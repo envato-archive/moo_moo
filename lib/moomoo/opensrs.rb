@@ -37,6 +37,37 @@ module MooMoo
       end
     end
 
+    def can_transfer?(domain)
+      try_opensrs do
+        cmd = Command.new('check_transfer', 'domain', {"domain" => domain})
+        result = run_command(cmd)
+
+        p result.inspect
+        case result['response_code'].to_i
+          when 200
+            result['transferrable'].to_i
+          else
+            errors = [result['rrptext1']]
+            raise OpenSRSException.new(errors), "Unexpected response from domain registry."
+        end
+      end
+    end
+
+    def can_register_list?(*domains)
+      try_opensrs do
+        results = []
+        domains.each do |domain|
+          begin
+            results << can_register?(domain)
+          rescue Exception => e
+            results << false
+          end
+        end
+
+        results
+      end
+    end
+
     def register(domain, term = 1)
       try_opensrs do
         contacts = {

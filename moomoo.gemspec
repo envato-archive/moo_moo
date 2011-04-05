@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "opensrs"
 
   s.add_dependency 'rspec'
+  s.add_dependency 'webmock'
+  s.add_dependency 'vcr'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

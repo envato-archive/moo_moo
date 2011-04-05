@@ -1,9 +1,9 @@
+require 'rexml/document'
+require 'digest/md5'
+require 'net/http'
+
 module MooMoo
   class Command
-    require 'rexml/document'
-    require 'digest/md5'
-    require 'net/http'
-
     def initialize(action, object, params = {})
       @action = action
       @object = object
@@ -101,7 +101,7 @@ module MooMoo
           if value.is_a?(Hash) || value.is_a?(Array)
             xml_add_collection_as_child(attrib_elem, value)
           else
-            attrib_elem.text = value
+            attrib_elem.text = (value.is_a?(String) ? value.dup : value)
           end
         end
       end
@@ -130,15 +130,31 @@ module MooMoo
     def parse_xml_response(data)
       doc = REXML::Document.new(data)
 
+      values = {}
+
       # Grab the important part of the response from OpenSRS
       a = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
+        begin
+          if item.elements.first.name == "dt_assoc"
+            extract_values(item.elements.first, values)
+          end
+        rescue
+        end
+
         item.is_a? REXML::Element
       }.map { |i|
+        begin
           [i.attributes['key'], i.text]
+        rescue
+        end
       }
 
       # Convert the array to a hash
-      Hash[*a.collect { |v| [v,v*2]}.flatten]
+      result = Hash[*a.collect { |v| [v,v*2]}.flatten].merge!(values)
+      p "ok"
+      p result.inspect
+      p "end"
+      result
     end
 
     def parse_response(data)
@@ -159,5 +175,10 @@ module MooMoo
       @returned_parameters
     end
 
+    def extract_values(element, values)
+      element.elements.each do |item|
+        values[item.attributes['key']] = item.text
+      end
+    end
   end
 end
