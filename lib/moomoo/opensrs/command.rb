@@ -49,7 +49,7 @@ module MooMoo
 
     # contact_set => {:owner => {}, :admin => {}}
     def xml_add_collection_as_child(elem, coll)
-      dt_type = (coll.is_a? Array) ? 'dt_array' : 'dt_assoc'
+      dt_type = (coll.is_a?(Array) || coll.is_a?(Hash)) ? 'dt_array' : 'dt_assoc'
       elem = elem.add_element(dt_type)
       coll = coll.first if coll.is_a? Array
                                                             
@@ -132,29 +132,31 @@ module MooMoo
 
       values = {}
 
-      # Grab the important part of the response from OpenSRS
-      a = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
-        begin
-          if item.elements.first.name == "dt_assoc"
-            extract_values(item.elements.first, values)
-          end
-        rescue
-        end
-
+      elements = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
         item.is_a? REXML::Element
-      }.map { |i|
-        begin
-          [i.attributes['key'], i.text]
-        rescue
-        end
       }
 
-      # Convert the array to a hash
-      result = Hash[*a.collect { |v| [v,v*2]}.flatten].merge!(values)
-      p "ok"
-      p result.inspect
-      p "end"
-      result
+      build_xml_hash(elements)
+    end
+
+    def build_xml_hash(elements)
+      data_hash = {}
+
+      elements.each do |elem|
+        key = elem.attributes['key']
+
+        if elem.elements.size > 0
+          if key.nil?
+            data_hash.merge!(build_xml_hash(elem.elements))
+          else
+            data_hash[key] = build_xml_hash(elem.elements)
+          end
+        else
+          data_hash[key] = elem.text unless key.nil?
+        end
+      end
+
+      data_hash
     end
 
     def parse_response(data)

@@ -19,7 +19,7 @@ task :sanitize_cassettes do
         if old.match(/#{ENV['OPENSRS_TEST_KEY']}|#{ENV['OPENSRS_TEST_URL']}|#{ENV['OPENSRS_TEST_USER']}|#{ENV['OPENSRS_TEST_PASS']}/)
           puts "Sanitizing #{file}"
           old.gsub!(ENV['OPENSRS_TEST_KEY'], '123key')
-          old.gsub!(ENV['OPENSRS_TEST_URL'], 'horizon.opensrs.net')
+          old.gsub!(ENV['OPENSRS_TEST_URL'], 'test.server.com')
           old.gsub!(ENV['OPENSRS_TEST_USER'], 'opensrs_user')
           old.gsub!(ENV['OPENSRS_TEST_PASS'], 'password')
           File.open(file, 'w') do |f|

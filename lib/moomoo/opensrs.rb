@@ -1,12 +1,21 @@
 require 'moomoo/opensrs/command'
 require 'moomoo/opensrs/opensrsexception'
 require 'moomoo/opensrs/utils'
+require 'moomoo/opensrs/lookup_commands'
+require 'moomoo/opensrs/provisioning_commands'
+require 'moomoo/opensrs/transfer_commands'
+require 'moomoo/opensrs/nameserver_commands'
 
 module MooMoo
   class OpenSRS
     include Utils
 
     attr_reader :port
+
+    include LookupCommands
+    include ProvisioningCommands
+    include TransferCommands
+    include NameserverCommands
 
     def initialize(host, key, user, password)
       @host = host
@@ -45,11 +54,20 @@ module MooMoo
         p result.inspect
         case result['response_code'].to_i
           when 200
-            result['transferrable'].to_i
+            result['transferrable'].to_i == 1
           else
             errors = [result['rrptext1']]
             raise OpenSRSException.new(errors), "Unexpected response from domain registry."
         end
+      end
+    end
+
+    def can_update?(domain)
+      try_opensrs do
+        cmd = Command.new('belongs_to_rsp', 'domain', {"domain" => domain})
+        result = run_command(cmd)
+
+        result['attributes']['belongs_to_rsp'].to_i == 1
       end
     end
 
@@ -68,112 +86,16 @@ module MooMoo
       end
     end
 
-    def register(domain, term = 1)
-      try_opensrs do
-        contacts = {
-          :owner => {
-            :first_name => "Owen",
-            :last_name => "Ottway",
-            :phone => "+1.4165550123x1902",
-            :fax => "+1.4165550124",
-            :email => "ottway@example.com",
-            :org_name => "Example Inc.",
-            :address1 => "32 Oak Street",
-            :address2 => "Suite 500",
-            :address3 => "Owner",
-            :city => "SomeCity",
-            :state => "CA",
-            :country => "US",
-            :postal_code => "90210",
-            :url => "http://www.example.com"
-          },
-          :admin => {
-            :first_name => "Owen",
-            :last_name => "Ottway",
-            :phone => "+1.4165550123x1902",
-            :fax => "+1.4165550124",
-            :email => "ottway@example.com",
-            :org_name => "Example Inc.",
-            :address1 => "32 Oak Street",
-            :address2 => "Suite 500",
-            :address3 => "Owner",
-            :city => "SomeCity",
-            :state => "CA",
-            :country => "US",
-            :postal_code => "90210",
-            :url => "http://www.example.com"
-          },
-          :billing => {
-            :first_name => "Owen",
-            :last_name => "Ottway",
-            :phone => "+1.4165550123x1902",
-            :fax => "+1.4165550124",
-            :email => "ottway@example.com",
-            :org_name => "Example Inc.",
-            :address1 => "32 Oak Street",
-            :address2 => "Suite 500",
-            :address3 => "Owner",
-            :city => "SomeCity",
-            :state => "CA",
-            :country => "US",
-            :postal_code => "90210",
-            :url => "http://www.example.com"
-          },
-          :tech => {
-            :first_name => "Owen",
-            :last_name => "Ottway",
-            :phone => "+1.4165550123x1902",
-            :fax => "+1.4165550124",
-            :email => "ottway@example.com",
-            :org_name => "Example Inc.",
-            :address1 => "32 Oak Street",
-            :address2 => "Suite 500",
-            :address3 => "Owner",
-            :city => "SomeCity",
-            :state => "CA",
-            :country => "US",
-            :postal_code => "90210",
-            :url => "http://www.example.com"
-          }
-        }
+    private
 
-
-        nameservers = [
-          "0".to_sym => {
-            :sortorder => 1,
-            :name => "ns1.systemdns.com"
-            #:name => "dns1.site5.com"
-          },
-          "1".to_sym => {
-            :sortorder => 2,
-            :name => "ns2.systemdns.com"
-            #:name => "dns2.site5.com"
-          },
-        ]
-
-        cmd = Command.new('sw_register', 'domain', {
-          "contact_set" => contacts, 
-          "custom_nameservers" => 1, 
-          "custom_tech_contact" => 1, 
-          "domain" => domain, 
-          "nameserver_list" => nameservers, 
-          "period" => term, 
-          "reg_type" => "new", 
-          "reg_username" => @user, 
-          "reg_password" => @password
-        })
-
-        begin
-          result = run_command(cmd)
-
-          success = result['is_success'].to_i == 1
-          order_id = result['attributes']['id'].to_i
-          #::DomainRegistry::DomainOrder.new(success, order_id)
-        rescue OpenSRSException => e
-        end
-
-        result
+    def index_array(arr)
+      arr_indexed = {}
+      arr.each_with_index do |item, index|
+        arr_indexed[index] = item
       end
+
+      arr_indexed
     end
+
   end
 end
