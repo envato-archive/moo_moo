@@ -164,8 +164,13 @@ module MooMoo
 
         it "should return suggested names for a domain" do
           result = @opensrs.name_suggest("random_domain", [".com", ".net"])
-          pending "Missing TLD list even tho its being set"
-          raise result.inspect
+          result['lookup']['count'].to_i.should == 4
+          result['lookup']['items']['0']['domain'].should == "randomdomain.com"
+          result['lookup']['items']['0']['status'].should == "taken"
+
+          result['suggestion']['count'].to_i.should == 49
+          result['suggestion']['items']['0']['domain'].should == "aimlessdomain.com"
+          result['suggestion']['items']['0']['status'].should == "available"
         end
       end
     end

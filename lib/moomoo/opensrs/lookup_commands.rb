@@ -135,6 +135,8 @@ module MooMoo
 
           cmd = Command.new('name_suggest', 'domain', {"searchstring" => domain, "tlds" => tlds_indexed})
           result = run_command(cmd)
+
+          result['attributes']
         end
       end
     end
