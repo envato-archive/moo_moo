@@ -124,7 +124,7 @@ module MooMoo
           result = @opensrs.get_orders_by_domain(@registered_domain)
           result['orders'].should be_a_kind_of(Hash)
           result['orders'].should have(2).domain
-          result['orders']['0']['id'].to_i.should == 1861574
+          result['orders']['0']['id'].to_i.should == 1862773
         end
       end
 
@@ -132,7 +132,7 @@ module MooMoo
         use_vcr_cassette "lookup/get_price"
 
         it "should return the price" do
-          result = @opensrs.get_price(random_domain)
+          result = @opensrs.get_price('example.com')
           result.should == 11.62
         end
       end
@@ -149,7 +149,7 @@ module MooMoo
         use_vcr_cassette "lookup/lookup_domain"
 
         it "should return the availbility of an available domain" do
-          result = @opensrs.lookup_domain(random_domain)
+          result = @opensrs.lookup_domain('example.com')
           result['status'].should == "available"
         end
 
