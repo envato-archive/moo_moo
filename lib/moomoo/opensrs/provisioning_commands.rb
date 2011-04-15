@@ -34,6 +34,8 @@ module MooMoo
           expire_year = 2011
           cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => expire_year, "handle" => "process"})
           result = run_command(cmd)
+
+          result['attributes']
         end
       end
 

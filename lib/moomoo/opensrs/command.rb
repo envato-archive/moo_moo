@@ -12,6 +12,7 @@ module MooMoo
 
     def run(host, key, user, port)
       xml = build_command(@action, @object, @params, nil)
+      p xml
 
       md5_signature = Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(

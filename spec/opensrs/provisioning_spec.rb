@@ -15,7 +15,6 @@ module MooMoo
     end
 
     describe "Provisioning Commands" do
-=begin
       describe "cancel_order" do
         use_vcr_cassette "provisioning/cancel_order"
 
@@ -27,7 +26,7 @@ module MooMoo
 
         it "should cancel all pending orders" do
           # TODO: do an pending order and verify it was canceled
-          result = @opensrs.cancel_pending_orders(Time.now.to_i)
+          result = @opensrs.cancel_pending_orders(1302890914)
           result['total'].to_i.should == 0
           result['cancelled'].should be_a_kind_of(Hash)
           result['cancelled'].should be_empty
@@ -60,8 +59,10 @@ module MooMoo
         use_vcr_cassette "provisioning/renew_domain"
 
         it "should renew" do
-          result = @opensrs.renew_domain(@registered_domain, 1)
-          raise result.inspect
+          result = @opensrs.renew_domain("example.com", 1)
+          result['order_id'].to_i.should == 1867227
+          result['id'].to_i.should == 678899
+          result['admin_email'].should == "adams@example.com"
         end
       end
 
@@ -69,9 +70,7 @@ module MooMoo
         use_vcr_cassette "provisioning/revoke_domain"
 
         it "should remove the domain from the registry" do
-          domain = random_domain
-          @opensrs.register(domain, 1)
-          result = @opensrs.revoke(domain, @opensrs_user)
+          result = @opensrs.revoke("example.com", @opensrs_user)
           result['is_success'].to_i.should == 1
         end
       end
@@ -84,9 +83,8 @@ module MooMoo
           result['is_success'].to_i.should == 1
         end
       end
-=end
 
-      describe "update_contacts" do
+      describe "update_contacts", :wip => true do
         use_vcr_cassette "provisioning/update_contacts"
 
         it "should update the contacts" do
