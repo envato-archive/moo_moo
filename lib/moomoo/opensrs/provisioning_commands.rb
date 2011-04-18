@@ -150,7 +150,7 @@ module MooMoo
           rescue OpenSRSException => e
           end
 
-          result
+          result['attributes']
         end
       end
 

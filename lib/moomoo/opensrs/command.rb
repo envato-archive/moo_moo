@@ -50,7 +50,7 @@ module MooMoo
 
     # contact_set => {:owner => {}, :admin => {}}
     def xml_add_collection_as_child(elem, coll)
-      dt_type = (coll.is_a?(Array) || coll.is_a?(Hash)) ? 'dt_array' : 'dt_assoc'
+      dt_type = (coll.is_a?(Array)) ? 'dt_array' : 'dt_assoc'
       elem = elem.add_element(dt_type)
       coll = coll.first if coll.is_a? Array
                                                             
@@ -89,6 +89,7 @@ module MooMoo
       doc = REXML::Document.new(xml)
       doc.root.elements["body/data_block/dt_assoc/item[@key='action']"].text = action
       doc.root.elements["body/data_block/dt_assoc/item[@key='object']"].text = object
+
       unless cookie.nil?
         cookie_elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'cookie'})
         cookie_elem.text = cookie

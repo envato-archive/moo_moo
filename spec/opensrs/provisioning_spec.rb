@@ -79,8 +79,9 @@ module MooMoo
         use_vcr_cassette "provisioning/register"
 
         it "should register a domain" do
-          result = @opensrs.register(random_domain, 1)
-          result['is_success'].to_i.should == 1
+          result = @opensrs.register('example.com', 1)
+          result['registration_text'].should match(/successfully completed/i)
+          result['id'].to_i.should == 1869406
         end
       end
 
