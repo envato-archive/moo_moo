@@ -75,7 +75,7 @@ module MooMoo
         end
       end
 
-      describe "register", :wip => true do
+      describe "register" do
         use_vcr_cassette "provisioning/register"
 
         it "should register a domain" do
@@ -85,7 +85,7 @@ module MooMoo
         end
       end
 
-      describe "update_contacts", :wip => true do
+      describe "update_contacts" do
         use_vcr_cassette "provisioning/update_contacts"
 
         it "should update the contacts" do

@@ -33,7 +33,7 @@ Rspec.configure do |c|
       @opensrs_user = ENV['OPENSRS_TEST_USER']
       @opensrs_pass = ENV['OPENSRS_TEST_PASS']
     else
-      @opensrs_host = 'example.com'
+      @opensrs_host = 'test.server.com'
       @opensrs_key = '123key'
       @opensrs_user = 'opensrs_user'
       @opensrs_pass = 'password'

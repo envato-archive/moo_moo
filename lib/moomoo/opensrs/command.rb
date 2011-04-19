@@ -12,7 +12,6 @@ module MooMoo
 
     def run(host, key, user, port)
       xml = build_command(@action, @object, @params, nil)
-      p xml
 
       md5_signature = Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(
@@ -50,7 +49,12 @@ module MooMoo
 
     # contact_set => {:owner => {}, :admin => {}}
     def xml_add_collection_as_child(elem, coll)
-      dt_type = (coll.is_a?(Array)) ? 'dt_array' : 'dt_assoc'
+      if coll.is_a?(Array)
+        dt_type = 'dt_array'
+      elsif coll.is_a?(Hash)
+        dt_type = 'dt_array' if Float(coll.keys.first) rescue 'dt_assoc'
+      end
+
       elem = elem.add_element(dt_type)
       coll = coll.first if coll.is_a? Array
                                                             
