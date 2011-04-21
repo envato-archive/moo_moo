@@ -12,6 +12,7 @@ module MooMoo
 
     def run(host, key, user, port)
       xml = build_command(@action, @object, @params, nil)
+      p xml
 
       md5_signature = Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(
@@ -49,10 +50,17 @@ module MooMoo
 
     # contact_set => {:owner => {}, :admin => {}}
     def xml_add_collection_as_child(elem, coll)
-      if coll.is_a?(Array)
-        dt_type = 'dt_array'
-      elsif coll.is_a?(Hash)
-        dt_type = 'dt_array' if Float(coll.keys.first) rescue 'dt_assoc'
+      # default collection type is array
+      dt_type = 'dt_array'
+
+      # if it's a hash, make sure the keys aren't numeric
+      if coll.is_a?(Hash)
+        begin
+          Float(coll.keys.first)
+        rescue
+          # the keys weren't numeric, so it really is an association (hash)
+          dt_type = 'dt_assoc'
+        end
       end
 
       elem = elem.add_element(dt_type)

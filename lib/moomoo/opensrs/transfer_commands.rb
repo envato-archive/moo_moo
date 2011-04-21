@@ -58,6 +58,7 @@ module MooMoo
           cmd = Command.new('send_password', 'transfer', {"domain_name" => domain})
           result = run_command(cmd)
 
+          raise result.inspect
           result['is_success'].to_i == 1
         end
       end

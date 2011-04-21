@@ -46,101 +46,8 @@ module MooMoo
         end
       end
 
-      def register(domain, term = 1)
+      def register(cmd)
         try_opensrs do
-          contacts = {
-            :owner => {
-              :first_name => "Owen",
-              :last_name => "Ottway",
-              :phone => "+1.4165550123x1902",
-              :fax => "+1.4165550124",
-              :email => "ottway@example.com",
-              :org_name => "Example Inc.",
-              :address1 => "32 Oak Street",
-              :address2 => "Suite 500",
-              :address3 => "Owner",
-              :city => "SomeCity",
-              :state => "CA",
-              :country => "US",
-              :postal_code => "90210",
-              :url => "http://www.example.com"
-            },
-            :admin => {
-              :first_name => "Owen",
-              :last_name => "Ottway",
-              :phone => "+1.4165550123x1902",
-              :fax => "+1.4165550124",
-              :email => "ottway@example.com",
-              :org_name => "Example Inc.",
-              :address1 => "32 Oak Street",
-              :address2 => "Suite 500",
-              :address3 => "Owner",
-              :city => "SomeCity",
-              :state => "CA",
-              :country => "US",
-              :postal_code => "90210",
-              :url => "http://www.example.com"
-            },
-            :billing => {
-              :first_name => "Owen",
-              :last_name => "Ottway",
-              :phone => "+1.4165550123x1902",
-              :fax => "+1.4165550124",
-              :email => "ottway@example.com",
-              :org_name => "Example Inc.",
-              :address1 => "32 Oak Street",
-              :address2 => "Suite 500",
-              :address3 => "Owner",
-              :city => "SomeCity",
-              :state => "CA",
-              :country => "US",
-              :postal_code => "90210",
-              :url => "http://www.example.com"
-            },
-            :tech => {
-              :first_name => "Owen",
-              :last_name => "Ottway",
-              :phone => "+1.4165550123x1902",
-              :fax => "+1.4165550124",
-              :email => "ottway@example.com",
-              :org_name => "Example Inc.",
-              :address1 => "32 Oak Street",
-              :address2 => "Suite 500",
-              :address3 => "Owner",
-              :city => "SomeCity",
-              :state => "CA",
-              :country => "US",
-              :postal_code => "90210",
-              :url => "http://www.example.com"
-            }
-          }
-
-
-          nameservers = [
-            "0".to_sym => {
-              :sortorder => 1,
-              :name => "ns1.systemdns.com"
-              #:name => "dns1.site5.com"
-            },
-            "1".to_sym => {
-              :sortorder => 2,
-              :name => "ns2.systemdns.com"
-              #:name => "dns2.site5.com"
-            },
-          ]
-
-          cmd = Command.new('sw_register', 'domain', {
-            "contact_set" => contacts, 
-            "custom_nameservers" => 1, 
-            "custom_tech_contact" => 1, 
-            "domain" => domain, 
-            "nameserver_list" => nameservers, 
-            "period" => term, 
-            "reg_type" => "new", 
-            "reg_username" => @user, 
-            "reg_password" => @password
-          })
-
           begin
             result = run_command(cmd)
 
@@ -157,9 +64,62 @@ module MooMoo
       def update_contacts(domain, contacts, types)
         try_opensrs do
           types = index_array(types)
-          p types.inspect
           cmd = Command.new('update_contacts', 'domain', {"domain" => domain, "contact_set" => contacts, "types" => types})
           result = run_command(cmd)
+
+          result['attributes']['details']
+        end
+      end
+
+      def register_domain(domain, contacts, term = 1, attribs = {})
+        try_opensrs do
+
+          nameservers = [
+            "0".to_sym => {
+              :sortorder => 1,
+              :name => "ns1.systemdns.com"
+              #:name => "dns1.site5.com"
+            },
+            "1".to_sym => {
+              :sortorder => 2,
+              :name => "ns2.systemdns.com"
+              #:name => "dns2.site5.com"
+            },
+          ]
+
+          attributes = {
+            "contact_set" => contacts, 
+            "custom_nameservers" => 1, 
+            "custom_tech_contact" => 1, 
+            "domain" => domain, 
+            "nameserver_list" => nameservers, 
+            "period" => term, 
+            "reg_type" => "new", 
+            "reg_username" => @user, 
+            "reg_password" => @password
+          }
+
+          cmd = Command.new('sw_register', 'domain', attributes.merge(attribs))
+
+          register(cmd)
+        end
+      end
+
+      def register_trust_service(csr, contacts, attributes, term = 1)
+        try_opensrs do
+
+          attribs = {
+            "contact_set" => contacts,
+            "csr" => csr,
+            "period" => term,
+            "reg_type" => "new",
+            "reg_username" => @user,
+            "reg_password" => @password
+          }
+
+          cmd = Command.new('sw_register', 'trust_service', attribs.merge(attributes))
+
+          register(cmd)
         end
       end
     end

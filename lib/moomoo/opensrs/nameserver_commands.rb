@@ -1,6 +1,47 @@
 module MooMoo
   class OpenSRS
     module NameserverCommands
+      def create_nameserver(name, ip)
+        try_opensrs do
+          cmd = Command.new('create', 'nameserver', {"name" => name, "ipaddress" => ip})
+          result = run_command(cmd)
+
+        end
+      end
+
+      def delete_nameserver(name, ip)
+        try_opensrs do
+          cmd = Command.new('delete', 'nameserver', {"name" => name, "ipaddress" => ip})
+          result = run_command(cmd)
+
+        end
+      end
+
+      def get_nameserver
+        try_opensrs do
+          cmd = Command.new('get', 'nameserver', {"name" => "all"})
+          result = run_command(cmd)
+
+        end
+      end
+
+      def modify_nameserver(name, ip, new_name)
+        try_opensrs do
+          cmd = Command.new('modify', 'nameserver', {"name" => name, "ipaddress" => ip, "new_name" => new_name})
+          result = run_command(cmd)
+
+        end
+      end
+
+      def set_cookie(username, password, domain)
+        try_opensrs do
+          cmd = Command.new('set', 'cookie', {"reg_username" => username, "reg_password" => password, "domain" => domain})
+          result = run_command(cmd)
+
+          result['attributes']
+        end
+      end
+
       def cancel_transfer(domain, reseller)
         try_opensrs do
           cmd = Command.new('cancel_transfer', 'transfer', {"domain" => domain, "reseller" => reseller})
@@ -48,16 +89,6 @@ module MooMoo
           result['attributes']['order_id'].to_i
         end
       end
-
-      def send_password(domain)
-        try_opensrs do
-          cmd = Command.new('send_password', 'transfer', {"domain_name" => domain})
-          result = run_command(cmd)
-
-          result['is_success'].to_i == 1
-        end
-      end
-
     end
   end
 end
