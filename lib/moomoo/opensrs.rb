@@ -5,6 +5,7 @@ require 'moomoo/opensrs/lookup_commands'
 require 'moomoo/opensrs/provisioning_commands'
 require 'moomoo/opensrs/transfer_commands'
 require 'moomoo/opensrs/nameserver_commands'
+require 'moomoo/opensrs/cookie_commands'
 
 module MooMoo
   class OpenSRS
@@ -16,6 +17,7 @@ module MooMoo
     include ProvisioningCommands
     include TransferCommands
     include NameserverCommands
+    include CookieCommands
 
     def initialize(host, key, user, password)
       @host = host

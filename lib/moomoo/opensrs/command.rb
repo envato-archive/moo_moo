@@ -4,15 +4,15 @@ require 'net/http'
 
 module MooMoo
   class Command
-    def initialize(action, object, params = {})
+    def initialize(action, object, params = {}, cookie = nil)
       @action = action
       @object = object
       @params = params
+      @cookie = cookie
     end
 
     def run(host, key, user, port)
-      xml = build_command(@action, @object, @params, nil)
-      p xml
+      xml = build_command(@action, @object, @params, @cookie)
 
       md5_signature = Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(
