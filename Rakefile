@@ -7,6 +7,13 @@ rescue LoadError
   exit
 end 
 
+begin
+    require 'metric_fu'
+      MetricFu::Configuration.run do |config|
+            config.rcov[:rcov_opts] << "-Ispec"
+              end
+rescue LoadError
+end
 
 desc "Sanitize sensitive info from cassettes"
 task :sanitize_cassettes do
@@ -36,3 +43,10 @@ task :sanitize_cassettes do
 end
 
 Bundler::GemHelper.install_tasks
+
+desc  "Run all specs with rcov"
+RSpec::Core::RakeTask.new(:rcov) do |t|
+    t.rcov = true
+      t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/,features\/}
+end
+

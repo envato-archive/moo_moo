@@ -18,6 +18,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'webmock'
   s.add_dependency 'vcr'
   s.add_dependency 'extlib'
+  s.add_dependency 'rcov'
+  s.add_dependency 'metric_fu'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
