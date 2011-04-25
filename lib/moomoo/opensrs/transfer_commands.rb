@@ -23,6 +23,8 @@ module MooMoo
         try_opensrs do
           cmd = Command.new('check_transfer', 'domain', {"domain" => domain})
           result = run_command(cmd)
+
+          result['attributes']
         end
       end
 

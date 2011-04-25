@@ -33,7 +33,8 @@ module MooMoo
 
         it "should do something" do
           result = @opensrs.check_transfer(@registered_domain)
-          pending "need a transferred domain to check"
+          result['transferrable'].to_i.should == 0
+          result['reason'].should match(/Domain already exists in.*account/i)
         end
       end
 
