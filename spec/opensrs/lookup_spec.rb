@@ -55,9 +55,11 @@ module MooMoo
         use_vcr_cassette "lookup/get_domain"
 
         it "should return all the info" do
-          pending "requires set cookie"
-          result = @opensrs.get_domain(@registered_domain)
-          raise result.inspect
+          result = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+          result = @opensrs.get_domain(@registered_domain, result['cookie'])
+          result['auto_renew'].to_i.should == 1
+          result['contact_set']['admin']['org_name'].should == "Example Inc."
+          result['nameserver_list']['0']['name'].should == "ns2.systemdns.com"
         end
       end
 
@@ -137,11 +139,12 @@ module MooMoo
         end
       end
 
-      describe "get_product_info" do
+      describe "get_product_info", :wip => true do
         use_vcr_cassette "lookup/get_product_info"
 
         it "should return the product info" do
-          pending "whats a trust service product"
+          result = @opensrs.get_product_info(99)
+          raise result.inspect
         end
       end
 

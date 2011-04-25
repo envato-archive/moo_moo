@@ -29,11 +29,12 @@ module MooMoo
         end
       end
 
-      def get_domain(domain, type = "all_info")
+      def get_domain(domain, cookie, type = "all_info")
         try_opensrs do
-          cmd = Command.new('get', 'domain', {"type" => "all_info"})
+          cmd = Command.new('get', 'domain', {"type" => "all_info"}, cookie)
           result = run_command(cmd)
 
+          result['attributes']
         end
       end
 
@@ -114,7 +115,11 @@ module MooMoo
         end
       end
 
-      def get_product_info()
+      def get_product_info(product_id)
+        try_opensrs do
+          cmd = Command.new('get_product_info', 'trust_service', {"product_id" => product_id})
+          result = run_command(cmd)
+        end
       end
 
       def lookup_domain(domain)
