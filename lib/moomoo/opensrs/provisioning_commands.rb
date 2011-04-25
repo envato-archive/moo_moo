@@ -24,7 +24,7 @@ module MooMoo
           cmd = Command.new('process_pending', 'domain', {"order_id" => order_id})
           result = run_command(cmd)
 
-          result
+          result['attributes']
         end
       end
 
@@ -50,6 +50,8 @@ module MooMoo
         try_opensrs do
           begin
             result = run_command(cmd)
+
+            p result.inspect
 
             success = result['is_success'].to_i == 1
             order_id = result['attributes']['id'].to_i
@@ -113,8 +115,9 @@ module MooMoo
             "csr" => csr,
             "period" => term,
             "reg_type" => "new",
-            "reg_username" => @user,
-            "reg_password" => @password
+            "handle" => "process",
+            #"reg_username" => @user,
+            #"reg_password" => @password
           }
 
           cmd = Command.new('sw_register', 'trust_service', attribs.merge(attributes))
