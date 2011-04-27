@@ -18,8 +18,8 @@ module MooMoo
         use_vcr_cassette "nameserver/create"
 
         it "should create the nameserver" do
-          result = @opensrs.create_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
-          result.should be_true
+          res = @opensrs.create_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
+          res.success?.should be_true
         end
       end
 
@@ -27,8 +27,8 @@ module MooMoo
         use_vcr_cassette "nameserver/delete"
 
         it "should delete the nameserver" do
-          result = @opensrs.delete_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
-          result.should be_true
+          res = @opensrs.delete_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
+          res.success?.should be_true
         end
       end
 
@@ -36,11 +36,11 @@ module MooMoo
         use_vcr_cassette "nameserver/get"
 
         it "should return the nameservers" do
-          result = @opensrs.get_nameserver(@registered_domain)
+          res = @opensrs.get_nameserver(@registered_domain)
 
-          result.should have(2).nameservers
-          result['0']['name'].should == "ns1.#{@registered_domain}"
-          result['1']['ipaddress'].should == "212.112.123.12"
+          res.result.should have(2).nameservers
+          res.result['0']['name'].should == "ns1.#{@registered_domain}"
+          res.result['1']['ipaddress'].should == "212.112.123.12"
         end
       end
 
@@ -48,8 +48,8 @@ module MooMoo
         use_vcr_cassette "nameserver/modify"
 
         it "should update the name of the nameserver" do
-          result = @opensrs.modify_nameserver("ns22.#{@registered_domain}", '212.112.123.11', "ns3.#{@registered_domain}", @registered_domain)
-          result.should be_true
+          res = @opensrs.modify_nameserver("ns22.#{@registered_domain}", '212.112.123.11', "ns3.#{@registered_domain}", @registered_domain)
+          res.success?.should be_true
         end
       end
     end

@@ -1,4 +1,5 @@
 require 'moomoo/opensrs/command'
+require 'moomoo/opensrs/response'
 require 'moomoo/opensrs/opensrsexception'
 require 'moomoo/opensrs/utils'
 require 'moomoo/opensrs/lookup_commands'

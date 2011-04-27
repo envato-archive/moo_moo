@@ -6,7 +6,7 @@ module MooMoo
           cmd = Command.new('cancel_pending_orders', 'order', {"to_date" => to_date})
           result = run_command(cmd)
 
-          result['attributes']
+          OpenSRS::Response.new(true, result['attributes'])
         end
       end
 
@@ -15,7 +15,7 @@ module MooMoo
           cmd = Command.new('modify', 'domain', {"data" => type}.merge(params))
           result = run_command(cmd)
 
-          result['is_success'].to_i == 1
+          OpenSRS::Response.new(result['is_success'].to_i == 1)
         end
       end
 
@@ -24,7 +24,7 @@ module MooMoo
           cmd = Command.new('process_pending', 'domain', {"order_id" => order_id})
           result = run_command(cmd)
 
-          result['attributes']
+          OpenSRS::Response.new(true, result['attributes'])
         end
       end
 
@@ -35,7 +35,7 @@ module MooMoo
           cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => expire_year, "handle" => "process"})
           result = run_command(cmd)
 
-          result['attributes']
+          OpenSRS::Response.new(true, result['attributes'])
         end
       end
 
@@ -43,6 +43,8 @@ module MooMoo
         try_opensrs do
           cmd = Command.new('revoke', 'domain', {"domain" => domain, "reseller" => reseller})
           result = run_command(cmd)
+
+          OpenSRS::Response.new(true, result)
         end
       end
 
@@ -51,15 +53,13 @@ module MooMoo
           begin
             result = run_command(cmd)
 
-            p result.inspect
-
             success = result['is_success'].to_i == 1
             order_id = result['attributes']['id'].to_i
             #::DomainRegistry::DomainOrder.new(success, order_id)
           rescue OpenSRSException => e
           end
 
-          result['attributes']
+          OpenSRS::Response.new(result['is_success'].to_i == 1, result['attributes'])
         end
       end
 
@@ -69,7 +69,7 @@ module MooMoo
           cmd = Command.new('update_contacts', 'domain', {"domain" => domain, "contact_set" => contacts, "types" => types})
           result = run_command(cmd)
 
-          result['attributes']['details']
+          OpenSRS::Response.new(true, result['attributes']['details'])
         end
       end
 

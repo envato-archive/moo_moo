@@ -93,7 +93,7 @@ module MooMoo
 
         it "should cancel all pending orders" do
           # TODO: do an pending order and verify it was canceled
-          result = @opensrs.cancel_pending_orders(1302890914)
+          result = @opensrs.cancel_pending_orders(1302890914).result
           result['total'].to_i.should == 0
           result['cancelled'].should be_a_kind_of(Hash)
           result['cancelled'].should be_empty
@@ -107,11 +107,12 @@ module MooMoo
         end
 
         it "should update the expire action" do
-          result = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
-          result.should be_true
+          res = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
+          res.success?.should be_true
         end
 
         it "should modify all domains linked to the profile" do
+          pending "modify all"
 #          result = @opensrs.modify_all('something', {})
         end
       end
@@ -120,7 +121,7 @@ module MooMoo
         use_vcr_cassette "provisioning/process_pending"
 
         it "should process the pending order" do
-          result = @opensrs.process_pending(1878084)
+          result = @opensrs.process_pending(1878084).result
           result['order_id'].to_i.should == 1878084
           result['id'].to_i.should == 730001
           result['f_auto_renew'].should == "Y"
@@ -131,7 +132,7 @@ module MooMoo
         use_vcr_cassette "provisioning/renew_domain"
 
         it "should renew" do
-          result = @opensrs.renew_domain("example.com", 1)
+          result = @opensrs.renew_domain("example.com", 1).result
           result['order_id'].to_i.should == 1867227
           result['id'].to_i.should == 678899
           result['admin_email'].should == "adams@example.com"
@@ -142,8 +143,8 @@ module MooMoo
         use_vcr_cassette "provisioning/revoke_domain"
 
         it "should remove the domain from the registry" do
-          result = @opensrs.revoke("example.com", @opensrs_user)
-          result['is_success'].to_i.should == 1
+          res = @opensrs.revoke("example.com", @opensrs_user)
+          res.success?.should be_true
         end
       end
 
@@ -151,13 +152,15 @@ module MooMoo
         use_vcr_cassette "provisioning/register"
 
         it "should register a domain" do
-          result = @opensrs.register_domain('example.com', @contacts, 1)
+          result = @opensrs.register_domain('example.com', @contacts, 1).result
           result['registration_text'].should match(/successfully completed/i)
           result['id'].to_i.should == 1869406
         end
 
         it "should do a pending domain registration" do
-          result = @opensrs.register_domain('example.com', @contacts, 1, {"handle" => "save"})
+          res = @opensrs.register_domain('example.com', @contacts, 1, {"handle" => "save"})
+          res.success?.should be_true
+          raise res.inspect
         end
       end
 
@@ -183,8 +186,8 @@ module MooMoo
         use_vcr_cassette "provisioning/update_contacts"
 
         it "should update the contacts" do
-          result = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
-          result[@registered_domain]['response_code'].to_i.should == 200
+          res = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
+          res.result[@registered_domain]['response_code'].to_i.should == 200
         end
       end
     end
