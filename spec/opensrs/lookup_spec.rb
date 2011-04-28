@@ -77,7 +77,7 @@ module MooMoo
         use_vcr_cassette "lookup/get_domains_by_expiredate"
 
         it "should return domains within an expiration range" do
-          result = @opensrs.get_domains_by_expiredate(Date.today, Date.today + 365).result
+          result = @opensrs.get_domains_by_expiredate(Date.parse('2011-04-21'), Date.parse('2011-04-21') + 365).result
           result['total'].to_i.should == 2
           result['exp_domains']['0']['name'].should == "example.com"
           result['exp_domains']['0']['f_auto_renew'].should == "N"
