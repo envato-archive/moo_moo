@@ -154,13 +154,12 @@ module MooMoo
         it "should register a domain" do
           result = @opensrs.register_domain('example.com', @contacts, 1).result
           result['registration_text'].should match(/successfully completed/i)
-          result['id'].to_i.should == 1869406
+          result['id'].to_i.should == 1881229
         end
 
         it "should do a pending domain registration" do
           res = @opensrs.register_domain('example.com', @contacts, 1, {"handle" => "save"})
           res.success?.should be_true
-          raise res.inspect
         end
       end
 
