@@ -23,6 +23,8 @@ module MooMoo
         try_opensrs do
           cmd = Command.new('update', 'cookie', {"reg_username" => @opensrs_user, "reg_password" => "", "domain" => old_domain, "domain_new" => new_domain}, cookie)
           result = run_command(cmd)
+
+          OpenSRS::Response.new(result['is_success'].to_i == 1, result['attributes'])
         end
       end
 
