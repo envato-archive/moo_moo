@@ -65,6 +65,16 @@ module MooMoo
         end
       end
 
+      def push_transfer(domain, username, password)
+        try_opensrs do
+          cmd = Command.new('rsp2rsp_push_transfer', nil, {"domain" => domain, "username" => username, "password" => password, "grsp" => "opensrs"})
+          result = run_command(cmd)
+
+          raise result.inspect
+          OpenSRS::Response.new(true)
+        end
+      end
+
     end
   end
 end

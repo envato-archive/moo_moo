@@ -31,7 +31,13 @@ module MooMoo
       describe "check_transfer" do
         use_vcr_cassette "transfer/check_transfer"
 
-        it "should do something" do
+        it "should show in progress if the transfer is in progress" do
+          result = @opensrs.check_transfer('exampledomain.com')
+          result['transferrable'].to_i.should == 0
+          result['reason'].should match(/Transfer in progress/i)
+        end
+
+        it "should say the domain already exists if it does" do
           result = @opensrs.check_transfer(@registered_domain)
           result['transferrable'].to_i.should == 0
           result['reason'].should match(/Domain already exists in.*account/i)
@@ -70,6 +76,15 @@ module MooMoo
 
         it "should resend email message to admin contact" do
           result = @opensrs.send_password(@registered_domain)
+        end
+      end
+
+      describe "push_transfer", :rerun => true do
+        use_vcr_cassette "transfer/rsp2rsp_push_transfer"
+
+        it "should transfer the domain" do
+          res = @opensrs.push_transfer('exampledomain.com', @opensrs_user, @opensrs_pass)
+          res.success?.should be_true
         end
       end
     end
