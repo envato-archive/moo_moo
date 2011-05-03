@@ -82,7 +82,7 @@ module MooMoo
     end
 
     describe "Provisioning Commands" do
-      describe "cancel_order", :wip => true do
+      describe "cancel_order" do
         use_vcr_cassette "provisioning/cancel_order"
 
         it "should cancel a trust service order" do
@@ -149,7 +149,7 @@ module MooMoo
         end
       end
 
-      describe "register", :real => true do
+      describe "register" do
         use_vcr_cassette "provisioning/register"
 
         it "should register a domain" do

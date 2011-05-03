@@ -99,7 +99,7 @@ module MooMoo
         end
       end
 
-      describe "check_transfer", :wip => true do
+      describe "check_transfer" do
         use_vcr_cassette "transfer/check_transfer"
 
         it "should show in progress if the transfer is in progress" do
@@ -115,7 +115,7 @@ module MooMoo
         end
       end
 
-      describe "get_transfers_away", :wip => true do
+      describe "get_transfers_away" do
         use_vcr_cassette "transfer/get_transfers_away"
 
         it "should list domains that have been transferred away" do
@@ -124,7 +124,7 @@ module MooMoo
         end
       end
 
-      describe "get_tranfers_in", :wip => true do
+      describe "get_tranfers_in" do
         use_vcr_cassette "transfer/get_transfers_in"
 
         it "should list domains that have been transferred in" do
@@ -151,7 +151,7 @@ module MooMoo
         end
       end
 
-      describe "push_transfer", :rerun => true do
+      describe "push_transfer" do
         use_vcr_cassette "transfer/rsp2rsp_push_transfer"
 
         it "should transfer the domain" do
