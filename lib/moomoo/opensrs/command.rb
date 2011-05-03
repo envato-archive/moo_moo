@@ -34,21 +34,11 @@ module MooMoo
 
       @returned_parameters = parse_response(res.body)
 
-=begin
-      DOMAIN_REGISTRY_LOG.log_info "OpenSRS Request: #{host}" do
-        @returned_parameters.each { |k,v|
-          DOMAIN_REGISTRY_LOG.log_info("#{k} => #{v}")
-        }
-      end
-=end
-
-      # validate the response
       validate_response
     end
 
     private
 
-    # contact_set => {:owner => {}, :admin => {}}
     def xml_add_collection_as_child(elem, coll)
       # default collection type is array
       dt_type = 'dt_array'
@@ -125,7 +115,9 @@ module MooMoo
 
     # hash containing all of the data.
     def parse_text_response(data)
-      lines = data.split(/[\r\n]+/).delete_if { |line| (line =~ /^\s*\;/) || (line !~ /=/) || (line =~ /^\s*\-\s*Param\s+\@/) }
+      lines = data.split(/[\r\n]+/).delete_if { |line| 
+        (line =~ /^\s*\;/) || (line !~ /=/) || (line =~ /^\s*\-\s*Param\s+\@/) 
+      }
 
       # generate the hash of returned parameters
       returned_parameters = {}
@@ -184,8 +176,6 @@ module MooMoo
     def validate_response
       if 0 == @returned_parameters["is_success"].to_i
         error_msg = "#{@returned_parameters["response_code"]} - #{@returned_parameters["response_text"]}"
-        #raise OpenSRSException, error_msg
-        #DOMAIN_REGISTRY_LOG.log_error error_msg
       end
 
       @returned_parameters

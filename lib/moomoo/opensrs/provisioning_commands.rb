@@ -1,6 +1,15 @@
 module MooMoo
   class OpenSRS
     module ProvisioningCommands
+      def cancel_order(order_id)
+        try_opensrs do
+          cmd = Command.new('cancel_order', 'trust_service', {"order_id" => order_id})
+          result = run_command(cmd)
+
+          OpenSRS::Response.new(result)
+        end
+      end
+
       def cancel_pending_orders(to_date)
         try_opensrs do
           cmd = Command.new('cancel_pending_orders', 'order', {"to_date" => to_date})

@@ -139,12 +139,14 @@ module MooMoo
         end
       end
 
-      describe "get_product_info", :wip => true do
+      describe "get_product_info" do
         use_vcr_cassette "lookup/get_product_info"
 
-        it "should return the product info" do
+        it "should not find an invalid product" do
           res = @opensrs.get_product_info(99)
-          raise res.inspect
+          res.success?.should be_false
+          res.error_code.should == 405
+          res.error_msg.should match(/cannot be found/i)
         end
       end
 

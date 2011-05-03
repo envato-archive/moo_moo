@@ -81,51 +81,55 @@ module MooMoo
     end
 
     describe "Transfer Commands" do
-      describe "cancel_transfer", :rerun => true do
+      describe "cancel_transfer" do
         use_vcr_cassette "transfer/cancel_transfer"
 
         it "should cancel the transfer for a domain" do
           res = @opensrs.cancel_transfer('exampledomain.com', @opensrs_user)
-          raise res.inspect
+          res.success?.should be_false
+          res.error_code.should == 400
+          res.error_msg.should match(/transfer state prohibits cancellation/i)
         end
 
         it "should cancel the transfer for an order" do
           res = @opensrs.cancel_transfer_for_order(1884820, @opensrs_user)
-          raise res.inspect
+          res.success?.should be_false
+          res.error_code.should == 400
+          res.error_msg.should match(/transfer state prohibits cancellation/i)
         end
       end
 
-      describe "check_transfer" do
+      describe "check_transfer", :wip => true do
         use_vcr_cassette "transfer/check_transfer"
 
         it "should show in progress if the transfer is in progress" do
-          result = @opensrs.check_transfer('exampledomain.com')
-          result['transferrable'].to_i.should == 0
-          result['reason'].should match(/Transfer in progress/i)
+          res = @opensrs.check_transfer('exampledomain.com')
+          res.result['transferrable'].to_i.should == 0
+          res.result['reason'].should match(/Transfer in progress/i)
         end
 
         it "should say the domain already exists if it does" do
-          result = @opensrs.check_transfer(@registered_domain)
-          result['transferrable'].to_i.should == 0
-          result['reason'].should match(/Domain already exists in.*account/i)
+          res = @opensrs.check_transfer(@registered_domain)
+          res.result['transferrable'].to_i.should == 0
+          res.result['reason'].should match(/Domain already exists in.*account/i)
         end
       end
 
-      describe "get_transfers_away" do
+      describe "get_transfers_away", :wip => true do
         use_vcr_cassette "transfer/get_transfers_away"
 
         it "should list domains that have been transferred away" do
-          result = @opensrs.get_transfers_away
-          result['total'].to_i.should == 0
+          res = @opensrs.get_transfers_away
+          res.result['total'].to_i.should == 0
         end
       end
 
-      describe "get_tranfers_in" do
+      describe "get_tranfers_in", :wip => true do
         use_vcr_cassette "transfer/get_transfers_in"
 
         it "should list domains that have been transferred in" do
-          result = @opensrs.get_transfers_in
-          result['total'].to_i.should == 0
+          res = @opensrs.get_transfers_in
+          res.result['total'].to_i.should == 0
         end
       end
 
@@ -133,16 +137,17 @@ module MooMoo
         use_vcr_cassette "transfer/process_transfer"
 
         it "should do a new order with cancelled order's data" do
-          pending "not sure"
+          res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
+          p res.inspect
           result = @opensrs.process_transfer(1, @opensrs_user)
         end
       end
 
-      describe "send_password (transfer)", :rerun => true do
+      describe "send_password (transfer)" do
         use_vcr_cassette "transfer/send_password"
 
         it "should resend email message to admin contact" do
-          result = @opensrs.send_password('exampledomains.com')
+          result = @opensrs.send_password('fdsafsfsafafsaexample.com')
         end
       end
 
@@ -150,18 +155,21 @@ module MooMoo
         use_vcr_cassette "transfer/rsp2rsp_push_transfer"
 
         it "should transfer the domain" do
-          #res = @opensrs.push_transfer('exampledomain.com', @opensrs_user, @opensrs_pass)
           res = @opensrs.push_transfer(@registered_domain, @opensrs_user, @opensrs_pass)
-          res.success?.should be_true
+          res.success?.should be_false
+          res.error_code.should == 465
+          res.error_msg.should match(/transfer permission denied/i)
         end
       end
 
-      describe "transfer", :rerun => true do
+      describe "transfer" do
         use_vcr_cassette "transfer/transfer"
 
-        it "should transfer" do
-          res = @opensrs.register_domain('exampledomains.com', @contacts, 1, {"reg_type" => "transfer"})
-          raise res.inspect
+        it "should initiate the transfer" do
+          res = @opensrs.register_domain('testingdomain.com', @contacts, 1, {"reg_type" => "transfer"})
+          res.success?.should be_true
+          res.result['id'].to_i.should == 1885789
+          res.result['registration_text'].should match(/transfer request initiated/i)
         end
       end
     end

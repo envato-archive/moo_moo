@@ -82,17 +82,18 @@ module MooMoo
     end
 
     describe "Provisioning Commands" do
-      describe "cancel_order" do
+      describe "cancel_order", :wip => true do
         use_vcr_cassette "provisioning/cancel_order"
 
-        pending "trust service"
+        it "should cancel a trust service order" do
+          pending
+        end
       end
 
       describe "cancel_pending_orders" do
         use_vcr_cassette "provisioning/cancel_pending_orders"
 
         it "should cancel all pending orders" do
-          # TODO: do an pending order and verify it was canceled
           result = @opensrs.cancel_pending_orders(1302890914).result
           result['total'].to_i.should == 0
           result['cancelled'].should be_a_kind_of(Hash)
@@ -169,7 +170,7 @@ module MooMoo
         end
       end
 
-      describe "register_trust_service", :wip => true do
+      describe "register_trust_service" do
         use_vcr_cassette "provisioning/trust_service"
 
         it "should register the trust service" do
@@ -179,11 +180,13 @@ module MooMoo
           @contacts[:admin].delete(:url)
           @contacts[:billing].delete(:url)
           @contacts[:tech].delete(:url)
-          result = @opensrs.register_trust_service(csr, @contacts, 
+          res = @opensrs.register_trust_service(csr, @contacts, 
                                                    { "server_type" => "apachessl", 
                                                      "product_type" => "securesite", 
                                                      "server_count" => 1}, 1) 
-          raise result.inspect
+          res.success?.should be_false
+          res.error_code.should == 501
+          res.error_msg.should match(/Permission denied/i)
         end
       end
 

@@ -24,7 +24,7 @@ module MooMoo
           cmd = Command.new('check_transfer', 'domain', {"domain" => domain})
           result = run_command(cmd)
 
-          result['attributes']
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -33,7 +33,7 @@ module MooMoo
           cmd = Command.new('get_transfers_away', 'domain')
           result = run_command(cmd)
           
-          result['attributes']
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -42,7 +42,7 @@ module MooMoo
           cmd = Command.new('get_transfers_in', 'domain')
           result = run_command(cmd)
 
-          result['attributes']
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -51,7 +51,7 @@ module MooMoo
           cmd = Command.new('process_transfer', 'transfer', {"order_id" => order_id, "reseller" => reseller})
           result = run_command(cmd)
 
-          result['attributes']['order_id'].to_i
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -60,8 +60,7 @@ module MooMoo
           cmd = Command.new('send_password', 'transfer', {"domain_name" => domain})
           result = run_command(cmd)
 
-          raise result.inspect
-          result['is_success'].to_i == 1
+          OpenSRS::Response.new(result)
         end
       end
 
@@ -70,8 +69,7 @@ module MooMoo
           cmd = Command.new('rsp2rsp_push_transfer', nil, {"domain" => domain, "username" => username, "password" => password, "grsp" => "opensrs"})
           result = run_command(cmd)
 
-          raise result.inspect
-          OpenSRS::Response.new(true)
+          OpenSRS::Response.new(result)
         end
       end
 
