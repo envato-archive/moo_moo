@@ -6,7 +6,7 @@ module MooMoo
           cmd = Command.new('cancel_pending_orders', 'order', {"to_date" => to_date})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(true, result['attributes'])
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -15,7 +15,7 @@ module MooMoo
           cmd = Command.new('modify', 'domain', {"data" => type}.merge(params))
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result['is_success'].to_i == 1)
+          OpenSRS::Response.new(result)
         end
       end
 
@@ -24,7 +24,7 @@ module MooMoo
           cmd = Command.new('process_pending', 'domain', {"order_id" => order_id})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(true, result['attributes'])
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -35,7 +35,7 @@ module MooMoo
           cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => expire_year, "handle" => "process"})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(true, result['attributes'])
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -44,7 +44,7 @@ module MooMoo
           cmd = Command.new('revoke', 'domain', {"domain" => domain, "reseller" => reseller})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(true, result)
+          OpenSRS::Response.new(result)
         end
       end
 
@@ -52,14 +52,10 @@ module MooMoo
         try_opensrs do
           begin
             result = run_command(cmd)
-
-            success = result['is_success'].to_i == 1
-            order_id = result['attributes']['id'].to_i
-            #::DomainRegistry::DomainOrder.new(success, order_id)
           rescue OpenSRSException => e
           end
 
-          OpenSRS::Response.new(result['is_success'].to_i == 1, result['attributes'])
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -69,7 +65,7 @@ module MooMoo
           cmd = Command.new('update_contacts', 'domain', {"domain" => domain, "contact_set" => contacts, "types" => types})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(true, result['attributes']['details'])
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -96,10 +92,11 @@ module MooMoo
             "domain" => domain, 
             "nameserver_list" => nameservers, 
             "period" => term, 
-            "reg_type" => "new", 
             "reg_username" => @user, 
             "reg_password" => @password
           }
+
+          attributes["reg_type"] = "new" unless attribs["reg_type"]
 
           cmd = Command.new('sw_register', 'domain', attributes.merge(attribs))
 

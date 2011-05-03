@@ -6,7 +6,7 @@ module MooMoo
           cmd = Command.new('cancel_transfer', 'transfer', {"domain" => domain, "reseller" => reseller})
           result = run_command(cmd)
 
-          result['is_success'].to_i == 1
+          OpenSRS::Response.new(result)
         end
       end
 
@@ -15,7 +15,7 @@ module MooMoo
           cmd = Command.new('cancel_transfer', 'transfer', {"order_id" => order_id, "reseller" => reseller})
           result = run_command(cmd)
 
-          result['is_success'].to_i == 1
+          OpenSRS::Response.new(result)
         end
       end
 

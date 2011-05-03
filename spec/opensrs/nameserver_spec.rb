@@ -37,10 +37,10 @@ module MooMoo
 
         it "should return the nameservers" do
           res = @opensrs.get_nameserver(@registered_domain)
-
-          res.result.should have(2).nameservers
-          res.result['0']['name'].should == "ns1.#{@registered_domain}"
-          res.result['1']['ipaddress'].should == "212.112.123.12"
+          result = res.result['nameserver_list']
+          result.should have(2).nameservers
+          result['0']['name'].should == "ns1.#{@registered_domain}"
+          result['1']['ipaddress'].should == "212.112.123.12"
         end
       end
 

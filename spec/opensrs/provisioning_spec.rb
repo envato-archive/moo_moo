@@ -148,18 +148,24 @@ module MooMoo
         end
       end
 
-      describe "register" do
+      describe "register", :real => true do
         use_vcr_cassette "provisioning/register"
 
         it "should register a domain" do
-          result = @opensrs.register_domain('example.com', @contacts, 1).result
+          res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, 1)
+          result = res.result
           result['registration_text'].should match(/successfully completed/i)
-          result['id'].to_i.should == 1881229
+          result['id'].to_i.should == 1885783
         end
 
         it "should do a pending domain registration" do
-          res = @opensrs.register_domain('example.com', @contacts, 1, {"handle" => "save"})
+          res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
           res.success?.should be_true
+        end
+
+        it "should fail if the domain is taken" do
+          res = @opensrs.register_domain('example.com', @contacts, 1)
+          res.success?.should be_false
         end
       end
 
@@ -186,7 +192,7 @@ module MooMoo
 
         it "should update the contacts" do
           res = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
-          res.result[@registered_domain]['response_code'].to_i.should == 200
+          res.result['details'][@registered_domain]['response_code'].to_i.should == 200
         end
       end
     end

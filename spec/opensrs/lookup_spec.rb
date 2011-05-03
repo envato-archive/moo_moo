@@ -112,7 +112,7 @@ module MooMoo
         use_vcr_cassette "lookup/get_order_info"
 
         it "should return the order info" do
-          result = @opensrs.get_order_info(1855625).result
+          result = @opensrs.get_order_info(1855625).result['field_hash']
           result['owner_address2'].should == "Suite 500"
           result['billing_org_name'].should == "Example Inc."
           result['period'].to_i.should == 1

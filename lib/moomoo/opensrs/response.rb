@@ -1,14 +1,21 @@
 module MooMoo
   class OpenSRS
     class Response
-      def initialize(success, hash = {})
-        @success = success
-        #@response_text = response_text
+      def initialize(hash, key = nil)
         @hash = hash
+        @key = key
       end
 
       def success?
-        @success
+        @hash['is_success'].nil? ? true : @hash['is_success'].to_i == 1
+      end
+
+      def error_msg
+        @hash['response_text']
+      end
+
+      def error_code
+        @hash['response_code'].to_i
       end
 
       def response_text
@@ -16,7 +23,7 @@ module MooMoo
       end
 
       def result
-        @hash
+        @key.nil? ? @hash : @hash[@key]
       end
     end
   end
