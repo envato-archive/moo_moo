@@ -29,5 +29,17 @@ module MooMoo
     def run_command(command)
       command.run(@host, @key, @user, @port)
     end
+
+    private
+
+    def index_array(arr)
+      arr_indexed = {}
+
+      arr.each_with_index do |item, index|
+        arr_indexed[index] = item
+      end
+
+      arr_indexed
+    end
   end
 end
