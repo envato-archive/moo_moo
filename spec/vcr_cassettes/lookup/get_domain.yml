@@ -1,0 +1,282 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                "@attributes": 
+                  key: protocol
+              - !str 
+                str: set
+                "@attributes": 
+                  key: action
+              - !str 
+                str: cookie
+                "@attributes": 
+                  key: object
+              - key: registrant_ip
+              - key: attributes
+                dt_assoc: 
+                  item: 
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: domain
+                  - !str 
+                    str: opensrs_user
+                    "@attributes": 
+                      key: reg_username
+                  - !str 
+                    str: password
+                    "@attributes": 
+                      key: reg_password
+        header: 
+          version: !str 
+            str: "0.9"
+            "@attributes": {}
+
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature: 
+      - 8336b13efc9bfb67a70d630cacd09299
+      content-length: 
+      - "697"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/xml
+      server: 
+      - OpenSRS/XML-RSA Server
+      date: 
+      - Wed, 04 May 2011 19:36:08 GMT
+      content-length: 
+      - "976"
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">COOKIE</item>
+          <item key="response_text">Command Successful</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="permission"></item>
+            <item key="cookie">zhyu3CKaW6cfWy9T:722808:23989</item>
+            <item key="expiredate">2012-04-07 20:45:46</item>
+            <item key="domain_count">1</item>
+            <item key="last_access_time">1304537164</item>
+            <item key="f_owner">1</item>
+            <item key="waiting_requests_no">0</item>
+            <item key="waiting_request">None</item>
+            <item key="last_ip"></item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                "@attributes": 
+                  key: protocol
+              - !str 
+                str: get
+                "@attributes": 
+                  key: action
+              - !str 
+                str: domain
+                "@attributes": 
+                  key: object
+              - key: registrant_ip
+              - !str 
+                str: zhyu3CKaW6cfWy9T:722808:23989
+                "@attributes": 
+                  key: cookie
+              - key: attributes
+                dt_assoc: 
+                  item: !str 
+                    str: all_info
+                    "@attributes": 
+                      key: type
+        header: 
+          version: !str 
+            str: "0.9"
+            "@attributes": {}
+
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature: 
+      - 71fec60f74e79b41e3b65c00227bb2da
+      content-length: 
+      - "648"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/xml
+      server: 
+      - OpenSRS/XML-RSA Server
+      date: 
+      - Wed, 04 May 2011 19:36:09 GMT
+      content-length: 
+      - "4300"
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">DOMAIN</item>
+          <item key="response_text">Query Successful</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="auto_renew">1</item>
+            <item key="contact_set">
+             <dt_assoc>
+              <item key="admin">
+               <dt_assoc>
+                <item key="country">US</item>
+                <item key="address3">Owner</item>
+                <item key="org_name">Example Inc.</item>
+                <item key="phone">+1.4165550123x1902</item>
+                <item key="address2">Suite 500</item>
+                <item key="last_name">Ottway</item>
+                <item key="state">CA</item>
+                <item key="email">ottway@example.com</item>
+                <item key="city">SomeCity</item>
+                <item key="postal_code">90210</item>
+                <item key="fax">+1.4165550124</item>
+                <item key="address1">32 Oak Street</item>
+                <item key="first_name">Owen</item>
+               </dt_assoc>
+              </item>
+              <item key="owner">
+               <dt_assoc>
+                <item key="country">US</item>
+                <item key="address3">Owner</item>
+                <item key="org_name">Example Inc.</item>
+                <item key="phone">+1.4165550123x1902</item>
+                <item key="state">CA</item>
+                <item key="last_name">Ottway</item>
+                <item key="address2">Suite 500</item>
+                <item key="email">ottway@example.com</item>
+                <item key="city">SomeCity</item>
+                <item key="postal_code">90210</item>
+                <item key="fax">+1.4165550124</item>
+                <item key="address1">32 Oak Street</item>
+                <item key="first_name">Owen</item>
+               </dt_assoc>
+              </item>
+              <item key="tech">
+               <dt_assoc>
+                <item key="country">US</item>
+                <item key="address3">Owner</item>
+                <item key="org_name">Example Inc.</item>
+                <item key="phone">+1.4165550123x1902</item>
+                <item key="address2">Suite 500</item>
+                <item key="state">CA</item>
+                <item key="last_name">Ottway</item>
+                <item key="email">ottway@example.com</item>
+                <item key="city">SomeCity</item>
+                <item key="postal_code">90210</item>
+                <item key="fax">+1.4165550124</item>
+                <item key="address1">32 Oak Street</item>
+                <item key="first_name">Owen</item>
+               </dt_assoc>
+              </item>
+              <item key="billing">
+               <dt_assoc>
+                <item key="country">US</item>
+                <item key="address3">Owner</item>
+                <item key="org_name">Example Inc.</item>
+                <item key="phone">+1.4165550123x1902</item>
+                <item key="state">CA</item>
+                <item key="last_name">Ottway</item>
+                <item key="address2">Suite 500</item>
+                <item key="email">ottway@example.com</item>
+                <item key="city">SomeCity</item>
+                <item key="postal_code">90210</item>
+                <item key="fax">+1.4165550124</item>
+                <item key="address1">32 Oak Street</item>
+                <item key="first_name">Owen</item>
+               </dt_assoc>
+              </item>
+             </dt_assoc>
+            </item>
+            <item key="registry_updatedate">2011-04-07 20:45:46</item>
+            <item key="sponsoring_rsp">1</item>
+            <item key="registry_createdate">2011-04-07 20:45:46</item>
+            <item key="expiredate">2012-04-07 20:45:46</item>
+            <item key="let_expire">0</item>
+            <item key="registry_expiredate">2012-04-07 20:45:46</item>
+            <item key="nameserver_list">
+             <dt_array>
+              <item key="0">
+               <dt_assoc>
+                <item key="name">ns2.systemdns.com</item>
+                <item key="sortorder">1</item>
+                <item key="ipaddress"></item>
+               </dt_assoc>
+              </item>
+              <item key="1">
+               <dt_assoc>
+                <item key="name">ns1.systemdns.com</item>
+                <item key="sortorder">2</item>
+                <item key="ipaddress"></item>
+               </dt_assoc>
+              </item>
+             </dt_array>
+            </item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

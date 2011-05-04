@@ -1,0 +1,91 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                "@attributes": 
+                  key: protocol
+              - !str 
+                str: modify
+                "@attributes": 
+                  key: action
+              - !str 
+                str: nameserver
+                "@attributes": 
+                  key: object
+              - key: registrant_ip
+              - key: attributes
+                dt_assoc: 
+                  item: 
+                  - !str 
+                    str: ns22.domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: name
+                  - !str 
+                    str: ns3.domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: new_name
+                  - !str 
+                    str: 212.112.123.11
+                    "@attributes": 
+                      key: ipaddress
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: domain
+        header: 
+          version: !str 
+            str: "0.9"
+            "@attributes": {}
+
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature: 
+      - 313999bcef3ecdc48ff38201949551ce
+      content-length: 
+      - "797"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Fri, 22 Apr 2011 19:06:02 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "497"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">NAMESERVER</item>
+          <item key="response_text">Command successful</item>
+          <item key="action">REPLY</item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

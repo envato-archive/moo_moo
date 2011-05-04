@@ -1,0 +1,198 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                "@attributes": 
+                  key: protocol
+              - !str 
+                str: set
+                "@attributes": 
+                  key: action
+              - !str 
+                str: cookie
+                "@attributes": 
+                  key: object
+              - key: registrant_ip
+              - key: attributes
+                dt_assoc: 
+                  item: 
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: domain
+                  - !str 
+                    str: opensrs_user
+                    "@attributes": 
+                      key: reg_username
+                  - !str 
+                    str: password
+                    "@attributes": 
+                      key: reg_password
+        header: 
+          version: !str 
+            str: "0.9"
+            "@attributes": {}
+
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature: 
+      - 8336b13efc9bfb67a70d630cacd09299
+      content-length: 
+      - "697"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/xml
+      server: 
+      - OpenSRS/XML-RSA Server
+      date: 
+      - Wed, 04 May 2011 19:23:43 GMT
+      content-length: 
+      - "976"
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">COOKIE</item>
+          <item key="response_text">Command Successful</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="permission"></item>
+            <item key="cookie">tPeEkn8iCzhyu3CK:722808:23299</item>
+            <item key="expiredate">2012-04-07 20:45:46</item>
+            <item key="domain_count">1</item>
+            <item key="last_access_time">1304536887</item>
+            <item key="f_owner">1</item>
+            <item key="waiting_requests_no">0</item>
+            <item key="waiting_request">None</item>
+            <item key="last_ip"></item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                "@attributes": 
+                  key: protocol
+              - !str 
+                str: update
+                "@attributes": 
+                  key: action
+              - !str 
+                str: cookie
+                "@attributes": 
+                  key: object
+              - key: registrant_ip
+              - !str 
+                str: tPeEkn8iCzhyu3CK:722808:23299
+                "@attributes": 
+                  key: cookie
+              - key: attributes
+                dt_assoc: 
+                  item: 
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: domain
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    "@attributes": 
+                      key: domain_new
+                  - key: reg_username
+                  - key: reg_password
+        header: 
+          version: !str 
+            str: "0.9"
+            "@attributes": {}
+
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature: 
+      - 05e7a159b062958a4bd3cd7662f40e96
+      content-length: 
+      - "799"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/xml
+      server: 
+      - OpenSRS/XML-RSA Server
+      date: 
+      - Wed, 04 May 2011 19:23:44 GMT
+      content-length: 
+      - "852"
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">COOKIE</item>
+          <item key="response_text">Command Successful</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="domain_count">1</item>
+            <item key="f_owner">1</item>
+            <item key="waiting_requests_no">0</item>
+            <item key="waiting_request">None</item>
+            <item key="cookie">tPeEkn8iCzhyu3CK:722808:23299</item>
+            <item key="expiredate">2012-04-07 20:45:46</item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"
