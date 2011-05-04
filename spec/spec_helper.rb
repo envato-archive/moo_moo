@@ -3,19 +3,29 @@ require 'moomoo'
 require 'vcr'
 require 'extlib'
 
+def format_request(i)
+  unless i.request.body.nil?
+    if i.request.body.is_a?(Hash)
+#          hash = i.request.body
+#          i.request.body = hash.to_xml_attributes
+    else
+      hash = Hash.from_xml(i.request.body)
+      i.request.body = hash
+      unless i.request.nil?
+      end
+    end
+  else
+  end
+end
+
 VCR.config do |c|
     c.cassette_library_dir = 'spec/vcr_cassettes'
     c.stub_with :webmock
+    c.before_record do |i|
+      format_request i
+    end
     c.before_playback do |i|
-      unless i.request.body.nil?
-        if i.request.body.is_a?(Hash)
-#          hash = i.request.body
-#          i.request.body = hash.to_xml_attributes
-        else
-          hash = Hash.from_xml(i.request.body)
-          i.request.body = hash
-        end
-      end
+      format_request i
     end
     c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:body]}
 end
