@@ -29,7 +29,7 @@ module MooMoo
         end
       end
 
-      describe "get_balance" do
+      describe "get_balance", :wip => true do
         use_vcr_cassette "lookup/get_balance"
 
         it "should return the balance" do

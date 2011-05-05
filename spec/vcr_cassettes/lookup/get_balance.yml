@@ -37,11 +37,11 @@
       message: OK
     headers: 
       date: 
-      - Fri, 15 Apr 2011 17:15:19 GMT
+      - Thu, 05 May 2011 20:46:45 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 
-      - "651"
+      - "652"
       content-type: 
       - text/xml
     body: |-
@@ -60,8 +60,8 @@
           <item key="action">REPLY</item>
           <item key="attributes">
            <dt_assoc>
-            <item key="balance">7312.24</item>
-            <item key="hold_balance">0.00</item>
+            <item key="balance">7157.18</item>
+            <item key="hold_balance">11.44</item>
            </dt_assoc>
           </item>
           <item key="response_code">200</item>

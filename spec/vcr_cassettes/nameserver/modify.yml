@@ -5,56 +5,56 @@
     uri: https://test.server.com:55443/
     body: 
       OPS_envelope: 
+        header: 
+          version: !str 
+            str: "0.9"
+            :@attributes: {}
+
         body: 
           data_block: 
             dt_assoc: 
               item: 
               - !str 
                 str: XCP
-                "@attributes": 
+                :@attributes: 
                   key: protocol
               - !str 
                 str: modify
-                "@attributes": 
+                :@attributes: 
                   key: action
               - !str 
                 str: nameserver
-                "@attributes": 
+                :@attributes: 
                   key: object
               - key: registrant_ip
-              - key: attributes
-                dt_assoc: 
+              - dt_assoc: 
                   item: 
                   - !str 
                     str: ns22.domainthatsnottaken1302209138.com
-                    "@attributes": 
+                    :@attributes: 
                       key: name
                   - !str 
-                    str: ns3.domainthatsnottaken1302209138.com
-                    "@attributes": 
-                      key: new_name
-                  - !str 
                     str: 212.112.123.11
-                    "@attributes": 
+                    :@attributes: 
                       key: ipaddress
                   - !str 
+                    str: ns3.domainthatsnottaken1302209138.com
+                    :@attributes: 
+                      key: new_name
+                  - !str 
                     str: domainthatsnottaken1302209138.com
-                    "@attributes": 
+                    :@attributes: 
                       key: domain
-        header: 
-          version: !str 
-            str: "0.9"
-            "@attributes": {}
-
+                key: attributes
     headers: 
-      x-username: 
-      - opensrs_user
       content-type: 
       - text/xml
+      x-username: 
+      - opensrs_user
       x-signature:
       - 00000000000000000000000000000000
       content-length: 
-      - "797"
+      - "813"
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200

@@ -3,67 +3,47 @@
   request: !ruby/struct:VCR::Request 
     method: :post
     uri: https://test.server.com:55443/
-    body: 
-      OPS_envelope: 
-        body: 
-          data_block: 
-            dt_assoc: 
-              item: 
-              - !str 
-                str: XCP
-                "@attributes": 
-                  key: protocol
-              - !str 
-                str: set
-                "@attributes": 
-                  key: action
-              - !str 
-                str: cookie
-                "@attributes": 
-                  key: object
-              - key: registrant_ip
-              - key: attributes
-                dt_assoc: 
-                  item: 
-                  - !str 
-                    str: domainthatsnottaken1302209138.com
-                    "@attributes": 
-                      key: domain
-                  - !str 
-                    str: opensrs_user
-                    "@attributes": 
-                      key: reg_username
-                  - !str 
-                    str: password
-                    "@attributes": 
-                      key: reg_password
-        header: 
-          version: !str 
-            str: "0.9"
-            "@attributes": {}
+    body: |
+      <?xml version='1.0' encoding='UTF-8' standalone='no'?>
+             
+            <!DOCTYPE OPS_envelope SYSTEM "ops.dtd"><OPS_envelope>
+              <header> 
+                <version>0.9</version>
+              </header> 
+              <body>
+                <data_block> 
+                  <dt_assoc>
+                    <item key='protocol'>XCP</item> 
+                    <item key='action'>set</item> 
+                    <item key='object'>cookie</item> 
+                    <item key='registrant_ip'/>
+                  <item key='attributes'><dt_assoc><item key='reg_username'>opensrs_user</item><item key='reg_password'>password</item><item key='domain'>domainthatsnottaken1302209138.com</item></dt_assoc></item></dt_assoc> 
+                </data_block>
+              </body> 
+            </OPS_envelope>
 
     headers: 
-      x-username: 
-      - opensrs_user
       content-type: 
       - text/xml
+      x-username: 
+      - opensrs_user
       x-signature:
       - 00000000000000000000000000000000
       content-length: 
-      - "697"
+      - "713"
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200
       message: OK
     headers: 
-      content-type: 
-      - text/xml
+      date: 
+      - Thu, 05 May 2011 20:54:18 GMT
       server: 
       - OpenSRS/XML-RSA Server
-      date: 
-      - Wed, 04 May 2011 19:21:27 GMT
       content-length: 
       - "976"
+      content-type: 
+      - text/xml
     body: |-
       <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
       <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
@@ -84,7 +64,7 @@
             <item key="cookie">0000000000000000:000000:00000</item>
             <item key="expiredate">2012-04-07 20:45:46</item>
             <item key="domain_count">1</item>
-            <item key="last_access_time">1304513951</item>
+            <item key="last_access_time">1304628021</item>
             <item key="f_owner">1</item>
             <item key="waiting_requests_no">0</item>
             <item key="waiting_request">None</item>

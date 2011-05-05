@@ -162,6 +162,7 @@ module MooMoo
         it "should do a pending domain registration" do
           res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
           res.success?.should be_true
+          res.result['id'].to_i.should == 1888032
         end
 
         it "should fail if the domain is taken" do
@@ -195,6 +196,7 @@ module MooMoo
 
         it "should update the contacts" do
           res = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
+          res.success?.should be_true
           res.result['details'][@registered_domain]['response_code'].to_i.should == 200
         end
       end

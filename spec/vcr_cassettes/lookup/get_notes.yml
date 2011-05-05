@@ -5,61 +5,65 @@
     uri: https://test.server.com:55443/
     body: 
       OPS_envelope: 
+        header: 
+          version: !str 
+            str: "0.9"
+            :@attributes: {}
+
         body: 
           data_block: 
             dt_assoc: 
               item: 
               - !str 
                 str: XCP
-                "@attributes": 
+                :@attributes: 
                   key: protocol
               - !str 
                 str: get_notes
-                "@attributes": 
+                :@attributes: 
                   key: action
               - !str 
                 str: domain
-                "@attributes": 
+                :@attributes: 
                   key: object
               - key: registrant_ip
-              - key: attributes
-                dt_assoc: 
+              - dt_assoc: 
                   item: 
                   - !str 
                     str: domainthatsnottaken1302209138.com
-                    "@attributes": 
+                    :@attributes: 
                       key: domain
                   - !str 
-                    str: domain
-                    "@attributes": 
+                    str: "1855625"
+                    :@attributes: 
+                      key: order_id
+                  - !str 
+                    str: order
+                    :@attributes: 
                       key: type
-        header: 
-          version: !str 
-            str: "0.9"
-            "@attributes": {}
-
+                key: attributes
     headers: 
-      x-username: 
-      - opensrs_user
       content-type: 
       - text/xml
-      x-signature:
-      - 00000000000000000000000000000000
+      x-username: 
+      - opensrs_user
+      x-signature: 
+      - 0
       content-length: 
-      - "672"
+      - "706"
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200
       message: OK
     headers: 
-      content-type: 
-      - text/xml
+      date: 
+      - Thu, 05 May 2011 17:43:51 GMT
       server: 
       - OpenSRS/XML-RSA Server
-      date: 
-      - Fri, 15 Apr 2011 17:15:22 GMT
       content-length: 
-      - "1726"
+      - "813"
+      content-type: 
+      - text/xml
     body: |-
       <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
       <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
@@ -75,7 +79,99 @@
           <item key="response_code">200</item>
           <item key="is_success">1</item>
           <item key="response_text">Command successful</item>
-          <item key="transaction_id">2011-04-15 13:15:22 5291 101</item>
+          <item key="transaction_id">2011-05-05 13:43:51 13355 101</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="page_size">40</item>
+            <item key="page">1</item>
+            <item key="notes">
+             <dt_array>
+             </dt_array>
+            </item>
+            <item key="total">0</item>
+           </dt_assoc>
+          </item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://test.server.com:55443/
+    body: 
+      OPS_envelope: 
+        header: 
+          version: !str 
+            str: "0.9"
+            :@attributes: {}
+
+        body: 
+          data_block: 
+            dt_assoc: 
+              item: 
+              - !str 
+                str: XCP
+                :@attributes: 
+                  key: protocol
+              - !str 
+                str: get_notes
+                :@attributes: 
+                  key: action
+              - !str 
+                str: domain
+                :@attributes: 
+                  key: object
+              - key: registrant_ip
+              - dt_assoc: 
+                  item: 
+                  - !str 
+                    str: domainthatsnottaken1302209138.com
+                    :@attributes: 
+                      key: domain
+                  - !str 
+                    str: domain
+                    :@attributes: 
+                      key: type
+                key: attributes
+    headers: 
+      content-type: 
+      - text/xml
+      x-username: 
+      - opensrs_user
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "672"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Thu, 05 May 2011 17:44:54 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "1727"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">DOMAIN</item>
+          <item key="response_text">Command successful</item>
+          <item key="transaction_id">2011-05-05 13:44:54 13357 101</item>
           <item key="action">REPLY</item>
           <item key="attributes">
            <dt_assoc>
@@ -110,102 +206,6 @@
              </dt_array>
             </item>
             <item key="total">4</item>
-           </dt_assoc>
-          </item>
-         </dt_assoc>
-        </data_block>
-       </body>
-      </OPS_envelope>
-    http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
-    method: :post
-    uri: https://test.server.com:55443/
-    body: 
-      OPS_envelope: 
-        body: 
-          data_block: 
-            dt_assoc: 
-              item: 
-              - !str 
-                str: XCP
-                "@attributes": 
-                  key: protocol
-              - !str 
-                str: get_notes
-                "@attributes": 
-                  key: action
-              - !str 
-                str: domain
-                "@attributes": 
-                  key: object
-              - key: registrant_ip
-              - key: attributes
-                dt_assoc: 
-                  item: 
-                  - !str 
-                    str: "1855625"
-                    "@attributes": 
-                      key: order_id
-                  - !str 
-                    str: domainthatsnottaken1302209138.com
-                    "@attributes": 
-                      key: domain
-                  - !str 
-                    str: order
-                    "@attributes": 
-                      key: type
-        header: 
-          version: !str 
-            str: "0.9"
-            "@attributes": {}
-
-    headers: 
-      x-username: 
-      - opensrs_user
-      content-type: 
-      - text/xml
-      x-signature:
-      - 00000000000000000000000000000000
-      content-length: 
-      - "690"
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
-      code: 200
-      message: OK
-    headers: 
-      content-type: 
-      - text/xml
-      server: 
-      - OpenSRS/XML-RSA Server
-      date: 
-      - Wed, 04 May 2011 19:38:08 GMT
-      content-length: 
-      - "813"
-    body: |-
-      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
-      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
-      <OPS_envelope>
-       <header>
-        <version>0.9</version>
-        </header>
-       <body>
-        <data_block>
-         <dt_assoc>
-          <item key="protocol">XCP</item>
-          <item key="object">DOMAIN</item>
-          <item key="response_text">Command successful</item>
-          <item key="transaction_id">2011-05-04 15:38:07 24253 101</item>
-          <item key="action">REPLY</item>
-          <item key="attributes">
-           <dt_assoc>
-            <item key="page_size">40</item>
-            <item key="page">1</item>
-            <item key="notes">
-             <dt_array>
-             </dt_array>
-            </item>
-            <item key="total">0</item>
            </dt_assoc>
           </item>
           <item key="response_code">200</item>
