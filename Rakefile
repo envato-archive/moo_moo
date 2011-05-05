@@ -29,7 +29,7 @@ task :sanitize_cassettes do
         old.gsub!(ENV['OPENSRS_TEST_USER'], 'opensrs_user')
         old.gsub!(ENV['OPENSRS_TEST_PASS'], 'password')
         old.gsub!(/x-signature.*?\n.*?\w{32}/, "x-signature:\n      - 00000000000000000000000000000000")
-        old.gsub!(/\w{16}:\w{6}:\w{5}/, '0000000000000000:000000:00000')
+        old.gsub!(/\w{16}:\w{6}:\w{2,8}/, '0000000000000000:000000:00000')
         File.open(file, 'w') do |f|
           f.write old
         end
