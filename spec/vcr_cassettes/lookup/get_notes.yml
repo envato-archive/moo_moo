@@ -43,8 +43,8 @@
       - opensrs_user
       content-type: 
       - text/xml
-      x-signature: 
-      - 640e5067a0d83718d729377565065e84
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "672"
   response: !ruby/struct:VCR::Response 
@@ -165,8 +165,8 @@
       - opensrs_user
       content-type: 
       - text/xml
-      x-signature: 
-      - 27510e0a6f78af0085f11d3deb2d7f3c
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "690"
   response: !ruby/struct:VCR::Response 

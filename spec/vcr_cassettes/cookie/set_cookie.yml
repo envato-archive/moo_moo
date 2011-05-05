@@ -47,8 +47,8 @@
       - opensrs_user
       content-type: 
       - text/xml
-      x-signature: 
-      - 8336b13efc9bfb67a70d630cacd09299
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "697"
   response: !ruby/struct:VCR::Response 
@@ -81,7 +81,7 @@
           <item key="attributes">
            <dt_assoc>
             <item key="permission"></item>
-            <item key="cookie">j8zZw8L7Ay6cbQ5P:722808:10610</item>
+            <item key="cookie">0000000000000000:000000:00000</item>
             <item key="expiredate">2012-04-07 20:45:46</item>
             <item key="domain_count">1</item>
             <item key="last_access_time">1304513951</item>

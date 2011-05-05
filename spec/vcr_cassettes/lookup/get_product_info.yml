@@ -38,8 +38,8 @@
       - text/xml
       x-username: 
       - opensrs_user
-      x-signature: 
-      - d181b59f17bd5b2d32fbf36c4ccfcf42
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "629"
   response: !ruby/struct:VCR::Response 
@@ -115,8 +115,8 @@
       - text/xml
       x-username: 
       - opensrs_user
-      x-signature: 
-      - 414448f841f6204e547f539355813acc
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "628"
   response: !ruby/struct:VCR::Response 
@@ -192,8 +192,8 @@
       - text/xml
       x-username: 
       - opensrs_user
-      x-signature: 
-      - ff9faf4168f7a48728803e8cf8b64a8d
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "628"
   response: !ruby/struct:VCR::Response 
@@ -258,8 +258,8 @@
       - text/xml
       x-username: 
       - opensrs_user
-      x-signature: 
-      - 13cbef0bcac4bbd71167befe3ef06a43
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "628"
   response: !ruby/struct:VCR::Response 

@@ -47,8 +47,8 @@
       - opensrs_user
       content-type: 
       - text/xml
-      x-signature: 
-      - 8336b13efc9bfb67a70d630cacd09299
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "697"
   response: !ruby/struct:VCR::Response 
@@ -81,7 +81,7 @@
           <item key="attributes">
            <dt_assoc>
             <item key="permission"></item>
-            <item key="cookie">QnJNd3a5u6jPbvyw:722808:23442</item>
+            <item key="cookie">0000000000000000:000000:00000</item>
             <item key="expiredate">2012-04-07 20:45:46</item>
             <item key="domain_count">1</item>
             <item key="last_access_time">1304537023</item>
@@ -122,13 +122,13 @@
                   key: object
               - key: registrant_ip
               - !str 
-                str: QnJNd3a5u6jPbvyw:722808:23442
+                str: 0000000000000000:000000:00000
                 "@attributes": 
                   key: cookie
               - key: attributes
                 dt_assoc: 
                   item: !str 
-                    str: QnJNd3a5u6jPbvyw:722808:23442
+                    str: 0000000000000000:000000:00000
                     "@attributes": 
                       key: cookie
         header: 
@@ -141,8 +141,8 @@
       - opensrs_user
       content-type: 
       - text/xml
-      x-signature: 
-      - bcfd21cf273429de4cd62f3c0d523d1e
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "674"
   response: !ruby/struct:VCR::Response 

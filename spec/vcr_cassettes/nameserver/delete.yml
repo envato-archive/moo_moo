@@ -27,8 +27,8 @@
       - text/xml
       x-username: 
       - opensrs_user
-      x-signature: 
-      - 81be9f950234654a42c48d91b7df7c84
+      x-signature:
+      - 00000000000000000000000000000000
       content-length: 
       - "747"
   response: !ruby/struct:VCR::Response 
