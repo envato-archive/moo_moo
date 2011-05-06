@@ -16,26 +16,28 @@ module MooMoo
 
     describe "Lookup Commands" do
       describe "belongs_to_rsp" do
-        use_vcr_cassette "lookup/belongs_to_rsp"
-
         it "should return false for a domain that is not owned by the rsp" do
-          res = @opensrs.belongs_to_rsp?('example.com')
-          res.result['belongs_to_rsp'].to_i.should == 0
+          VCR.use_cassette("lookup/belongs_to_rsp") do
+            res = @opensrs.belongs_to_rsp?('example.com')
+            res.result['belongs_to_rsp'].to_i.should == 0
+          end
         end
 
         it "should return true for a domain owned by the rsp" do
-          res = @opensrs.belongs_to_rsp?(@registered_domain)
-          res.result['belongs_to_rsp'].to_i.should == 1
+          VCR.use_cassette("lookup/belongs_to_rsp_negative") do
+            res = @opensrs.belongs_to_rsp?(@registered_domain)
+            res.result['belongs_to_rsp'].to_i.should == 1
+          end
         end
       end
 
-      describe "get_balance", :wip => true do
+      describe "get_balance" do
         use_vcr_cassette "lookup/get_balance"
 
         it "should return the balance" do
           res = @opensrs.get_balance
           res.result['balance'].to_f.should == 7312.24
-          res.result['hold_balance'].to_f.should == 0.00
+          res.result['hold_balance'].to_f.should == 11.44
         end
       end
 
@@ -87,24 +89,28 @@ module MooMoo
       end
 
       describe "get_notes" do
-        use_vcr_cassette "lookup/get_notes"
-
         it "should return the notes for a domain" do
-          result = @opensrs.get_notes_for_domain(@registered_domain).result
-          result['total'].to_i.should == 4
-          result['notes']['1']['note'].should match(/Order.*?\d+.*?Domain Registration.*?1 year/i)
+          VCR.use_cassette("lookup/get_notes_for_domain") do
+            result = @opensrs.get_notes_for_domain(@registered_domain).result
+            result['total'].to_i.should == 4
+            result['notes']['1']['note'].should match(/Order.*?\d+.*?Domain Registration.*?1 year/i)
+          end
         end
 
         it "should return the notes for an order" do
-          result = @opensrs.get_notes_for_order(@registered_domain, 1855625).result
-          result['page'].to_i.should == 1
-          result['notes'].should be_a_kind_of(Hash)
-          result['notes'].should be_empty
+          VCR.use_cassette("lookup/get_notes_for_order") do
+            result = @opensrs.get_notes_for_order(@registered_domain, 1855625).result
+            result['page'].to_i.should == 1
+            result['notes'].should be_a_kind_of(Hash)
+            result['notes'].should be_empty
+          end
         end
 
         it "should return the notes for a transfer" do
-          pending "need a transfer id"
-          result = @opensrs.get_notes_for_transfer(@registered_domain, 1)
+          VCR.use_cassette("lookup/get_notes_for_transfer") do
+            pending "need a transfer id"
+            result = @opensrs.get_notes_for_transfer(@registered_domain, 1)
+          end
         end
       end
 
@@ -125,7 +131,7 @@ module MooMoo
         it "should return the orders for a domain" do
           result = @opensrs.get_orders_by_domain(@registered_domain).result
           result['orders'].should be_a_kind_of(Hash)
-          result['orders'].should have(2).domain
+          result['orders'].should have(2).domains
           result['orders']['0']['id'].to_i.should == 1862773
         end
       end
@@ -151,16 +157,18 @@ module MooMoo
       end
 
       describe "lookup domain" do
-        use_vcr_cassette "lookup/lookup_domain"
-
         it "should return the availbility of an available domain" do
-          result = @opensrs.lookup_domain('example.com').result
-          result['status'].should == "available"
+          VCR.use_cassette("lookup/lookup_domain_available") do
+            result = @opensrs.lookup_domain('example.com').result
+            result['status'].should == "available"
+          end
         end
 
         it "should return the availability of a registered domain" do
-          result = @opensrs.lookup_domain(@registered_domain).result
-          result['status'].should == "taken"
+          VCR.use_cassette("lookup/lookup_domain_registered") do
+            result = @opensrs.lookup_domain(@registered_domain).result
+            result['status'].should == "taken"
+          end
         end
       end
 
