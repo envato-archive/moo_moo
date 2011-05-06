@@ -102,14 +102,14 @@ module MooMoo
       end
 
       describe "modify domain" do
-        use_vcr_cassette "provisioning/modify_domain"
-
         it "should update the contact information" do
         end
 
         it "should update the expire action" do
-          res = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
-          res.success?.should be_true
+          VCR.use_cassette("provisioning/modify_domain") do
+            res = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
+            res.success?.should be_true
+          end
         end
 
         it "should modify all domains linked to the profile" do
@@ -150,24 +150,28 @@ module MooMoo
       end
 
       describe "register" do
-        use_vcr_cassette "provisioning/register"
-
         it "should register a domain" do
-          res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, 1)
-          result = res.result
-          result['registration_text'].should match(/successfully completed/i)
-          result['id'].to_i.should == 1885783
+          VCR.use_cassette("provisioning/register_domain") do
+            res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, 1)
+            result = res.result
+            result['registration_text'].should match(/successfully completed/i)
+            result['id'].to_i.should == 1885783
+          end
         end
 
         it "should do a pending domain registration" do
-          res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
-          res.success?.should be_true
-          res.result['id'].to_i.should == 1888032
+          VCR.use_cassette("provisioning/register_pending_domain") do
+            res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
+            res.success?.should be_true
+            res.result['id'].to_i.should == 1888032
+          end
         end
 
         it "should fail if the domain is taken" do
-          res = @opensrs.register_domain('example.com', @contacts, 1)
-          res.success?.should be_false
+          VCR.use_cassette("provisioning/register_taken_domain") do
+            res = @opensrs.register_domain('example.com', @contacts, 1)
+            res.success?.should be_false
+          end
         end
       end
 
