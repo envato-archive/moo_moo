@@ -2,26 +2,8 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: :post
-    uri: https://test.server.com:55443/
-    body: |
-      <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-             
-            <!DOCTYPE OPS_envelope SYSTEM "ops.dtd"><OPS_envelope>
-              <header> 
-                <version>0.9</version>
-              </header> 
-              <body>
-                <data_block> 
-                  <dt_assoc>
-                    <item key='protocol'>XCP</item> 
-                    <item key='action'>create</item> 
-                    <item key='object'>nameserver</item> 
-                    <item key='registrant_ip'/>
-                  <item key='attributes'><dt_assoc><item key='name'>ns1.domainthatsnottaken1302209138.com</item><item key='ipaddress'>212.112.123.11</item><item key='domain'>domainthatsnottaken1302209138.com</item></dt_assoc></item></dt_assoc> 
-                </data_block>
-              </body> 
-            </OPS_envelope>
-
+    uri: https://server.com:55443/
+    body: 
     headers: 
       content-type: 
       - text/xml
@@ -30,14 +12,14 @@
       x-signature:
       - 00000000000000000000000000000000
       content-length: 
-      - "748"
+      - "747"
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200
       message: OK
     headers: 
       date: 
-      - Fri, 22 Apr 2011 16:08:32 GMT
+      - Fri, 06 May 2011 20:31:09 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 

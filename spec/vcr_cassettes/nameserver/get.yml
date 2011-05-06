@@ -2,26 +2,8 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: :post
-    uri: https://test.server.com:55443/
-    body: |
-      <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-             
-            <!DOCTYPE OPS_envelope SYSTEM "ops.dtd"><OPS_envelope>
-              <header> 
-                <version>0.9</version>
-              </header> 
-              <body>
-                <data_block> 
-                  <dt_assoc>
-                    <item key='protocol'>XCP</item> 
-                    <item key='action'>get</item> 
-                    <item key='object'>nameserver</item> 
-                    <item key='registrant_ip'/>
-                  <item key='attributes'><dt_assoc><item key='name'>all</item><item key='domain'>domainthatsnottaken1302209138.com</item></dt_assoc></item></dt_assoc> 
-                </data_block>
-              </body> 
-            </OPS_envelope>
-
+    uri: https://server.com:55443/
+    body: 
     headers: 
       content-type: 
       - text/xml
@@ -37,11 +19,11 @@
       message: OK
     headers: 
       date: 
-      - Fri, 22 Apr 2011 16:21:13 GMT
+      - Fri, 06 May 2011 20:31:11 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 
-      - "1401"
+      - "1400"
       content-type: 
       - text/xml
     body: |-
@@ -72,7 +54,7 @@
               <item key="1">
                <dt_assoc>
                 <item key="can_delete">1</item>
-                <item key="name">ns2.domainthatsnottaken1302209138.com</item>
+                <item key="name">ns3.domainthatsnottaken1302209138.com</item>
                 <item key="ipaddress">212.112.123.12</item>
                </dt_assoc>
               </item>
