@@ -25,7 +25,7 @@ task :sanitize_cassettes do
         old = File.read(file)
         puts "Sanitizing #{file}"
         old.gsub!(ENV['OPENSRS_TEST_KEY'], '123key')
-        old.gsub!(ENV['OPENSRS_TEST_URL'], 'test.server.com')
+        old.gsub!(ENV['OPENSRS_TEST_URL'], 'server.com')
         old.gsub!(ENV['OPENSRS_TEST_USER'], 'opensrs_user')
         old.gsub!(ENV['OPENSRS_TEST_PASS'], 'password')
         old.gsub!(/x-signature.*?\n.*?\w{32}/, "x-signature:\n      - 00000000000000000000000000000000")

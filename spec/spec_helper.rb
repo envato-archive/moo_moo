@@ -3,32 +3,11 @@ require 'moomoo'
 require 'vcr'
 require 'extlib'
 
-def format_request(i)
-  unless i.request.body.nil?
-    if i.request.body.is_a?(Hash)
-    else
-      hash = Hash.from_xml(i.request.body)
-      i.request.body = hash
-    end
-  else
-  end
-end
-
 VCR.config do |c|
     c.cassette_library_dir = 'spec/vcr_cassettes'
-    c.stub_with :webmock
+    c.stub_with :fakeweb
 
-=begin
-    c.before_record do |i|
-      format_request i
-    end
-
-    c.before_playback do |i|
-      format_request i
-    end
-=end
-
-    c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:body]}
+    c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:uri]}
 end
 
 def live_test?
@@ -44,7 +23,7 @@ Rspec.configure do |c|
       @opensrs_user = ENV['OPENSRS_TEST_USER']
       @opensrs_pass = ENV['OPENSRS_TEST_PASS']
     else
-      @opensrs_host = 'test.server.com'
+      @opensrs_host = 'server.com'
       @opensrs_key = '123key'
       @opensrs_user = 'opensrs_user'
       @opensrs_pass = 'password'

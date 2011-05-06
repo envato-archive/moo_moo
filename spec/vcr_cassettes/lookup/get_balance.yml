@@ -2,26 +2,8 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: :post
-    uri: https://test.server.com:55443/
-    body: |
-      <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-             
-            <!DOCTYPE OPS_envelope SYSTEM "ops.dtd"><OPS_envelope>
-              <header> 
-                <version>0.9</version>
-              </header> 
-              <body>
-                <data_block> 
-                  <dt_assoc>
-                    <item key='protocol'>XCP</item> 
-                    <item key='action'>get_balance</item> 
-                    <item key='object'>balance</item> 
-                    <item key='registrant_ip'/>
-                  <item key='attributes'><dt_assoc/></item></dt_assoc> 
-                </data_block>
-              </body> 
-            </OPS_envelope>
-
+    uri: https://server.com:55443/
+    body: 
     headers: 
       content-type: 
       - text/xml
@@ -37,7 +19,7 @@
       message: OK
     headers: 
       date: 
-      - Thu, 05 May 2011 20:46:45 GMT
+      - Fri, 06 May 2011 20:13:18 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 
@@ -60,7 +42,7 @@
           <item key="action">REPLY</item>
           <item key="attributes">
            <dt_assoc>
-            <item key="balance">7157.18</item>
+            <item key="balance">7312.24</item>
             <item key="hold_balance">11.44</item>
            </dt_assoc>
           </item>

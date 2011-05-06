@@ -2,26 +2,8 @@
 - !ruby/struct:VCR::HTTPInteraction 
   request: !ruby/struct:VCR::Request 
     method: :post
-    uri: https://test.server.com:55443/
-    body: |
-      <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-             
-            <!DOCTYPE OPS_envelope SYSTEM "ops.dtd"><OPS_envelope>
-              <header> 
-                <version>0.9</version>
-              </header> 
-              <body>
-                <data_block> 
-                  <dt_assoc>
-                    <item key='protocol'>XCP</item> 
-                    <item key='action'>get_deleted_domains</item> 
-                    <item key='object'>domain</item> 
-                    <item key='registrant_ip'/>
-                  <item key='attributes'><dt_assoc/></item></dt_assoc> 
-                </data_block>
-              </body> 
-            </OPS_envelope>
-
+    uri: https://server.com:55443/
+    body: 
     headers: 
       content-type: 
       - text/xml
@@ -37,11 +19,11 @@
       message: OK
     headers: 
       date: 
-      - Fri, 15 Apr 2011 17:15:19 GMT
+      - Fri, 06 May 2011 20:13:19 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 
-      - "11179"
+      - "11613"
       content-type: 
       - text/xml
     body: |-
@@ -76,7 +58,7 @@
               <item key="1">
                <dt_assoc>
                 <item key="delete_date">10-JAN-2011 14:25:29</item>
-                <item key="name">example1.com</item>
+                <item key="name">example2.com</item>
                 <item key="reason">By-Request</item>
                 <item key="expiredate">10-JAN-2012 19:19:37</item>
                 <item key="expiredate_epoch">1326241177</item>

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "opensrs"
 
   s.add_dependency 'rspec'
-  s.add_dependency 'webmock'
+  s.add_dependency 'fakeweb'
   s.add_dependency 'vcr'
   s.add_dependency 'extlib'
   s.add_dependency 'rcov'
