@@ -146,6 +146,7 @@ module MooMoo
         it "should remove the domain from the registry" do
           res = @opensrs.revoke("example.com", @opensrs_user)
           res.success?.should be_true
+          res.result['charge'].to_i.should == 1
         end
       end
 

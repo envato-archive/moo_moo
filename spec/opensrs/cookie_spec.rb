@@ -17,7 +17,7 @@ module MooMoo
       describe "set_cookie" do
         use_vcr_cassette "cookie/set_cookie"
 
-        it "should set the cookie", :wip => true do
+        it "should set the cookie" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           res.success?.should be_true
           res.result['cookie'].should == "0000000000000000:000000:00000"
