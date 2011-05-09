@@ -82,14 +82,6 @@ module MooMoo
     end
 
     describe "Provisioning Commands" do
-      describe "cancel_order" do
-        use_vcr_cassette "provisioning/cancel_order"
-
-        it "should cancel a trust service order" do
-          pending
-        end
-      end
-
       describe "cancel_pending_orders" do
         use_vcr_cassette "provisioning/cancel_pending_orders"
 
@@ -112,9 +104,11 @@ module MooMoo
           end
         end
 
-        it "should modify all domains linked to the profile" do
-          pending "modify all"
-#          result = @opensrs.modify_all('something', {})
+        it "should modify all domains linked to the profile", :wip => true do
+          VCR.use_cassette("provisioning/modify_all_domains") do
+            res = @opensrs.modify('expire_action', {"affect_domains" => 1, "auto_renew" => 0, "let_expire" => 1}, "0000000000000000:000000:00000")
+            res.success?.should == true
+          end
         end
       end
 
