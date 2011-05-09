@@ -53,7 +53,7 @@ module MooMoo
           cmd = Command.new('revoke', 'domain', {"domain" => domain, "reseller" => reseller})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
