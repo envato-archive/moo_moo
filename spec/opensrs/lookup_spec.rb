@@ -108,8 +108,8 @@ module MooMoo
 
         it "should return the notes for a transfer" do
           VCR.use_cassette("lookup/get_notes_for_transfer") do
-            pending "need a transfer id"
-            result = @opensrs.get_notes_for_transfer(@registered_domain, 1)
+            res = @opensrs.get_notes_for_transfer("testingdomain.com", 37021)
+            res.success?.should be_true
           end
         end
       end
