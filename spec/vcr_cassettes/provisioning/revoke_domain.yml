@@ -12,18 +12,18 @@
       x-signature:
       - 00000000000000000000000000000000
       content-length: 
-      - "652"
+      - "684"
   response: !ruby/struct:VCR::Response 
     status: !ruby/struct:VCR::ResponseStatus 
       code: 200
       message: OK
     headers: 
       date: 
-      - Fri, 06 May 2011 20:58:53 GMT
+      - Mon, 09 May 2011 17:51:21 GMT
       server: 
       - OpenSRS/XML-RSA Server
       content-length: 
-      - "541"
+      - "688"
       content-type: 
       - text/xml
     body: |-
@@ -38,10 +38,16 @@
          <dt_assoc>
           <item key="protocol">XCP</item>
           <item key="object">DOMAIN</item>
-          <item key="response_text">The Domain you specified does not belong to this Reseller. opensrs_user</item>
+          <item key="response_text">Domain example.com revoked successfully</item>
           <item key="action">REPLY</item>
-          <item key="response_code">463</item>
-          <item key="is_success">0</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="charge">1</item>
+            <item key="price">1.0</item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
          </dt_assoc>
         </data_block>
        </body>
