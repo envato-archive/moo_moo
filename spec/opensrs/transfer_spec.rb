@@ -82,36 +82,40 @@ module MooMoo
 
     describe "Transfer Commands" do
       describe "cancel_transfer" do
-        use_vcr_cassette "transfer/cancel_transfer"
-
         it "should cancel the transfer for a domain" do
-          res = @opensrs.cancel_transfer('exampledomain.com', @opensrs_user)
-          res.success?.should be_false
-          res.error_code.should == 400
-          res.error_msg.should match(/transfer state prohibits cancellation/i)
+          VCR.use_cassette("transfer/cancel_transfer") do
+            res = @opensrs.cancel_transfer('exampledomain.com', @opensrs_user)
+            res.success?.should be_false
+            res.error_code.should == 400
+            res.error_msg.should match(/transfer state prohibits cancellation/i)
+          end
         end
 
         it "should cancel the transfer for an order" do
-          res = @opensrs.cancel_transfer_for_order(1884820, @opensrs_user)
-          res.success?.should be_false
-          res.error_code.should == 400
-          res.error_msg.should match(/transfer state prohibits cancellation/i)
+          VCR.use_cassette("transfer/cancel_trasnfer_order") do
+            res = @opensrs.cancel_transfer_for_order(1884820, @opensrs_user)
+            res.success?.should be_false
+            res.error_code.should == 400
+            res.error_msg.should match(/transfer state prohibits cancellation/i)
+          end
         end
       end
 
       describe "check_transfer" do
-        use_vcr_cassette "transfer/check_transfer"
-
         it "should show in progress if the transfer is in progress" do
-          res = @opensrs.check_transfer('exampledomain.com')
-          res.result['transferrable'].to_i.should == 0
-          res.result['reason'].should match(/Transfer in progress/i)
+          VCR.use_cassette("transfer/check_transfer") do
+            res = @opensrs.check_transfer('exampledomain.com')
+            res.result['transferrable'].to_i.should == 0
+            res.result['reason'].should match(/Transfer in progress/i)
+          end
         end
 
         it "should say the domain already exists if it does" do
-          res = @opensrs.check_transfer(@registered_domain)
-          res.result['transferrable'].to_i.should == 0
-          res.result['reason'].should match(/Domain already exists in.*account/i)
+          VCR.use_cassette("transfer/check_transfer_exists") do
+            res = @opensrs.check_transfer(@registered_domain)
+            res.result['transferrable'].to_i.should == 0
+            res.result['reason'].should match(/Domain already exists in.*account/i)
+          end
         end
       end
 
@@ -129,7 +133,8 @@ module MooMoo
 
         it "should list domains that have been transferred in" do
           res = @opensrs.get_transfers_in
-          res.result['total'].to_i.should == 0
+          res.result['total'].to_i.should == 1
+          res.result['transfers']['0']['domain'].should == "testingdomain.com"
         end
       end
 
@@ -139,7 +144,7 @@ module MooMoo
         it "should do a new order with cancelled order's data" do
           res = @opensrs.register_domain('fds23afafdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
           p res.inspect
-          result = @opensrs.process_transfer(1888026, @opensrs_user)
+          result = @opensrs.process_transfer(res.result['id'].to_i, @opensrs_user)
           p result.inspect
           pending "needs some fixing"
         end
