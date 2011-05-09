@@ -19,9 +19,9 @@ module MooMoo
         end
       end
 
-      def modify(type, params)
+      def modify(type, params, cookie = nil)
         try_opensrs do
-          cmd = Command.new('modify', 'domain', {"data" => type}.merge(params))
+          cmd = Command.new('modify', 'domain', {"data" => type}.merge(params), cookie)
           result = run_command(cmd)
 
           OpenSRS::Response.new(result)
