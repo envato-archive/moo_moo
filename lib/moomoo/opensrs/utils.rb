@@ -3,8 +3,8 @@ module MooMoo
     def try_opensrs
       begin
         yield
-      rescue OpenSRSException => x
-        raise OpenSRSException, x.message
+      rescue Exception => e
+        raise OpenSRSException, e.message
       end
     end
   end
