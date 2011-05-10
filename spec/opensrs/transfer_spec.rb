@@ -162,7 +162,7 @@ module MooMoo
         use_vcr_cassette "transfer/rsp2rsp_push_transfer"
 
         it "should transfer the domain" do
-          res = @opensrs.push_transfer(@registered_domain, @opensrs_user, @opensrs_pass)
+          res = @opensrs.push_transfer(@registered_domain, @opensrs_user, @opensrs_pass, "opensrs")
           res.success?.should be_false
           res.error_code.should == 465
           res.error_msg.should match(/transfer permission denied/i)
