@@ -18,20 +18,38 @@ module MooMoo
     include NameserverCommands
     include CookieCommands
 
-    def initialize(host, key, user, password)
+    # Constructor
+    #
+    # === Required
+    #  * <tt>:host</tt> - host of the OpenSRS server
+    #  * <tt>:key</tt> - private key
+    #  * <tt>:user</tt> - username of the reseller
+    #  * <tt>:password</tt> - password of the rseller
+    #
+    # === Optional
+    #  * <tt>:port</tt> - port to connect on
+    def initialize(host, key, user, password, port = 55443)
       @host = host
       @key = key
       @user = user
       @password = password
-      @port = 55443
+      @port = port
     end
 
+    # Runs a command
+    #
+    # === Required
+    #  * <tt>:command</tt> - command to run
     def run_command(command)
       command.run(@host, @key, @user, @port)
     end
 
     private
 
+    # Indexes an array by building a hash with numeric keys
+    #
+    # === Required
+    #  * <tt>:arr</tt> - array to build an indexed hash of
     def index_array(arr)
       arr_indexed = {}
 
