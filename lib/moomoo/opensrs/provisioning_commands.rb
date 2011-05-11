@@ -107,23 +107,22 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain name to register
       #  * <tt>:contacts</tt> - contact set for the domain
+      #  * <tt>:nameservers</tt> - array of nameservers
       #
       # ==== Optional
       #  * <tt>:term</tt> - number of years to register the domain for
       #  * <tt>:attribs</tt> - additional attributes to set
-      def register_domain(domain, contacts, term = 1, attribs = {})
+      def register_domain(domain, contacts, nameservers, term = 1, attribs = {})
         try_opensrs do
 
           nameservers = [
             "0".to_sym => {
               :sortorder => 1,
-              :name => "ns1.systemdns.com"
-              #:name => "dns1.site5.com"
+              :name => nameservers.first
             },
             "1".to_sym => {
               :sortorder => 2,
-              :name => "ns2.systemdns.com"
-              #:name => "dns2.site5.com"
+              :name => nameservers.size == 2 ? nameservers[1] : nameservers.first
             },
           ]
 
