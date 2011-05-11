@@ -62,11 +62,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain name to renew
       #  * <tt>:term</tt> - number of years to renew for
-      def renew_domain(domain, term)
+      #  * <tt>:current_expiration_year</tt> - current expiration year in YYYY format
+      def renew_domain(domain, term, current_expiration_year)
         try_opensrs do
-          # TODO: get the expiration year
-          expire_year = 2011
-          cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => expire_year, "handle" => "process"})
+          cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => current_expiration_year, "handle" => "process"})
           result = run_command(cmd)
 
           OpenSRS::Response.new(result, 'attributes')
