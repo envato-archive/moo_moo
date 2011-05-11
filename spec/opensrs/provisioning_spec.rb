@@ -147,7 +147,7 @@ module MooMoo
       describe "register" do
         it "should register a domain" do
           VCR.use_cassette("provisioning/register_domain") do
-            res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, 1)
+            res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
             result = res.result
             result['registration_text'].should match(/successfully completed/i)
             result['id'].to_i.should == 1885783
@@ -156,7 +156,7 @@ module MooMoo
 
         it "should do a pending domain registration" do
           VCR.use_cassette("provisioning/register_pending_domain") do
-            res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
+            res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
             res.success?.should be_true
             res.result['id'].to_i.should == 1888032
           end
@@ -164,7 +164,7 @@ module MooMoo
 
         it "should fail if the domain is taken" do
           VCR.use_cassette("provisioning/register_taken_domain") do
-            res = @opensrs.register_domain('example.com', @contacts, 1)
+            res = @opensrs.register_domain('example.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
             res.success?.should be_false
           end
         end

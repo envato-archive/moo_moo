@@ -142,7 +142,7 @@ module MooMoo
         use_vcr_cassette "transfer/process_transfer"
 
         it "should do a new order with cancelled order's data" do
-          res = @opensrs.register_domain('fds23afafdsajfkdajfkljfklajfdkljflaexample.com', @contacts, 1, {"handle" => "save"})
+          res = @opensrs.register_domain('fds23afafdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
           p res.inspect
           result = @opensrs.process_transfer(res.result['id'].to_i, @opensrs_user)
           p result.inspect
@@ -173,7 +173,7 @@ module MooMoo
         use_vcr_cassette "transfer/transfer"
 
         it "should initiate the transfer" do
-          res = @opensrs.register_domain('testingdomain.com', @contacts, 1, {"reg_type" => "transfer"})
+          res = @opensrs.register_domain('testingdomain.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"reg_type" => "transfer"})
           res.success?.should be_true
           res.result['id'].to_i.should == 1885789
           res.result['registration_text'].should match(/transfer request initiated/i)
