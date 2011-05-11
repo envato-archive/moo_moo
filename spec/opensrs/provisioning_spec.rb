@@ -104,7 +104,7 @@ module MooMoo
           end
         end
 
-        it "should modify all domains linked to the profile", :wip => true do
+        it "should modify all domains linked to the profile" do
           VCR.use_cassette("provisioning/modify_all_domains") do
             res = @opensrs.modify('expire_action', {"affect_domains" => 1, "auto_renew" => 0, "let_expire" => 1}, "0000000000000000:000000:00000")
             res.success?.should == true
@@ -127,7 +127,7 @@ module MooMoo
         use_vcr_cassette "provisioning/renew_domain"
 
         it "should renew" do
-          result = @opensrs.renew_domain("example.com", 1).result
+          result = @opensrs.renew_domain("example.com", 1, 2011).result
           result['order_id'].to_i.should == 1867227
           result['id'].to_i.should == 678899
           result['admin_email'].should == "adams@example.com"
