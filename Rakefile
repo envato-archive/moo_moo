@@ -42,6 +42,7 @@ task :sanitize_cassettes do
   end
 end
 
+RSpec::Core::RakeTask.new :spec
 Bundler::GemHelper.install_tasks
 
 desc  "Run all specs with rcov"
