@@ -51,3 +51,4 @@ RSpec::Core::RakeTask.new(:rcov) do |t|
       t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/,features\/}
 end
 
+task :default => [:spec]
