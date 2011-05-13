@@ -143,9 +143,7 @@ module MooMoo
 
         it "should do a new order with cancelled order's data" do
           res = @opensrs.register_domain('fds23afafdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
-          p res.inspect
           result = @opensrs.process_transfer(res.result['id'].to_i, @opensrs_user)
-          p result.inspect
           pending "needs some fixing"
         end
       end
