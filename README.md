@@ -13,7 +13,7 @@ Usage
 
 First, create an opensrs object from which all commands are called:
 
-    opensrs = OpenSRS.new("horizon.opensrs.net", "<YOUR_KEY>", "<YOUR_RESELLER_USER>", "<YOUR_PASSWORD>"")
+    opensrs = MooMoo::OpenSRS.new("horizon.opensrs.net", "<YOUR_KEY>", "<YOUR_RESELLER_USER>", "<YOUR_PASSWORD>"")
 
 Now you can call a variety of commands to deal with domains, nameservers, etc. Here's how to check the availability of a domain name:
 
