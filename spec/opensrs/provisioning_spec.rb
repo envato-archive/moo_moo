@@ -180,10 +180,10 @@ module MooMoo
           @contacts[:admin].delete(:url)
           @contacts[:billing].delete(:url)
           @contacts[:tech].delete(:url)
-          res = @opensrs.register_trust_service(csr, @contacts, 
-                                                   { "server_type" => "apachessl", 
-                                                     "product_type" => "securesite", 
-                                                     "server_count" => 1}, 1) 
+          res = @opensrs.register_trust_service(csr, @contacts,
+                                                   { "server_type" => "apachessl",
+                                                     "product_type" => "securesite",
+                                                     "server_count" => 1}, 1)
           res.success?.should be_false
           res.error_code.should == 501
           res.error_msg.should match(/Permission denied/i)
