@@ -48,7 +48,7 @@ module MooMoo
         try_opensrs do
           cmd = Command.new('get_transfers_away', 'domain')
           result = run_command(cmd)
-          
+
           OpenSRS::Response.new(result, 'attributes')
         end
       end

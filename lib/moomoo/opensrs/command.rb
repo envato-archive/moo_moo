@@ -74,7 +74,7 @@ module MooMoo
 
       elem = elem.add_element(dt_type)
       coll = coll.first if coll.is_a? Array
-                                                            
+
       coll.each do |key, value|
         child = elem.add_element('item', {'key' => key})
         if value.is_a?(Hash) || value.is_a?(Array)
@@ -84,7 +84,7 @@ module MooMoo
         end
       end
     end
-                                                              
+
     # Builds an XML string of the command which can be sent to OpenSRS
     #
     # ==== Required
@@ -97,22 +97,22 @@ module MooMoo
     def build_command(action, object, attributes = nil, cookie = nil)
       xml = <<-XML
 
-      <?xml version='1.0' encoding='UTF-8' standalone='no' ?> 
-      <!DOCTYPE OPS_envelope SYSTEM 'ops.dtd'> 
+      <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+      <!DOCTYPE OPS_envelope SYSTEM 'ops.dtd'>
       <OPS_envelope>
-        <header> 
+        <header>
           <version>0.9</version>
-        </header> 
+        </header>
         <body>
-          <data_block> 
+          <data_block>
             <dt_assoc>
-              <item key="protocol">XCP</item> 
-              <item key="action">GET_BALANCE</item> 
-              <item key="object">BALANCE</item> 
+              <item key="protocol">XCP</item>
+              <item key="action">GET_BALANCE</item>
+              <item key="object">BALANCE</item>
               <item key="registrant_ip"/>
-            </dt_assoc> 
+            </dt_assoc>
           </data_block>
-        </body> 
+        </body>
       </OPS_envelope>
       XML
 
@@ -147,8 +147,8 @@ module MooMoo
     #  * <tt>data</tt> - data of the response
     # hash containing all of the data.
     def parse_text_response(data)
-      lines = data.split(/[\r\n]+/).delete_if { |line| 
-        (line =~ /^\s*\;/) || (line !~ /=/) || (line =~ /^\s*\-\s*Param\s+\@/) 
+      lines = data.split(/[\r\n]+/).delete_if { |line|
+        (line =~ /^\s*\;/) || (line !~ /=/) || (line =~ /^\s*\-\s*Param\s+\@/)
       }
 
       # generate the hash of returned parameters
@@ -161,7 +161,7 @@ module MooMoo
       returned_parameters
     end
 
-    # Parses an XML response from the OpenSRS registry and generates a 
+    # Parses an XML response from the OpenSRS registry and generates a
     # hash containing all of the data. Elements with child elements
     # are converted into hashes themselves, with the :element_text entry
     # containing any raw text
@@ -205,7 +205,7 @@ module MooMoo
     end
 
     # Parses a response (text or XML) and returns a hash of the data
-    # 
+    #
     # ==== Required
     #  * <tt>data</tt> - data of the response
     def parse_response(data)

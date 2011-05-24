@@ -14,9 +14,9 @@ def live_test?
   !ENV['OPENSRS_REAL'].nil?
 end
 
-Rspec.configure do |c|
+RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
-  c.before(:each) do 
+  c.before(:each) do
     if live_test?
       @opensrs_host = ENV['OPENSRS_TEST_URL']
       @opensrs_key = ENV['OPENSRS_TEST_KEY']

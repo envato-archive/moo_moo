@@ -26,7 +26,7 @@ module MooMoo
 
       describe "delete_cookie" do
         use_vcr_cassette "cookie/delete_cookie"
-        
+
         it "should destroy the cookie" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           res = @opensrs.delete_cookie(res.result['cookie'])
