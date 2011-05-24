@@ -30,7 +30,7 @@ module MooMoo
       # Changes information associated with a domain
       #
       # ==== Required
-      #  * <tt>:type</tt> - type of data to modify 
+      #  * <tt>:type</tt> - type of data to modify
       #  * <tt>:params</tt> - new parameter values to set
       #
       # ==== Optional
@@ -127,13 +127,13 @@ module MooMoo
           ]
 
           attributes = {
-            "contact_set" => contacts, 
-            "custom_nameservers" => 1, 
-            "custom_tech_contact" => 1, 
-            "domain" => domain, 
-            "nameserver_list" => nameservers, 
-            "period" => term, 
-            "reg_username" => @user, 
+            "contact_set" => contacts,
+            "custom_nameservers" => 1,
+            "custom_tech_contact" => 1,
+            "domain" => domain,
+            "nameserver_list" => nameservers,
+            "period" => term,
+            "reg_username" => @user,
             "reg_password" => @password
           }
 
