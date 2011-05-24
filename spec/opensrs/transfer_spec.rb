@@ -139,14 +139,19 @@ module MooMoo
       end
 
       describe "process_transfer" do
-        use_vcr_cassette "transfer/process_transfer"
-
         it "should do a new order with cancelled order's data" do
-          res = @opensrs.register_domain('fds23afafdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
-          p res.inspect
-          result = @opensrs.process_transfer(res.result['id'].to_i, @opensrs_user)
-          p result.inspect
-          pending "needs some fixing"
+          VCR.use_cassette("transfer/process_transfer") do
+            result = @opensrs.process_transfer(123, @opensrs_user)
+            result.success?.should be_true
+          end
+        end
+
+        it "should not transfer if the status does not allow it" do
+          VCR.use_cassette("transfer/process_transfer_unsuccessful") do
+            result = @opensrs.process_transfer(123, @opensrs_user)
+            result.success?.should be_false
+            result.error_code.should == 400
+          end
         end
       end
 
