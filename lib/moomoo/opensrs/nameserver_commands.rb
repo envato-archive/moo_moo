@@ -15,7 +15,7 @@ module MooMoo
           cmd = Command.new('create', 'nameserver', {"name" => name, "ipaddress" => ip, "domain" => domain}, cookie)
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          Response.new(result)
         end
       end
 
@@ -33,7 +33,7 @@ module MooMoo
           cmd = Command.new('delete', 'nameserver', {"name" => name, "ipaddress" => ip, "domain" => domain}, cookie)
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          Response.new(result)
         end
       end
 
@@ -46,7 +46,7 @@ module MooMoo
           cmd = Command.new('get', 'nameserver', {"name" => "all", "domain" => domain})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -62,7 +62,7 @@ module MooMoo
           cmd = Command.new('modify', 'nameserver', {"name" => name, "ipaddress" => ip, "new_name" => new_name, "domain" => domain})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          Response.new(result)
         end
       end
     end

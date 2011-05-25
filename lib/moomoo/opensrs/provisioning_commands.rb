@@ -10,7 +10,7 @@ module MooMoo
           cmd = Command.new('cancel_order', 'trust_service', {"order_id" => order_id})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -23,7 +23,7 @@ module MooMoo
           cmd = Command.new('cancel_pending_orders', 'order', {"to_date" => to_date})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -40,7 +40,7 @@ module MooMoo
           cmd = Command.new('modify', 'domain', {"data" => type}.merge(params), cookie)
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          Response.new(result)
         end
       end
 
@@ -53,7 +53,7 @@ module MooMoo
           cmd = Command.new('process_pending', 'domain', {"order_id" => order_id})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -68,7 +68,7 @@ module MooMoo
           cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => current_expiration_year, "handle" => "process"})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -82,7 +82,7 @@ module MooMoo
           cmd = Command.new('revoke', 'domain', {"domain" => domain, "reseller" => reseller})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -98,7 +98,7 @@ module MooMoo
           cmd = Command.new('update_contacts', 'domain', {"domain" => domain, "contact_set" => contacts, "types" => types})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
 
@@ -187,7 +187,7 @@ module MooMoo
             result = {}
           end
 
-          OpenSRS::Response.new(result, 'attributes')
+          Response.new(result, 'attributes')
         end
       end
     end
