@@ -178,7 +178,12 @@ module MooMoo
         use_vcr_cassette "transfer/transfer"
 
         it "initiates the transfer" do
-          res = @opensrs.register_domain('testingdomain.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"reg_type" => "transfer"})
+          res = @opensrs.register_domain(
+            :domain => 'testingdomain.com', 
+            :contacts => @contacts, 
+            :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"], 
+            :term => 1, 
+            :options => {:reg_type => :transfer})
           res.success?.should be_true
           res.result['id'].to_i.should == 1885789
           res.result['registration_text'].should match(/transfer request initiated/i)

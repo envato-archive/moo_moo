@@ -9,7 +9,11 @@ module MooMoo
       #  * <tt>:domain</tt> - domain to set the cookie for
       def set_cookie(username, password, domain)
         try_opensrs do
-          cmd = Command.new('set', 'cookie', {"reg_username" => username, "reg_password" => password, "domain" => domain})
+          cmd = Command.new('set', 'cookie', {
+            "reg_username" => username, 
+            "reg_password" => password, 
+            "domain" => domain
+            })
           result = run_command(cmd)
 
           Response.new(result, 'attributes')
@@ -35,9 +39,14 @@ module MooMoo
       #  * <tt>:old_domain</tt> - domain the cookie is currently set for
       #  * <tt>:new_domain</tt> - domain to set the cookie for
       #  * <tt>:cookie</tt> - cookie to update
-      def update_cookie(old_domain, new_domain, cookie)
+      def update_cookie(attribs)
         try_opensrs do
-          cmd = Command.new('update', 'cookie', {"reg_username" => @opensrs_user, "reg_password" => "", "domain" => old_domain, "domain_new" => new_domain}, cookie)
+          cmd = Command.new('update', 'cookie', {
+            "reg_username" => @opensrs_user, 
+            "reg_password" => "", 
+            "domain" => attribs[:old_domain], 
+            "domain_new" => attribs[:new_domain]
+            }, attribs[:cookie])
           result = run_command(cmd)
 
           Response.new(result, 'attributes')

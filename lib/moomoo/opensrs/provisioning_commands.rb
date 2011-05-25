@@ -63,9 +63,14 @@ module MooMoo
       #  * <tt>:domain</tt> - domain name to renew
       #  * <tt>:term</tt> - number of years to renew for
       #  * <tt>:current_expiration_year</tt> - current expiration year in YYYY format
-      def renew_domain(domain, term, current_expiration_year)
+      def renew_domain(attribs)
         try_opensrs do
-          cmd = Command.new('renew', 'domain', {"domain" => domain, "period" => term, "currentexpirationyear" => current_expiration_year, "handle" => "process"})
+          cmd = Command.new('renew', 'domain', {
+            :domain => attribs[:domain], 
+            "period" => attribs[:term], 
+            "currentexpirationyear" => attribs[:current_expiration_year], 
+            "handle" => "process"
+          })
           result = run_command(cmd)
 
           Response.new(result, 'attributes')
@@ -111,35 +116,27 @@ module MooMoo
       #
       # ==== Optional
       #  * <tt>:term</tt> - number of years to register the domain for
-      #  * <tt>:attribs</tt> - additional attributes to set
-      def register_domain(domain, contacts, nameservers, term = 1, attribs = {})
+      #  * <tt>:options</tt> - additional attributes to set
+      def register_domain(attribs)
         try_opensrs do
-
-          nameservers = [
-            "0".to_sym => {
-              :sortorder => 1,
-              :name => nameservers.first
-            },
-            "1".to_sym => {
-              :sortorder => 2,
-              :name => nameservers.size == 2 ? nameservers[1] : nameservers.first
-            },
-          ]
+          attribs[:term] = 1 unless attribs[:term]
+          nameservers = format_nameservers(attribs[:nameservers])
 
           attributes = {
-            "contact_set" => contacts,
-            "custom_nameservers" => 1,
-            "custom_tech_contact" => 1,
-            "domain" => domain,
-            "nameserver_list" => nameservers,
-            "period" => term,
-            "reg_username" => @user,
-            "reg_password" => @password
+            :contact_set => attribs[:contacts],
+            :custom_nameservers => 1,
+            :custom_tech_contact => 1,
+            :domain => attribs[:domain],
+            :nameserver_list => nameservers,
+            :period => attribs[:term],
+            :reg_username => @user,
+            :reg_password => @password
           }
 
-          attributes["reg_type"] = "new" unless attribs["reg_type"]
+          attributes[:reg_type] = :new unless attribs[:options] && attribs[:options][:reg_type]
+          attributes.merge!(attribs[:options]) if attribs[:options]
 
-          cmd = Command.new('sw_register', 'domain', attributes.merge(attribs))
+          cmd = Command.new('sw_register', 'domain', attributes)
 
           register(cmd)
         end
@@ -181,14 +178,25 @@ module MooMoo
       #  * <tt>:cmd</tt> - command to run
       def register(cmd)
         try_opensrs do
-          begin
-            result = run_command(cmd)
-          rescue OpenSRSException => e
-            result = {}
-          end
+          result = run_command(cmd)
 
           Response.new(result, 'attributes')
         end
+      end
+
+      private
+
+      def format_nameservers(nameservers)
+        [
+          "0".to_sym => {
+            :sortorder => 1,
+            :name => nameservers.first
+          },
+          "1".to_sym => {
+            :sortorder => 2,
+            :name => nameservers.size == 2 ? nameservers[1] : nameservers.first
+          },
+        ]
       end
     end
   end

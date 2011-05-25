@@ -18,7 +18,10 @@ module MooMoo
         use_vcr_cassette "nameserver/create"
 
         it "creates the nameserver" do
-          res = @opensrs.create_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
+          res = @opensrs.create_nameserver(
+            :name => "ns1.#{@registered_domain}", 
+            :ip => '212.112.123.11', 
+            :domain => @registered_domain)
           res.success?.should be_true
         end
       end
@@ -27,7 +30,10 @@ module MooMoo
         use_vcr_cassette "nameserver/delete"
 
         it "deletes the nameserver" do
-          res = @opensrs.delete_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
+          res = @opensrs.delete_nameserver(
+            :name => "ns1.#{@registered_domain}", 
+            :ip => '212.112.123.11', 
+            :domain => @registered_domain)
           res.success?.should be_true
         end
       end
@@ -48,7 +54,11 @@ module MooMoo
         use_vcr_cassette "nameserver/modify"
 
         it "updates the name of the nameserver" do
-          res = @opensrs.modify_nameserver("ns22.#{@registered_domain}", '212.112.123.11', "ns3.#{@registered_domain}", @registered_domain)
+          res = @opensrs.modify_nameserver(
+            :name => "ns22.#{@registered_domain}", 
+            :ip => '212.112.123.11', 
+            :new_name => "ns3.#{@registered_domain}", 
+            :domain => @registered_domain)
           res.success?.should be_true
         end
       end
