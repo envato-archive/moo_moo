@@ -39,7 +39,10 @@ module MooMoo
 
         it "updates the cookie's domain" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
-          res = @opensrs.update_cookie(@registered_domain, @registered_domain, res.result['cookie'])
+          res = @opensrs.update_cookie(
+            :old_domain => @registered_domain, 
+            :new_domain => @registered_domain, 
+            :cookie => res.result['cookie'])
           res.success?.should be_true
           res.result['domain_count'].to_i.should == 1
         end

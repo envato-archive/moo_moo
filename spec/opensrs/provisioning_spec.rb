@@ -118,19 +118,19 @@ module MooMoo
 
         it "updates the expire action" do
           VCR.use_cassette("provisioning/modify_domain") do
-            res = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
+            res = @opensrs.modify('expire_action', {:domain => @registered_domain, :auto_renew => 1, :let_expire => 0})
             res.success?.should be_true
           end
         end
 
         it "modifies all domains linked to the profile" do
           VCR.use_cassette("provisioning/modify_all_domains") do
-            res = @opensrs.modify('expire_action', 
-                                  {"affect_domains" => 1, 
-                                    "auto_renew" => 0, 
-                                    "let_expire" => 1
-                                  }, 
-                                  "0000000000000000:000000:00000")
+            res = @opensrs.modify('expire_action', {
+              :affect_domains => 1, 
+              :auto_renew => 0, 
+              :let_expire => 1
+            }, 
+            "0000000000000000:000000:00000")
             res.success?.should == true
           end
         end
@@ -151,7 +151,11 @@ module MooMoo
         use_vcr_cassette "provisioning/renew_domain"
 
         it "renews the domain" do
-          result = @opensrs.renew_domain("example.com", 1, 2011).result
+          result = @opensrs.renew_domain(
+            :domain => "example.com", 
+            :term => 1, 
+            :current_expiration_year => 2011
+          ).result
           result['order_id'].to_i.should == 1867227
           result['id'].to_i.should == 678899
           result['admin_email'].should == "adams@example.com"
@@ -171,7 +175,11 @@ module MooMoo
       describe "#register" do
         it "registers a domain" do
           VCR.use_cassette("provisioning/register_domain") do
-            res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
+            res = @opensrs.register_domain(
+              :domain => 'fdsafsfsafafsaexample.com', 
+              :contacts => @contacts, 
+              :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"], 
+              :term => 1)
             result = res.result
             result['registration_text'].should match(/successfully completed/i)
             result['id'].to_i.should == 1885783
@@ -180,7 +188,12 @@ module MooMoo
 
         it "registers a pending domain registration" do
           VCR.use_cassette("provisioning/register_pending_domain") do
-            res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
+            res = @opensrs.register_domain(
+              :domain => 'fdsajfkdajfkljfklajfdkljflaexample.com', 
+              :contacts => @contacts, 
+              :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"], 
+              :term => 1, 
+              :options => {:handle => :save})
             res.success?.should be_true
             res.result['id'].to_i.should == 1888032
           end
@@ -188,7 +201,11 @@ module MooMoo
 
         it "fails if the domain is taken" do
           VCR.use_cassette("provisioning/register_taken_domain") do
-            res = @opensrs.register_domain('example.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
+            res = @opensrs.register_domain(
+              :domain => 'example.com', 
+              :contacts => @contacts, 
+              :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"], 
+              :term => 1)
             res.success?.should be_false
           end
         end
