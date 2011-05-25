@@ -13,31 +13,31 @@ module MooMoo
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
-    describe "Cookie Commands" do
-      describe "set_cookie" do
+    describe "CookieCommands" do
+      describe "#set_cookie" do
         use_vcr_cassette "cookie/set_cookie"
 
-        it "should set the cookie" do
+        it "sets the cookie" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           res.success?.should be_true
           res.result['cookie'].should == "0000000000000000:000000:00000"
         end
       end
 
-      describe "delete_cookie" do
+      describe "#delete_cookie" do
         use_vcr_cassette "cookie/delete_cookie"
 
-        it "should destroy the cookie" do
+        it "destroys the cookie" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           res = @opensrs.delete_cookie(res.result['cookie'])
           res.success?.should be_true
         end
       end
 
-      describe "update_cookie" do
+      describe "#update_cookie" do
         use_vcr_cassette "cookie/update_cookie"
 
-        it "should update the cookie's domain" do
+        it "updates the cookie's domain" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           res = @opensrs.update_cookie(@registered_domain, @registered_domain, res.result['cookie'])
           res.success?.should be_true
@@ -45,10 +45,10 @@ module MooMoo
         end
       end
 
-      describe "quit_session" do
+      describe "#quit_session" do
         use_vcr_cassette "cookie/quit_session"
 
-        it "should quit the session" do
+        it "quits the session" do
           res = @opensrs.quit_session
           res.success?.should be_true
         end
