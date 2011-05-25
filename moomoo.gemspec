@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "opensrs"
 
   s.add_runtime_dependency('jruby-openssl', '~> 0.7.3') if RUBY_PLATFORM == 'java'
+  s.add_development_dependency 'rake', '~> 0.8.7'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'fakeweb'
   s.add_development_dependency 'vcr'
