@@ -13,29 +13,29 @@ module MooMoo
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
-    describe "Nameserver Commands" do
-      describe "create_nameserver" do
+    describe "NameserverCommands" do
+      describe "#create_nameserver" do
         use_vcr_cassette "nameserver/create"
 
-        it "should create the nameserver" do
+        it "creates the nameserver" do
           res = @opensrs.create_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
           res.success?.should be_true
         end
       end
 
-      describe "delete_nameserver" do
+      describe "#delete_nameserver" do
         use_vcr_cassette "nameserver/delete"
 
-        it "should delete the nameserver" do
+        it "deletes the nameserver" do
           res = @opensrs.delete_nameserver("ns1.#{@registered_domain}", '212.112.123.11', @registered_domain)
           res.success?.should be_true
         end
       end
 
-      describe "get_nameserver" do
+      describe "#get_nameserver" do
         use_vcr_cassette "nameserver/get"
 
-        it "should return the nameservers" do
+        it "returns the nameservers" do
           res = @opensrs.get_nameserver(@registered_domain)
           result = res.result['nameserver_list']
           result.should have(2).nameservers
@@ -44,10 +44,10 @@ module MooMoo
         end
       end
 
-      describe "modify_nameserver" do
+      describe "#modify_nameserver" do
         use_vcr_cassette "nameserver/modify"
 
-        it "should update the name of the nameserver" do
+        it "updates the name of the nameserver" do
           res = @opensrs.modify_nameserver("ns22.#{@registered_domain}", '212.112.123.11', "ns3.#{@registered_domain}", @registered_domain)
           res.success?.should be_true
         end

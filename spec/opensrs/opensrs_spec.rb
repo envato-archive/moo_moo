@@ -7,7 +7,7 @@ module MooMoo
     include Utils
 
     describe "Utils" do
-      it "should raise an OpenSRSException" do
+      it "raises an OpenSRSException" do
         expect {try_opensrs { raise "Exception message" } }.to raise_error OpenSRSException
       end
     end

@@ -81,9 +81,9 @@ module MooMoo
           }
     end
 
-    describe "Provisioning Commands" do
-      describe "cancel_order", :wip => true do
-        it "should cancel a trust service order" do
+    describe "ProvisioningCommands" do
+      describe "#cancel_order" do
+        it "cancels a trust service order" do
           VCR.use_cassette("provisioning/cancel_order") do
             res = @opensrs.cancel_order(123456)
             res.success?.should be_true
@@ -92,7 +92,7 @@ module MooMoo
           end
         end
 
-        it "should not cancel an invalid trust service order" do
+        it "doesn't cancel an invalid trust service order" do
           VCR.use_cassette("provisioning/cancel_order_invalid") do
             res = @opensrs.cancel_order(111111)
             res.success?.should be_false
@@ -101,10 +101,10 @@ module MooMoo
         end
       end
 
-      describe "cancel_pending_orders" do
+      describe "#cancel_pending_orders" do
         use_vcr_cassette "provisioning/cancel_pending_orders"
 
-        it "should cancel all pending orders" do
+        it "cancels all pending orders" do
           result = @opensrs.cancel_pending_orders(1302890914).result
           result['total'].to_i.should == 0
           result['cancelled'].should be_a_kind_of(Hash)
@@ -112,29 +112,34 @@ module MooMoo
         end
       end
 
-      describe "modify domain" do
-        it "should update the contact information" do
+      describe "#modify domain" do
+        it "updates the contact information" do
         end
 
-        it "should update the expire action" do
+        it "updates the expire action" do
           VCR.use_cassette("provisioning/modify_domain") do
             res = @opensrs.modify('expire_action', {"domain" => @registered_domain, "auto_renew" => 1, "let_expire" => 0})
             res.success?.should be_true
           end
         end
 
-        it "should modify all domains linked to the profile" do
+        it "modifies all domains linked to the profile" do
           VCR.use_cassette("provisioning/modify_all_domains") do
-            res = @opensrs.modify('expire_action', {"affect_domains" => 1, "auto_renew" => 0, "let_expire" => 1}, "0000000000000000:000000:00000")
+            res = @opensrs.modify('expire_action', 
+                                  {"affect_domains" => 1, 
+                                    "auto_renew" => 0, 
+                                    "let_expire" => 1
+                                  }, 
+                                  "0000000000000000:000000:00000")
             res.success?.should == true
           end
         end
       end
 
-      describe "process_pending" do
+      describe "#process_pending" do
         use_vcr_cassette "provisioning/process_pending"
 
-        it "should process the pending order" do
+        it "processes the pending order" do
           result = @opensrs.process_pending(1878084).result
           result['order_id'].to_i.should == 1878084
           result['id'].to_i.should == 730001
@@ -142,10 +147,10 @@ module MooMoo
         end
       end
 
-      describe "renew_domain" do
+      describe "#renew_domain" do
         use_vcr_cassette "provisioning/renew_domain"
 
-        it "should renew" do
+        it "renews the domain" do
           result = @opensrs.renew_domain("example.com", 1, 2011).result
           result['order_id'].to_i.should == 1867227
           result['id'].to_i.should == 678899
@@ -153,18 +158,18 @@ module MooMoo
         end
       end
 
-      describe "revoke domain" do
+      describe "#revoke domain" do
         use_vcr_cassette "provisioning/revoke_domain"
 
-        it "should remove the domain from the registry" do
+        it "removes the domain from the registry" do
           res = @opensrs.revoke("example.com", @opensrs_user)
           res.success?.should be_true
           res.result['charge'].to_i.should == 1
         end
       end
 
-      describe "register" do
-        it "should register a domain" do
+      describe "#register" do
+        it "registers a domain" do
           VCR.use_cassette("provisioning/register_domain") do
             res = @opensrs.register_domain('fdsafsfsafafsaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
             result = res.result
@@ -173,7 +178,7 @@ module MooMoo
           end
         end
 
-        it "should do a pending domain registration" do
+        it "registers a pending domain registration" do
           VCR.use_cassette("provisioning/register_pending_domain") do
             res = @opensrs.register_domain('fdsajfkdajfkljfklajfdkljflaexample.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1, {"handle" => "save"})
             res.success?.should be_true
@@ -181,7 +186,7 @@ module MooMoo
           end
         end
 
-        it "should fail if the domain is taken" do
+        it "fails if the domain is taken" do
           VCR.use_cassette("provisioning/register_taken_domain") do
             res = @opensrs.register_domain('example.com', @contacts, ["ns1.systemdns.com", "ns2.systemdns.com"], 1)
             res.success?.should be_false
@@ -189,10 +194,10 @@ module MooMoo
         end
       end
 
-      describe "register_trust_service" do
+      describe "#register_trust_service" do
         use_vcr_cassette "provisioning/trust_service"
 
-        it "should register the trust service" do
+        it "registers the trust service" do
           csr = "-----BEGIN CERTIFICATE REQUEST----- MIIC4TCCAckCAQAwgZsxKTAnBgNVBAMTIHNlY3VyZXNpdGUudGVzdDEyODU4NzYwMzY2MDgub3JnMQswCQYDVQQGEwJDQTELMAkGA1UECBMCT04xEDAOBgNVBAcTB1Rvcm9udG8xDzANBgNVBAoTBm5ld29yZzEPMA0GA1UECxMGUUFEZXB0MSAwHgYJKoZIhvcNAQkBFhFxYWZpdmVAdHVjb3dzLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJ0FDLurKaddUzayM5FgICBhy8DkOaBuYzCiHSFw6xRUf9CjAHpC/MiUM5TnegMiU02COAPmfeHZAERv21CoB/HPDcshewHJywzs8nwcbGncz37eFhNGFQNIif5ExoGAcLS9+d1EAmR1CupTBCCq86lGBa/RdwgUNlvLF5IgZZeKphd/FKaYB2KZmRBxM51WvV6AYmRKb6IsuUZCfHO2FCelThDE0EF99GbfSapVj7woSIu0/PTJcEX4sHURq6pY3ELfNG0BOzrTsT3Af8T3N5xwD0FMatkDrCPCgVx7sRZ05UqenxBOVWBJQcr5QRZSykxBosGjbqO3QSyGsElIKgkCAwEAAaAAMA0GCSqGSIb3DQEBBAUAA4IBAQCEUGNk45qCJiR4Yuce4relbP22EwK7pyX0+0VZ+F3eUxhpZ6S5WN1Juuru8w48RchQBjGK1jjUfXJIqn/DgX+yAfMj4aW/ohBmovN2ViuNILvNaj0volwoqyMlNrTmBze69qHMfnMGUUUehMr/Nq4QdQTqxy7EYQkNOqx21gfZcUi6zWCeFTRkasD+SYAKsOUIKdrt/Jq5lWFXxhkJHuyA+q1yr/w6zh18JmFAT4y/0q/odFGyIr9yKhQ9usW1sQ8CT3e3AnU4jq7sBrYFxN0f+92W8gX7WADortA7+6PcSFPrZEoQlr5Brki7GSwIuTTSlKFRyZ53DbEGjp2ELnnl -----END CERTIFICATE REQUEST----- "
           @contacts.delete(:owner)
           @contacts.delete(:title)
@@ -209,10 +214,10 @@ module MooMoo
         end
       end
 
-      describe "update_contacts" do
+      describe "#update_contacts" do
         use_vcr_cassette "provisioning/update_contacts"
 
-        it "should update the contacts" do
+        it "updates the contacts" do
           res = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
           res.success?.should be_true
           res.result['details'][@registered_domain]['response_code'].to_i.should == 200

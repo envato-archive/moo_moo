@@ -14,16 +14,16 @@ module MooMoo
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
-    describe "Lookup Commands" do
-      describe "belongs_to_rsp" do
-        it "should return false for a domain that is not owned by the rsp" do
+    describe "LookupCommands" do
+      describe "#belongs_to_rsp" do
+        it "returns false for a domain that is not owned by the rsp" do
           VCR.use_cassette("lookup/belongs_to_rsp") do
             res = @opensrs.belongs_to_rsp?('example.com')
             res.result['belongs_to_rsp'].to_i.should == 0
           end
         end
 
-        it "should return true for a domain owned by the rsp" do
+        it "returns true for a domain owned by the rsp" do
           VCR.use_cassette("lookup/belongs_to_rsp_negative") do
             res = @opensrs.belongs_to_rsp?(@registered_domain)
             res.result['belongs_to_rsp'].to_i.should == 1
@@ -31,20 +31,20 @@ module MooMoo
         end
       end
 
-      describe "get_balance" do
+      describe "#get_balance" do
         use_vcr_cassette "lookup/get_balance"
 
-        it "should return the balance" do
+        it "returns the balance" do
           res = @opensrs.get_balance
           res.result['balance'].to_f.should == 7312.24
           res.result['hold_balance'].to_f.should == 11.44
         end
       end
 
-      describe "get_deleted_domains" do
+      describe "#get_deleted_domains" do
         use_vcr_cassette "lookup/get_deleted_domains"
 
-        it "should return domains that have been deleted" do
+        it "returns domains that have been deleted" do
           result = @opensrs.get_deleted_domains.result
           result['total'].to_i.should == 2
           result['del_domains']['0']['name'].should == "example.com"
@@ -53,10 +53,10 @@ module MooMoo
         end
       end
 
-      describe "get domain" do
+      describe "#get domain" do
         use_vcr_cassette "lookup/get_domain"
 
-        it "should return all the info" do
+        it "returns all the info" do
           res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
           result = @opensrs.get_domain(@registered_domain, res.result['cookie']).result
           result['auto_renew'].to_i.should == 1
@@ -65,20 +65,20 @@ module MooMoo
         end
       end
 
-      describe "get_domains_contacts" do
+      describe "#get_domains_contacts" do
         use_vcr_cassette "lookup/get_domains_contacts"
 
-        it "should return the domains contacts" do
+        it "returns the domain's contacts" do
           result = @opensrs.get_domains_contacts(@registered_domain).result
           result[@registered_domain]['contact_set']['owner']['address2'].should == "Suite 500"
           result[@registered_domain]['contact_set']['billing']['org_name'].should == "Example Inc."
         end
       end
 
-      describe "get_domains_by_expiredate" do
+      describe "#get_domains_by_expiredate" do
         use_vcr_cassette "lookup/get_domains_by_expiredate"
 
-        it "should return domains within an expiration range" do
+        it "returns domains within an expiration range" do
           result = @opensrs.get_domains_by_expiredate(Date.parse('2011-04-21'), Date.parse('2011-04-21') + 365).result
           result['total'].to_i.should == 2
           result['exp_domains']['0']['name'].should == "example.com"
@@ -88,8 +88,8 @@ module MooMoo
         end
       end
 
-      describe "get_notes" do
-        it "should return the notes for a domain" do
+      describe "#get_notes" do
+        it "returns the notes for a domain" do
           VCR.use_cassette("lookup/get_notes_for_domain") do
             result = @opensrs.get_notes_for_domain(@registered_domain).result
             result['total'].to_i.should == 4
@@ -97,7 +97,7 @@ module MooMoo
           end
         end
 
-        it "should return the notes for an order" do
+        it "returns the notes for an order" do
           VCR.use_cassette("lookup/get_notes_for_order") do
             result = @opensrs.get_notes_for_order(@registered_domain, 1855625).result
             result['page'].to_i.should == 1
@@ -106,7 +106,7 @@ module MooMoo
           end
         end
 
-        it "should return the notes for a transfer" do
+        it "returns the notes for a transfer" do
           VCR.use_cassette("lookup/get_notes_for_transfer") do
             res = @opensrs.get_notes_for_transfer("testingdomain.com", 37021)
             res.success?.should be_true
@@ -114,10 +114,10 @@ module MooMoo
         end
       end
 
-      describe "get_order_info" do
+      describe "#get_order_info" do
         use_vcr_cassette "lookup/get_order_info"
 
-        it "should return the order info" do
+        it "returns the order info" do
           result = @opensrs.get_order_info(1855625).result['field_hash']
           result['owner_address2'].should == "Suite 500"
           result['billing_org_name'].should == "Example Inc."
@@ -125,10 +125,10 @@ module MooMoo
         end
       end
 
-      describe "get_orders_by_domain" do
+      describe "#get_orders_by_domain" do
         use_vcr_cassette "lookup/get_orders_by_domain"
 
-        it "should return the orders for a domain" do
+        it "returns the orders for a domain" do
           result = @opensrs.get_orders_by_domain(@registered_domain).result
           result['orders'].should be_a_kind_of(Hash)
           result['orders'].should have(2).domains
@@ -136,19 +136,19 @@ module MooMoo
         end
       end
 
-      describe "get_price" do
+      describe "#get_price" do
         use_vcr_cassette "lookup/get_price"
 
-        it "should return the price" do
+        it "returns the price" do
           res = @opensrs.get_price('example.com')
           res.result['price'].to_f.should == 11.62
         end
       end
 
-      describe "get_product_info" do
+      describe "#get_product_info" do
         use_vcr_cassette "lookup/get_product_info"
 
-        it "should not find an invalid product" do
+        it "fails to find an invalid product" do
           res = @opensrs.get_product_info(99)
           res.success?.should be_false
           res.error_code.should == 405
@@ -156,15 +156,15 @@ module MooMoo
         end
       end
 
-      describe "lookup domain" do
-        it "should return the availbility of an available domain" do
+      describe "#lookup domain" do
+        it "returns the availbility of an available domain" do
           VCR.use_cassette("lookup/lookup_domain_available") do
             result = @opensrs.lookup_domain('example.com').result
             result['status'].should == "available"
           end
         end
 
-        it "should return the availability of a registered domain" do
+        it "returns the availability of a registered domain" do
           VCR.use_cassette("lookup/lookup_domain_registered") do
             result = @opensrs.lookup_domain(@registered_domain).result
             result['status'].should == "taken"
@@ -172,10 +172,10 @@ module MooMoo
         end
       end
 
-      describe "name_suggest" do
+      describe "#name_suggest" do
         use_vcr_cassette "lookup/name_suggest"
 
-        it "should return suggested names for a domain" do
+        it "returns suggested names for a domain" do
           result = @opensrs.name_suggest("random_domain", [".com", ".net"]).result
           result['lookup']['count'].to_i.should == 4
           result['lookup']['items']['0']['domain'].should == "randomdomain.com"
