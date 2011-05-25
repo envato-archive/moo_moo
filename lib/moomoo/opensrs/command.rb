@@ -168,7 +168,7 @@ module MooMoo
     #
     # ==== Required
     #  * <tt>data</tt> - data of the response
-    def parse_xml_response(data)
+    def parse_response(data)
       doc = REXML::Document.new(data)
 
       values = {}
@@ -202,26 +202,6 @@ module MooMoo
       end
 
       data_hash
-    end
-
-    # Parses a response (text or XML) and returns a hash of the data
-    #
-    # ==== Required
-    #  * <tt>data</tt> - data of the response
-    def parse_response(data)
-      return parse_xml_response(data) if data =~ /^<\?xml/
-      return parse_text_response(data)
-    end
-
-    # Extracts the child elements key/text values from the given element
-    #
-    # ==== Required
-    #  * <tt>element</tt> - XML element with child elements
-    #  * <tt>values</tt> - hash of values to populate
-    def extract_values(element, values)
-      element.elements.each do |item|
-        values[item.attributes['key']] = item.text
-      end
     end
   end
 end
