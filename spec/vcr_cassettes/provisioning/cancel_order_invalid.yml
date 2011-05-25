@@ -1,0 +1,49 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://server.com:55443/
+    body: 
+    headers: 
+      x-username: 
+      - opensrs_user
+      content-type: 
+      - text/xml
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "602"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      content-type: 
+      - text/xml
+      server: 
+      - OpenSRS/XML-RSA Server
+      date: 
+      - Wed, 25 May 2011 15:05:19 GMT
+      content-length: 
+      - "547"
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">TRUST_SERVICE</item>
+          <item key="response_text">Invalid id supplied. Cannot be found in the database</item>
+          <item key="action">CANCEL_ORDER:REPLY</item>
+          <item key="response_code">405</item>
+          <item key="is_success">0</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

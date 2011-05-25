@@ -82,6 +82,25 @@ module MooMoo
     end
 
     describe "Provisioning Commands" do
+      describe "cancel_order", :wip => true do
+        it "should cancel a trust service order" do
+          VCR.use_cassette("provisioning/cancel_order") do
+            res = @opensrs.cancel_order(123456)
+            res.success?.should be_true
+            res.result['order_id'].to_i.should == 123456
+            res.result['domain'].should == "example.com"
+          end
+        end
+
+        it "should not cancel an invalid trust service order" do
+          VCR.use_cassette("provisioning/cancel_order_invalid") do
+            res = @opensrs.cancel_order(111111)
+            res.success?.should be_false
+            res.error_code.should == 405
+          end
+        end
+      end
+
       describe "cancel_pending_orders" do
         use_vcr_cassette "provisioning/cancel_pending_orders"
 

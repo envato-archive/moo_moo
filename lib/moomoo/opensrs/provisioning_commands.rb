@@ -10,7 +10,7 @@ module MooMoo
           cmd = Command.new('cancel_order', 'trust_service', {"order_id" => order_id})
           result = run_command(cmd)
 
-          OpenSRS::Response.new(result)
+          OpenSRS::Response.new(result, 'attributes')
         end
       end
 
@@ -184,6 +184,7 @@ module MooMoo
           begin
             result = run_command(cmd)
           rescue OpenSRSException => e
+            result = {}
           end
 
           OpenSRS::Response.new(result, 'attributes')
