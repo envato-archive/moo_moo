@@ -16,11 +16,11 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('jruby-openssl', '~> 0.7.3') if RUBY_PLATFORM == 'java'
   s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'fakeweb'
-  s.add_development_dependency 'vcr'
-  s.add_development_dependency 'rcov'
-  s.add_development_dependency 'metric_fu'
+  s.add_development_dependency 'rspec', '~> 2.5.0'
+  s.add_development_dependency 'fakeweb', '~> 1.3.0'
+  s.add_development_dependency 'vcr', '~> 1.9.0'
+  s.add_development_dependency 'rcov', '>= 0.9.9'
+  s.add_development_dependency 'metric_fu', '>= 2.1.1'
 
   s.add_dependency 'extlib'
 
