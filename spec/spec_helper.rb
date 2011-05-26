@@ -1,5 +1,5 @@
 require 'rspec'
-require 'moomoo'
+require 'moo_moo'
 require 'vcr'
 require 'extlib'
 

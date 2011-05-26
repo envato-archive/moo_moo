@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'moomoo/opensrs'
+require 'moo_moo/opensrs'
 
 module MooMoo
 

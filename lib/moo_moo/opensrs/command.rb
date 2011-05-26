@@ -45,7 +45,8 @@ module MooMoo
 
       http = Net::HTTP.new(URI.encode(host), port)
       http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
       res = http.post(URI.encode("/"), xml, headers)
 
       @returned_parameters = parse_response(res.body)
