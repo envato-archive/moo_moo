@@ -1,6 +1,6 @@
 require 'spec_helper'
-require 'moomoo/opensrs'
-require 'moomoo/opensrs/utils'
+require 'moo_moo/opensrs'
+require 'moo_moo/opensrs/utils'
 
 module MooMoo
   describe OpenSRS do
