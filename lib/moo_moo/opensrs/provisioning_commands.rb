@@ -64,6 +64,10 @@ module MooMoo
       #  * <tt>:term</tt> - number of years to renew for
       #  * <tt>:current_expiration_year</tt> - current expiration year in YYYY format
       def renew_domain(attribs)
+        Args.new(attribs) do |c|
+          c.requires :domain, :term, :current_expiration_year
+        end
+
         try_opensrs do
           cmd = Command.new('renew', 'domain', {
             :domain => attribs[:domain], 
@@ -118,6 +122,11 @@ module MooMoo
       #  * <tt>:term</tt> - number of years to register the domain for
       #  * <tt>:options</tt> - additional attributes to set
       def register_domain(attribs)
+        Args.new(attribs) do |c|
+          c.requires :domain, :contacts, :nameservers
+          c.optionals :term, :options
+        end
+
         try_opensrs do
           attribs[:term] = 1 unless attribs[:term]
           nameservers = format_nameservers(attribs[:nameservers])

@@ -150,6 +150,18 @@ module MooMoo
       describe "#renew_domain" do
         use_vcr_cassette "provisioning/renew_domain"
 
+        it "requires a domain", :wip => true do
+          requires_attr(:domain) { @opensrs.renew_domain(:term => 1, :current_expiration_year => 2011) }
+        end
+
+        it "requires a term", :wip => true do
+          requires_attr(:term) { @opensrs.renew_domain(:domain => 'example.com', :current_expiration_year => 2011) }
+        end
+
+        it "requires a current_expiration_year", :wip => true do
+          requires_attr(:current_expiration_year) { @opensrs.renew_domain(:domain => 'example.com', :term => 1) }
+        end
+
         it "renews the domain" do
           result = @opensrs.renew_domain(
             :domain => "example.com", 
@@ -173,6 +185,18 @@ module MooMoo
       end
 
       describe "#register" do
+        it "requires a domain", :wip => true do
+          requires_attr(:domain) { @opensrs.register_domain(:contacts => @contacts, :nameservers => ['ns1.blah.com']) }
+        end
+
+        it "requires a contacts", :wip => true do
+          requires_attr(:contacts) { @opensrs.register_domain(:domain => 'example.com', :nameservers => []) }
+        end
+
+        it "requires a nameservers", :wip => true do
+          requires_attr(:nameservers) { @opensrs.register_domain(:domain => 'example.com', :contacts => @contacts) }
+        end
+
         it "registers a domain" do
           VCR.use_cassette("provisioning/register_domain") do
             res = @opensrs.register_domain(

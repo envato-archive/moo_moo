@@ -11,6 +11,11 @@ module MooMoo
       # ==== Optional
       #  * <tt>:cookie</tt> - cookie for domain
       def create_nameserver(attribs, cookie = nil)
+        Args.new(attribs) do |c|
+          c.requires :name, :ip, :domain
+          c.optionals :cookie
+        end
+
         try_opensrs do
           cmd = Command.new('create', 'nameserver', {
             "name" => attribs[:name], 
@@ -33,6 +38,11 @@ module MooMoo
       # ==== Optional
       #  * <tt>:cookie</tt> - cookie for domain
       def delete_nameserver(attribs, cookie = nil)
+        Args.new(attribs) do |c|
+          c.requires :name, :ip, :domain
+          c.optionals :cookie
+        end
+
         try_opensrs do
           cmd = Command.new('delete', 'nameserver', {
             "name" => attribs[:name], 
@@ -66,6 +76,10 @@ module MooMoo
       #  * <tt>:new_name</tt> - new name for the nameserver
       #  * <tt>:domain</tt> - domain profile the nameserver was created for
       def modify_nameserver(attribs)
+        Args.new(attribs) do |c|
+          c.requires :name, :ip, :new_name, :domain
+        end
+
         try_opensrs do
           cmd = Command.new('modify', 'nameserver', {
             "name" => attribs[:name], 

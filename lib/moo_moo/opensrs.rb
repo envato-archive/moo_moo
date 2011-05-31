@@ -1,4 +1,6 @@
 module MooMoo
+  require 'moo_moo/opensrs/args'
+
   autoload :Command, 'moo_moo/opensrs/command'
   autoload :OpenSRSException, 'moo_moo/opensrs/opensrsexception'
   autoload :Utils, 'moo_moo/opensrs/utils'
