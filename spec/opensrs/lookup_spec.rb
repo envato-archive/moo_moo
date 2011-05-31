@@ -54,29 +54,45 @@ module MooMoo
       end
 
       describe "#get domain" do
-        use_vcr_cassette "lookup/get_domain"
-
         it "returns all the info" do
-          res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
-          result = @opensrs.get_domain(@registered_domain, res.result['cookie']).result
-          result['auto_renew'].to_i.should == 1
-          result['contact_set']['admin']['org_name'].should == "Example Inc."
-          result['nameserver_list']['0']['name'].should == "ns2.systemdns.com"
+          VCR.use_cassette("lookup/get_domain") do
+            res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+            result = @opensrs.get_domain(@registered_domain, res.result['cookie']).result
+            result['auto_renew'].to_i.should == 1
+            result['contact_set']['admin']['org_name'].should == "Example Inc."
+            result['nameserver_list']['0']['name'].should == "ns2.systemdns.com"
+          end
         end
       end
 
       describe "#get_domains_contacts" do
-        use_vcr_cassette "lookup/get_domains_contacts"
-
         it "returns the domain's contacts" do
-          result = @opensrs.get_domains_contacts(@registered_domain).result
-          result[@registered_domain]['contact_set']['owner']['address2'].should == "Suite 500"
-          result[@registered_domain]['contact_set']['billing']['org_name'].should == "Example Inc."
+          VCR.use_cassette("lookup/get_domains_contacts") do
+            result = @opensrs.get_domains_contacts(@registered_domain).result
+            result[@registered_domain]['contact_set']['owner']['address2'].should == "Suite 500"
+            result[@registered_domain]['contact_set']['billing']['org_name'].should == "Example Inc."
+          end
+        end
+
+        it "fails for a domain that is not in the registry" do
+          VCR.use_cassette("lookup/get_domains_contacts_fail") do
+            res = @opensrs.get_domains_contacts('example.com')
+            res.success?.should be_true
+            res.result['example.com']['error'].should match(/Domain does not belong to the reseller/i)
+          end
         end
       end
 
       describe "#get_domains_by_expiredate" do
         use_vcr_cassette "lookup/get_domains_by_expiredate"
+
+        it "requires a start date", :wip => true do
+          requires_attr(:start_date) { @opensrs.get_domains_by_expiredate(:end_date => Date.parse('2011-04-21')) }
+        end
+
+        it "requires an end date", :wip => true do
+          requires_attr(:end_date) { @opensrs.get_domains_by_expiredate(:start_date => Date.parse('2011-04-21')) }
+        end
 
         it "returns domains within an expiration range" do
           result = @opensrs.get_domains_by_expiredate(

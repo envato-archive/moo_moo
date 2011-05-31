@@ -17,6 +17,18 @@ module MooMoo
       describe "#create_nameserver" do
         use_vcr_cassette "nameserver/create"
 
+        it "requires a name", :wip => true do
+          requires_attr(:name) { @opensrs.create_nameserver(:ip => '123.123.123.123', :domain => 'example.com') }
+        end
+
+        it "requires a ip", :wip => true do
+          requires_attr(:ip) { @opensrs.create_nameserver(:name => 'blah', :domain => 'example.com') }
+        end
+
+        it "requires a domain", :wip => true do
+          requires_attr(:domain) { @opensrs.create_nameserver(:name => 'blah', :ip => '123.123.123.123') }
+        end
+
         it "creates the nameserver" do
           res = @opensrs.create_nameserver(
             :name => "ns1.#{@registered_domain}", 
@@ -28,6 +40,18 @@ module MooMoo
 
       describe "#delete_nameserver" do
         use_vcr_cassette "nameserver/delete"
+
+        it "requires a name", :wip => true do
+          requires_attr(:name) { @opensrs.delete_nameserver(:ip => '123.123.123.123', :domain => 'example.com') }
+        end
+
+        it "requires a ip", :wip => true do
+          requires_attr(:ip) { @opensrs.delete_nameserver(:name => 'blah', :domain => 'example.com') }
+        end
+
+        it "requires a domain", :wip => true do
+          requires_attr(:domain) { @opensrs.delete_nameserver(:name => 'blah', :ip => '123.123.123.123') }
+        end
 
         it "deletes the nameserver" do
           res = @opensrs.delete_nameserver(
@@ -52,6 +76,38 @@ module MooMoo
 
       describe "#modify_nameserver" do
         use_vcr_cassette "nameserver/modify"
+
+        it "requires a name", :wip => true do
+          requires_attr(:name) { @opensrs.modify_nameserver(
+            :ip => '123.123.123.123',
+            :new_name => 'blah',
+            :domain => 'example.com') 
+          }
+        end
+
+        it "requires a ip", :wip => true do
+          requires_attr(:ip) { @opensrs.modify_nameserver(
+            :name => 'blah',
+            :new_name => 'blah',
+            :domain => 'example.com') 
+          }
+        end
+
+        it "requires a domain", :wip => true do
+          requires_attr(:domain) { @opensrs.modify_nameserver(
+            :name => 'blah',
+            :ip => '123.123.123.123',
+            :new_name => 'blah')
+          }
+        end
+
+        it "requires a new_name", :wip => true do
+          requires_attr(:new_name) { @opensrs.modify_nameserver(
+            :name => 'blah',
+            :ip => '123.123.123.123',
+            :domain => 'example.com') 
+          }
+        end
 
         it "updates the name of the nameserver" do
           res = @opensrs.modify_nameserver(

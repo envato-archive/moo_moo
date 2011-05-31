@@ -3,11 +3,15 @@ require 'moo_moo'
 require 'vcr'
 require 'extlib'
 
-VCR.config do |c|
-    c.cassette_library_dir = 'spec/vcr_cassettes'
-    c.stub_with :fakeweb
+def requires_attr(attr, &block)
+  expect { block.call }.to raise_error(MooMoo::MooMooArgumentError, /Missing required parameter: #{attr}/i)
+end
 
-    c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:uri]}
+VCR.config do |c|
+  c.cassette_library_dir = 'spec/vcr_cassettes'
+  c.stub_with :fakeweb
+
+  c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:uri]}
 end
 
 def live_test?

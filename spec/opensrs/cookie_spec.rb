@@ -15,12 +15,20 @@ module MooMoo
 
     describe "CookieCommands" do
       describe "#set_cookie" do
-        use_vcr_cassette "cookie/set_cookie"
-
         it "sets the cookie" do
-          res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
-          res.success?.should be_true
-          res.result['cookie'].should == "0000000000000000:000000:00000"
+          VCR.use_cassette("cookie/set_cookie") do
+            res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+            res.success?.should be_true
+            res.result['cookie'].should == "0000000000000000:000000:00000"
+          end
+        end
+
+        it "fails to set the cookie" do
+          VCR.use_cassette("cookie/set_cookie_fail") do
+            res = @opensrs.set_cookie(@opensrs_user, 'password', 'example.com')
+            res.success?.should be_false
+            res.error_code.should == 415
+          end
         end
       end
 
