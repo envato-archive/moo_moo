@@ -42,8 +42,18 @@ module MooMoo
     #
     # === Required
     #  * <tt>:command</tt> - command to run
-    def run_command(command)
-      command.run(@host, @key, @user, @port)
+    #  * <tt>:command</tt> - command to run
+    #
+    # === Optional
+    #  * <tt>:params</tt> - parameters for the command
+    #  * <tt>:cookie</tt> - cookie, if the command requires it
+    def run_command(action, object, params = {}, cookie = nil)
+      cmd = Command.new(action, object, params, cookie)
+
+      try_opensrs do
+        result = cmd.run(@host, @key, @user, @port)
+        Response.new(result, params[:key])
+      end
     end
 
     private

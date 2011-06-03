@@ -6,12 +6,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:order_id</tt> - ID of the order
       def cancel_order(order_id)
-        try_opensrs do
-          cmd = Command.new('cancel_order', 'trust_service', {"order_id" => order_id})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :cancel_order, :trust_service, {
+          :order_id => order_id,
+          :key => 'attributes'
+        }
       end
 
       # Cancels pending or declined orders
@@ -19,12 +17,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:to_date</tt> - date before which to cancel orders
       def cancel_pending_orders(to_date)
-        try_opensrs do
-          cmd = Command.new('cancel_pending_orders', 'order', {"to_date" => to_date})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :cancel_pending_orders, :order, {
+          :to_date => to_date,
+          :key => 'attributes'
+        }
       end
 
       # Changes information associated with a domain
@@ -35,13 +31,10 @@ module MooMoo
       #
       # ==== Optional
       #  * <tt>:cookie</tt> - cookie for the domain
-      def modify(type, params, cookie = nil)
-        try_opensrs do
-          cmd = Command.new('modify', 'domain', {"data" => type}.merge(params), cookie)
-          result = run_command(cmd)
+      def modify(params)
+        cookie = params.delete :cookie
 
-          Response.new(result)
-        end
+        run_command :modify, :domain, params, cookie
       end
 
       # Processes or cancels a pending order
@@ -49,12 +42,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:order_id</tt> - ID of the pending order to process
       def process_pending(order_id)
-        try_opensrs do
-          cmd = Command.new('process_pending', 'domain', {"order_id" => order_id})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :process_pending, :domain, {
+          :order_id => order_id,
+          :key => 'attributes'
+        }
       end
 
       # Renews a domain name
@@ -68,17 +59,10 @@ module MooMoo
           c.requires :domain, :term, :current_expiration_year
         end
 
-        try_opensrs do
-          cmd = Command.new('renew', 'domain', {
-            :domain => attribs[:domain], 
-            "period" => attribs[:term], 
-            "currentexpirationyear" => attribs[:current_expiration_year], 
-            "handle" => "process"
-          })
-          result = run_command(cmd)
+        attribs[:handle] = 'process' unless attribs[:handle]
+        attribs[:key] = 'attributes'
 
-          Response.new(result, 'attributes')
-        end
+        run_command :renew, :domain, attribs
       end
 
       # Removes the domain at the registry
@@ -86,13 +70,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain name to remove
       #  * <tt>:reseller</tt> - username of the reseller
-      def revoke(domain, reseller)
-        try_opensrs do
-          cmd = Command.new('revoke', 'domain', {"domain" => domain, "reseller" => reseller})
-          result = run_command(cmd)
+      def revoke(params)
+        params[:key] = 'attributes'
 
-          Response.new(result, 'attributes')
-        end
+        run_command :revoke, :domain, params
       end
 
       # Submits a domain contact information update
@@ -101,15 +82,13 @@ module MooMoo
       #  * <tt>:domain</tt> - domain name to update the contacts of
       #  * <tt>:contacts</tt> - contact set with updated values
       #  * <tt>:types</tt> - list of contact types that are to be updated
-      def update_contacts(domain, contacts, types)
-        try_opensrs do
-          types = index_array(types)
-          cmd = Command.new('update_contacts', 'domain', {"domain" => domain, "contact_set" => contacts, "types" => types})
-          result = run_command(cmd)
+      def update_contacts(params)
+        types = index_array(params[:types])
 
-          Response.new(result, 'attributes')
-        end
-      end
+        params[:contact_set] = params.delete :contacts
+        params[:key] = 'attributes'
+
+        run_command :update_contacts, :domain, params      end
 
       # Submits a new registration request or transfer order
       #
@@ -127,28 +106,25 @@ module MooMoo
           c.optionals :term, :options
         end
 
-        try_opensrs do
-          attribs[:term] = 1 unless attribs[:term]
-          nameservers = format_nameservers(attribs[:nameservers])
+        attribs[:term] = 1 unless attribs[:term]
+        nameservers = format_nameservers(attribs[:nameservers])
 
-          attributes = {
-            :contact_set => attribs[:contacts],
-            :custom_nameservers => 1,
-            :custom_tech_contact => 1,
-            :domain => attribs[:domain],
-            :nameserver_list => nameservers,
-            :period => attribs[:term],
-            :reg_username => @user,
-            :reg_password => @password
-          }
+        attributes = {
+          :contact_set => attribs[:contacts],
+          :custom_nameservers => 1,
+          :custom_tech_contact => 1,
+          :domain => attribs[:domain],
+          :nameserver_list => nameservers,
+          :period => attribs[:term],
+          :reg_username => @user,
+          :reg_password => @password
+        }
 
-          attributes[:reg_type] = :new unless attribs[:options] && attribs[:options][:reg_type]
-          attributes.merge!(attribs[:options]) if attribs[:options]
+        attributes[:reg_type] = :new unless attribs[:options] && attribs[:options][:reg_type]
+        attributes.merge!(attribs[:options]) if attribs[:options]
+        attributes[:key] = 'attributes'
 
-          cmd = Command.new('sw_register', 'domain', attributes)
-
-          register(cmd)
-        end
+        res = run_command :sw_register, :domain, attributes
       end
 
       # Submits a new registration request or transfer order
@@ -160,37 +136,15 @@ module MooMoo
       # ==== Optional
       #  * <tt>:attribs</tt> - additional attributes to set
       #  * <tt>:term</tt> - number of years to register the trust service for
-      def register_trust_service(csr, contacts, attributes, term = 1)
-        try_opensrs do
+      def register_trust_service(params)
+        params[:period] = params.delete :term
+        params[:period] = 1 unless params[:period]
+        params[:reg_type] = 'new' unless params[:reg_type]
+        params[:handle] = 'process' unless params[:handle]
+        params[:contact_set] = params.delete :contacts
+        params[:key] = 'attributes'
 
-          attribs = {
-            "contact_set" => contacts,
-            "csr" => csr,
-            "period" => term,
-            "reg_type" => "new",
-            "handle" => "process",
-            #"reg_username" => @user,
-            #"reg_password" => @password
-          }
-
-          cmd = Command.new('sw_register', 'trust_service', attribs.merge(attributes))
-
-          register(cmd)
-        end
-      end
-
-      private
-
-      # Submits a new registration request or transfer order
-      #
-      # ==== Required
-      #  * <tt>:cmd</tt> - command to run
-      def register(cmd)
-        try_opensrs do
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :sw_register, :trust_service, params
       end
 
       private

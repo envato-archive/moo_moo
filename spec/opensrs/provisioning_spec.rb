@@ -10,7 +10,7 @@ module MooMoo
         "domainthatsnottaken#{Time.now.to_i}.com"
       end
 
-      @opensrs = OpenSRS.new(@opensrs_host, @opensrs_key, @opensrs_user, @opensrs_pass)
+      @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
       @registered_domain = "domainthatsnottaken1302209138.com"
       @contacts = {
             :title => "blahblah",
@@ -118,19 +118,19 @@ module MooMoo
 
         it "updates the expire action" do
           VCR.use_cassette("provisioning/modify_domain") do
-            res = @opensrs.modify('expire_action', {:domain => @registered_domain, :auto_renew => 1, :let_expire => 0})
+            res = @opensrs.modify({:type => 'expire_action', :domain => @registered_domain, :auto_renew => 1, :let_expire => 0})
             res.success?.should be_true
           end
         end
 
         it "modifies all domains linked to the profile" do
           VCR.use_cassette("provisioning/modify_all_domains") do
-            res = @opensrs.modify('expire_action', {
+            res = @opensrs.modify({
+              :type => 'expire_action',
               :affect_domains => 1, 
               :auto_renew => 0, 
-              :let_expire => 1
-            }, 
-            "0000000000000000:000000:00000")
+              :let_expire => 1,
+              :cookie => "0000000000000000:000000:00000"})
             res.success?.should == true
           end
         end
@@ -178,7 +178,7 @@ module MooMoo
         use_vcr_cassette "provisioning/revoke_domain"
 
         it "removes the domain from the registry" do
-          res = @opensrs.revoke("example.com", @opensrs_user)
+          res = @opensrs.revoke(:domain => "example.com", :reseller => MooMoo.config.user)
           res.success?.should be_true
           res.result['charge'].to_i.should == 1
         end
@@ -245,10 +245,12 @@ module MooMoo
           @contacts[:admin].delete(:url)
           @contacts[:billing].delete(:url)
           @contacts[:tech].delete(:url)
-          res = @opensrs.register_trust_service(csr, @contacts,
-                                                   { "server_type" => "apachessl",
-                                                     "product_type" => "securesite",
-                                                     "server_count" => 1}, 1)
+          res = @opensrs.register_trust_service(:csr => csr, 
+                                                :contacts => @contacts,
+                                                :server_type => 'apachessl',
+                                                :product_type => 'securesite',
+                                                :server_count => 1,
+                                                :term => 1)
           res.success?.should be_false
           res.error_code.should == 501
           res.error_msg.should match(/Permission denied/i)
@@ -259,7 +261,7 @@ module MooMoo
         use_vcr_cassette "provisioning/update_contacts"
 
         it "updates the contacts" do
-          res = @opensrs.update_contacts(@registered_domain, @contacts, ["owner", "admin", "billing", "tech"])
+          res = @opensrs.update_contacts(:domain => @registered_domain, :contacts => @contacts, :types => ["owner", "admin", "billing", "tech"])
           res.success?.should be_true
           res.result['details'][@registered_domain]['response_code'].to_i.should == 200
         end

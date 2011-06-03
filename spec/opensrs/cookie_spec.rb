@@ -9,7 +9,7 @@ module MooMoo
         "domainthatsnottaken#{Time.now.to_i}.com"
       end
 
-      @opensrs = OpenSRS.new(@opensrs_host, @opensrs_key, @opensrs_user, @opensrs_pass)
+      @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
@@ -17,7 +17,9 @@ module MooMoo
       describe "#set_cookie" do
         it "sets the cookie" do
           VCR.use_cassette("cookie/set_cookie") do
-            res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+            res = @opensrs.set_cookie(:username => MooMoo.config.user,
+                                      :password => MooMoo.config.pass,
+                                      :domain => @registered_domain)
             res.success?.should be_true
             res.result['cookie'].should == "0000000000000000:000000:00000"
           end
@@ -25,7 +27,9 @@ module MooMoo
 
         it "fails to set the cookie" do
           VCR.use_cassette("cookie/set_cookie_fail") do
-            res = @opensrs.set_cookie(@opensrs_user, 'password', 'example.com')
+            res = @opensrs.set_cookie(:username => MooMoo.config.user,
+                                      :password => 'password',
+                                      :domain => 'example.com')
             res.success?.should be_false
             res.error_code.should == 415
           end
@@ -36,7 +40,9 @@ module MooMoo
         use_vcr_cassette "cookie/delete_cookie"
 
         it "destroys the cookie" do
-          res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+          res = @opensrs.set_cookie(:username => MooMoo.config.user,
+                                    :password => MooMoo.config.pass,
+                                    :domain => @registered_domain)
           res = @opensrs.delete_cookie(res.result['cookie'])
           res.success?.should be_true
         end
@@ -46,7 +52,9 @@ module MooMoo
         use_vcr_cassette "cookie/update_cookie"
 
         it "updates the cookie's domain" do
-          res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
+          res = @opensrs.set_cookie(:username => MooMoo.config.user,
+                                    :password => MooMoo.config.pass,
+                                    :domain => @registered_domain)
           res = @opensrs.update_cookie(
             :old_domain => @registered_domain, 
             :new_domain => @registered_domain, 

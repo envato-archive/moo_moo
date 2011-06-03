@@ -7,17 +7,13 @@ module MooMoo
       #  * <tt>:username</tt> - username of the registrant
       #  * <tt>:password</tt> - password of the registrant
       #  * <tt>:domain</tt> - domain to set the cookie for
-      def set_cookie(username, password, domain)
-        try_opensrs do
-          cmd = Command.new('set', 'cookie', {
-            "reg_username" => username, 
-            "reg_password" => password, 
-            "domain" => domain
-            })
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+      def set_cookie(params)
+        run_command :set, :cookie, {
+          :reg_username => params[:username],
+          :reg_password => params[:password],
+          :domain => params[:domain],
+          :key => 'attributes'
+        }
       end
 
       # Deletes a cookie that was previously set
@@ -25,12 +21,9 @@ module MooMoo
       # ==== Required
       #  * <tt>:cookie</tt> - cookie to delete
       def delete_cookie(cookie)
-        try_opensrs do
-          cmd = Command.new('delete', 'cookie', {"cookie" => cookie}, cookie)
-          result = run_command(cmd)
-
-          Response.new(result)
-        end
+        run_command :delete, :cookie, {
+          :cookie => cookie
+        }, cookie
       end
 
       # Updates a cookie to be valid for a different domain
@@ -40,28 +33,19 @@ module MooMoo
       #  * <tt>:new_domain</tt> - domain to set the cookie for
       #  * <tt>:cookie</tt> - cookie to update
       def update_cookie(attribs)
-        try_opensrs do
-          cmd = Command.new('update', 'cookie', {
-            "reg_username" => @opensrs_user, 
-            "reg_password" => "", 
-            "domain" => attribs[:old_domain], 
-            "domain_new" => attribs[:new_domain]
-            }, attribs[:cookie])
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :update, :cookie, {
+          :reg_username => MooMoo.config.user,
+          :reg_password => '',
+          :domain => attribs[:old_domain],
+          :domain_new => attribs[:new_domain],
+          :key => 'attributes'
+        }, attribs[:cookie]
       end
 
       # Cleanly terminates the connection
       #
       def quit_session
-        try_opensrs do
-          cmd = Command.new('quit', 'session')
-          result = run_command(cmd)
-
-          Response.new(result)
-        end
+        run_command :quit, :session
       end
     end
   end

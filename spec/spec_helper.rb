@@ -3,6 +3,28 @@ require 'moo_moo'
 require 'vcr'
 require 'extlib'
 
+
+module MooMoo
+  autoload :Config, 'moo_moo/config'
+
+  class << self
+    attr_accessor :config
+  end
+
+  def self.configure
+    yield config if block_given?
+    config
+  end
+
+  self.config = Config.new
+end
+MooMoo.configure do |config|
+  config.host = ENV['OPENSRS_TEST_URL']
+  config.key = ENV['OPENSRS_TEST_KEY']
+  config.user = ENV['OPENSRS_TEST_USER']
+  config.pass = ENV['OPENSRS_TEST_PASS']
+end
+
 def requires_attr(attr, &block)
   expect { block.call }.to raise_error(MooMoo::MooMooArgumentError, /Missing required parameter: #{attr}/i)
 end
@@ -22,15 +44,21 @@ RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
   c.before(:each) do
     if live_test?
-      @opensrs_host = ENV['OPENSRS_TEST_URL']
-      @opensrs_key = ENV['OPENSRS_TEST_KEY']
-      @opensrs_user = ENV['OPENSRS_TEST_USER']
-      @opensrs_pass = ENV['OPENSRS_TEST_PASS']
+      MooMoo.configure do |config|
+        config.host = ENV['OPENSRS_TEST_URL']
+        config.key = ENV['OPENSRS_TEST_KEY']
+        config.user = ENV['OPENSRS_TEST_USER']
+        config.pass = ENV['OPENSRS_TEST_PASS']
+      end
     else
-      @opensrs_host = 'server.com'
-      @opensrs_key = '123key'
-      @opensrs_user = 'opensrs_user'
-      @opensrs_pass = 'password'
+      MooMoo.configure do |config|
+        config.host = 'server.com'
+        config.key = '123key'
+        config.user = 'opensrs_user'
+        config.pass = 'password'
+      end
     end
+
+#    @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
   end
 end

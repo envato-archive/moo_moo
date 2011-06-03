@@ -6,34 +6,26 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to check ownership of
       def belongs_to_rsp?(domain)
-        try_opensrs do
-          cmd = Command.new('belongs_to_rsp', 'domain', {"domain" => domain})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :belongs_to_rsp, :domain, {
+          :domain => domain,
+          :key => 'attributes'
+        }
       end
 
       # Returns the balance of the reseller's account
       #
       def get_balance
-        try_opensrs do
-          cmd = Command.new('get_balance', 'balance')
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_balance, :balance, {
+          :key => 'attributes'
+        }
       end
 
       # Lists domains that have been deleted due to expiration or request
       #
       def get_deleted_domains
-        try_opensrs do
-          cmd = Command.new('get_deleted_domains', 'domain')
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_deleted_domains, :domain, {
+          :key => 'attributes'
+        }
       end
 
       # Queries various types of data associated with a domain
@@ -44,13 +36,13 @@ module MooMoo
       #
       # ==== Optional
       #  * <tt>:type</tt> - type of query to perform
-      def get_domain(domain, cookie, type = "all_info")
-        try_opensrs do
-          cmd = Command.new('get', 'domain', {"type" => "all_info"}, cookie)
-          result = run_command(cmd)
+      def get_domain(params)
+        params[:type] = 'all_info' unless params[:type]
 
-          Response.new(result, 'attributes')
-        end
+        run_command :get, :domain, {
+          :type => params[:type],
+          :key => 'attributes'
+        }, params[:cookie]
       end
 
       # Queries contact information for a list of domains
@@ -58,17 +50,15 @@ module MooMoo
       # ==== Required
       #  * <tt>:domains</tt> - domains to get contact information for
       def get_domains_contacts(*domains)
-        try_opensrs do
-          domain_list = {}
-          domains.each_with_index do |domain, index|
-            domain_list[index] = domain
-          end
-
-          cmd = Command.new('get_domains_contacts', 'domain', {"domain_list" => domain_list})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
+        domain_list = {}
+        domains.each_with_index do |domain, index|
+          domain_list[index] = domain
         end
+
+        run_command :get_domains_contacts, :domain, {
+          :domain_list => domain_list,
+          :key => 'attributes'
+        }
       end
 
       # Queries the domains expiring within the specified date range
@@ -81,15 +71,11 @@ module MooMoo
           c.requires :start_date, :end_date
         end
 
-        try_opensrs do
-          cmd = Command.new('get_domains_by_expiredate', 'domain', {
-            "exp_from" => attribs[:start_date].to_s, 
-            "exp_to" => attribs[:end_date].to_s
-            })
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_domains_by_expiredate, :domain, {
+          :exp_from => attribs[:start_date].to_s,
+          :exp_to => attribs[:end_date].to_s,
+          :key => 'attributes'
+        }
       end
 
       # Retrieves the domain notes that detail the history of the domain (renewals, transfers, etc.)
@@ -97,12 +83,11 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to get the notes for
       def get_notes_for_domain(domain)
-        try_opensrs do
-          cmd = Command.new('get_notes', 'domain', {"domain" => domain, "type" => "domain"})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_notes, :domain, {
+          :domain => domain,
+          :type => 'domain',
+          :key => 'attributes'
+        }
       end
 
       # Retrieves the domain notes based on an order
@@ -110,13 +95,13 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to get the notes for
       #  * <tt>:order_id</tt> - ID of the order
-      def get_notes_for_order(domain, order_id)
-        try_opensrs do
-          cmd = Command.new('get_notes', 'domain', {"domain" => domain, "order_id" => order_id, "type" => "order"})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+      def get_notes_for_order(params)
+        run_command :get_notes, :domain, {
+          :domain => params[:domain],
+          :order_id => params[:order_id],
+          :type => 'order',
+          :key => 'attributes'
+        }
       end
 
       # Retrieves the domain notes based on a transfer ID
@@ -124,13 +109,13 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to get the notes for
       #  * <tt>:transfer_id</tt> - ID of the transfer
-      def get_notes_for_transfer(domain, transfer_id)
-        try_opensrs do
-          cmd = Command.new('get_notes', 'domain', {"domain" => domain, "transfer_id" => transfer_id, "type" => "transfer"})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+      def get_notes_for_transfer(params)
+        run_command :get_notes, :domain, {
+          :domain => params[:domain],
+          :transfer_id => params[:transfer_id],
+          :type => 'transfer',
+          :key => 'attributes'
+        }
       end
 
       # Queries all information related to an order
@@ -138,12 +123,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:order_id</tt> - ID of the order
       def get_order_info(order_id)
-        try_opensrs do
-          cmd = Command.new('get_order_info', 'domain', {"order_id" => order_id})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_order_info, :domain, {
+          :order_id => order_id,
+          :key => 'attributes'
+        }
       end
 
       # Retrieves information about orders placed for a specific domain
@@ -151,12 +134,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to get orders for
       def get_orders_by_domain(domain)
-        try_opensrs do
-          cmd = Command.new('get_orders_by_domain', 'domain', {"domain" => domain})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_orders_by_domain, :domain, {
+          :domain => domain,
+          :key => 'attributes'
+        }
       end
 
       # Queries the price of a domain
@@ -164,12 +145,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to query the price of
       def get_price(domain)
-        try_opensrs do
-          cmd = Command.new('get_price', 'domain', {"domain" => domain})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_price, :domain, {
+          :domain => domain,
+          :key => 'attributes'
+        }
       end
 
       # Queries the properties of the specified Trust Service product
@@ -177,12 +156,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:product_id</tt> - ID of the product
       def get_product_info(product_id)
-        try_opensrs do
-          cmd = Command.new('get_product_info', 'trust_service', {"product_id" => product_id})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get_product_info, :trust_service, {
+          :product_id => product_id,
+          :key => 'attributes'
+        }
       end
 
       # Determines the availability of a domain
@@ -190,12 +167,10 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain to check availability of
       def lookup_domain(domain)
-        try_opensrs do
-          cmd = Command.new('lookup', 'domain', {"domain" => domain})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :lookup, :domain, {
+          :domain => domain,
+          :key => 'attributes'
+        }
       end
 
       # Provides suggestions for a domain name for the specified TLDs
@@ -204,17 +179,16 @@ module MooMoo
       #  * <tt>:domain</tt> - domain
       #  * <tt>:tlds</tt> - list of TLDs to make suggestions with
       def name_suggest(domain, tlds)
-        try_opensrs do
-          tlds_indexed = {}
-          tlds.each_with_index do |tld, index|
-            tlds_indexed[index] = tld
-          end
-
-          cmd = Command.new('name_suggest', 'domain', {"searchstring" => domain, "tlds" => tlds_indexed})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
+        tlds_indexed = {}
+        tlds.each_with_index do |tld, index|
+          tlds_indexed[index] = tld
         end
+
+        run_command :name_suggest, :domain, {
+          :searchstring => domain,
+          :tlds => tlds_indexed,
+          :key => 'attributes'
+        }
       end
     end
   end

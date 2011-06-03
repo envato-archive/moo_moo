@@ -10,22 +10,14 @@ module MooMoo
       #
       # ==== Optional
       #  * <tt>:cookie</tt> - cookie for domain
-      def create_nameserver(attribs, cookie = nil)
+      def create_nameserver(attribs)
         Args.new(attribs) do |c|
           c.requires :name, :ip, :domain
           c.optionals :cookie
         end
 
-        try_opensrs do
-          cmd = Command.new('create', 'nameserver', {
-            "name" => attribs[:name], 
-            "ipaddress" => attribs[:ip], 
-            "domain" => attribs[:domain]
-            }, cookie)
-          result = run_command(cmd)
-
-          Response.new(result)
-        end
+        cookie = attribs.delete :cookie
+        run_command :create, :nameserver, attribs, cookie
       end
 
       # Deletes a nameserver
@@ -43,16 +35,8 @@ module MooMoo
           c.optionals :cookie
         end
 
-        try_opensrs do
-          cmd = Command.new('delete', 'nameserver', {
-            "name" => attribs[:name], 
-            "ipaddress" => attribs[:ip], 
-            "domain" => attribs[:domain]
-            }, cookie)
-          result = run_command(cmd)
-
-          Response.new(result)
-        end
+        cookie = attribs.delete :cookie
+        run_command :delete, :nameserver, attribs, cookie
       end
 
       # Queries nameservers that exist for the given domain
@@ -60,12 +44,11 @@ module MooMoo
       # ==== Required
       #  * <tt>:domain</tt> - domain profile to query
       def get_nameserver(domain)
-        try_opensrs do
-          cmd = Command.new('get', 'nameserver', {"name" => "all", "domain" => domain})
-          result = run_command(cmd)
-
-          Response.new(result, 'attributes')
-        end
+        run_command :get, :nameserver, {
+          :name => 'all',
+          :domain => domain,
+          :key => 'attributes'
+        }
       end
 
       # Renames a nameserver
@@ -80,17 +63,7 @@ module MooMoo
           c.requires :name, :ip, :new_name, :domain
         end
 
-        try_opensrs do
-          cmd = Command.new('modify', 'nameserver', {
-            "name" => attribs[:name], 
-            "ipaddress" => attribs[:ip], 
-            "new_name" => attribs[:new_name], 
-            "domain" => attribs[:domain]
-            })
-          result = run_command(cmd)
-
-          Response.new(result)
-        end
+        run_command :modify, :nameserver, attribs
       end
     end
   end
