@@ -10,7 +10,7 @@ module MooMoo
         "domainthatsnottaken#{Time.now.to_i}.com"
       end
 
-      @opensrs = OpenSRS.new(@opensrs_host, @opensrs_key, @opensrs_user, @opensrs_pass)
+      @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
@@ -56,8 +56,10 @@ module MooMoo
       describe "#get domain" do
         it "returns all the info" do
           VCR.use_cassette("lookup/get_domain") do
-            res = @opensrs.set_cookie(@opensrs_user, @opensrs_pass, @registered_domain)
-            result = @opensrs.get_domain(@registered_domain, res.result['cookie']).result
+            res = @opensrs.set_cookie(:username => MooMoo.config.user,
+                                      :password => MooMoo.config.pass,
+                                      :domain => @registered_domain)
+            result = @opensrs.get_domain(:cookie => res.result['cookie']).result
             result['auto_renew'].to_i.should == 1
             result['contact_set']['admin']['org_name'].should == "Example Inc."
             result['nameserver_list']['0']['name'].should == "ns2.systemdns.com"
@@ -118,7 +120,7 @@ module MooMoo
 
         it "returns the notes for an order" do
           VCR.use_cassette("lookup/get_notes_for_order") do
-            result = @opensrs.get_notes_for_order(@registered_domain, 1855625).result
+            result = @opensrs.get_notes_for_order(:domain => @registered_domain, :order_id => 1855625).result
             result['page'].to_i.should == 1
             result['notes'].should be_a_kind_of(Hash)
             result['notes'].should be_empty
@@ -127,7 +129,7 @@ module MooMoo
 
         it "returns the notes for a transfer" do
           VCR.use_cassette("lookup/get_notes_for_transfer") do
-            res = @opensrs.get_notes_for_transfer("testingdomain.com", 37021)
+            res = @opensrs.get_notes_for_transfer(:domain => "testingdomain.com", :transfer_id => 37021)
             res.success?.should be_true
           end
         end

@@ -9,7 +9,7 @@ module MooMoo
         "domainthatsnottaken#{Time.now.to_i}.com"
       end
 
-      @opensrs = OpenSRS.new(@opensrs_host, @opensrs_key, @opensrs_user, @opensrs_pass)
+      @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
       @registered_domain = "domainthatsnottaken1302209138.com"
     end
 
