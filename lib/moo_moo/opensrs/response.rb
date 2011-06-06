@@ -31,12 +31,6 @@ module MooMoo
         @hash['response_code'].to_i
       end
 
-      # Returns the response text
-      #
-      def response_text
-        @response_text
-      end
-
       # Returns the result hash
       #
       def result

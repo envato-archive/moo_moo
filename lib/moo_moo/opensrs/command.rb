@@ -142,26 +142,6 @@ module MooMoo
       doc.to_s
     end
 
-    # Parses a text response into a collection of returned parameters
-    #
-    # ==== Required
-    #  * <tt>data</tt> - data of the response
-    # hash containing all of the data.
-    def parse_text_response(data)
-      lines = data.split(/[\r\n]+/).delete_if { |line|
-        (line =~ /^\s*\;/) || (line !~ /=/) || (line =~ /^\s*\-\s*Param\s+\@/)
-      }
-
-      # generate the hash of returned parameters
-      returned_parameters = {}
-      lines.each { |line|
-        key, value = line.split('=')
-        key.downcase!
-        returned_parameters.merge!({key => value})
-      }
-      returned_parameters
-    end
-
     # Parses an XML response from the OpenSRS registry and generates a
     # hash containing all of the data. Elements with child elements
     # are converted into hashes themselves, with the :element_text entry
