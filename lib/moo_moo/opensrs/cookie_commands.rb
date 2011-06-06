@@ -1,5 +1,5 @@
 module MooMoo
-  class OpenSRS
+  module OpenSRS
     module CookieCommands
       # Creates a cookie for a domain
       #

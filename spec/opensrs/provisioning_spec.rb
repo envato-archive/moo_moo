@@ -10,7 +10,7 @@ module MooMoo
         "domainthatsnottaken#{Time.now.to_i}.com"
       end
 
-      @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
+      @opensrs = OpenSRS::Base.new
       @registered_domain = "domainthatsnottaken1302209138.com"
       @contacts = {
             :title => "blahblah",

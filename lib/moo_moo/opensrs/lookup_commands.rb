@@ -1,5 +1,5 @@
 module MooMoo
-  class OpenSRS
+  module OpenSRS
     module LookupCommands
       # Determines whether a domain belongs to the reseller
       #
