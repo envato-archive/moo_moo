@@ -20,22 +20,24 @@ module MooMoo
     include CookieCommands
     include Utils
 
+    attr_reader :host, :key, :user, :pass, :port
+
     # Constructor
     #
     # === Required
     #  * <tt>:host</tt> - host of the OpenSRS server
     #  * <tt>:key</tt> - private key
     #  * <tt>:user</tt> - username of the reseller
-    #  * <tt>:password</tt> - password of the rseller
+    #  * <tt>:pass</tt> - password of the rseller
     #
     # === Optional
     #  * <tt>:port</tt> - port to connect on
-    def initialize(host, key, user, password, port = 55443)
-      @host = host
-      @key = key
-      @user = user
-      @password = password
-      @port = port
+    def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
+      @host = host || MooMoo.config.host
+      @key = key || MooMoo.config.key
+      @user = user || MooMoo.config.user
+      @pass = pass || MooMoo.config.pass
+      @port = port || MooMoo.config.port
     end
 
     # Runs a command
