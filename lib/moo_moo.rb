@@ -1,4 +1,5 @@
 module MooMoo
+  autoload :Version, 'moo_moo/version'
   autoload :Config, 'moo_moo/config'
 
   class << self
