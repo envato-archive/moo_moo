@@ -1,5 +1,5 @@
 module MooMoo
-  class OpenSRS
+  module OpenSRS
     module ProvisioningCommands
       # Cancels a Trust Service order
       #

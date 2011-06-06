@@ -21,7 +21,7 @@ module MooMoo
           config.pass = 'secret2'
         end
 
-        opensrs = OpenSRS.new
+        opensrs = OpenSRS::Base.new
 
         opensrs.host.should == 'host.com'
         opensrs.key.should == 'secret'

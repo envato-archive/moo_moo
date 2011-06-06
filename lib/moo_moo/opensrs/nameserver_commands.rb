@@ -1,5 +1,5 @@
 module MooMoo
-  class OpenSRS
+  module OpenSRS
     module NameserverCommands
       # Creates a nameserver
       #

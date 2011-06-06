@@ -1,5 +1,5 @@
 module MooMoo
-  class OpenSRS
+  module OpenSRS
     module TransferCommands
       # Cancels a transfer that is pending owner approval
       #
