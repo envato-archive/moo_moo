@@ -3,21 +3,6 @@ require 'moo_moo'
 require 'vcr'
 require 'extlib'
 
-
-module MooMoo
-  autoload :Config, 'moo_moo/config'
-
-  class << self
-    attr_accessor :config
-  end
-
-  def self.configure
-    yield config if block_given?
-    config
-  end
-
-  self.config = Config.new
-end
 MooMoo.configure do |config|
   config.host = ENV['OPENSRS_TEST_URL']
   config.key = ENV['OPENSRS_TEST_KEY']
@@ -58,7 +43,15 @@ RSpec.configure do |c|
         config.pass = 'password'
       end
     end
+  end
+end
 
-#    @opensrs = OpenSRS.new(MooMoo.config.host, MooMoo.config.key, MooMoo.config.user, MooMoo.config.pass)
+RSpec::Matchers.define :have_attr_accessor do |attribute|
+  match do |object|
+    object.respond_to?(attribute) && object.respond_to?("#{attribute}=")
+  end
+
+  description do
+    "have attr_writer :#{attribute}"
   end
 end
