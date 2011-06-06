@@ -83,12 +83,13 @@ module MooMoo
       #  * <tt>:contacts</tt> - contact set with updated values
       #  * <tt>:types</tt> - list of contact types that are to be updated
       def update_contacts(params)
-        types = index_array(params[:types])
+        params[:types] = index_array(params[:types])
 
         params[:contact_set] = params.delete :contacts
         params[:key] = 'attributes'
 
-        run_command :update_contacts, :domain, params      end
+        run_command :update_contacts, :domain, params
+      end
 
       # Submits a new registration request or transfer order
       #
