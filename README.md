@@ -15,7 +15,20 @@ Usage
 
 First, create an opensrs object from which all commands are called:
 
-    opensrs = MooMoo::OpenSRS.new("horizon.opensrs.net", "<YOUR_KEY>", "<YOUR_RESELLER_USER>", "<YOUR_PASSWORD>")
+    opensrs = MooMoo::OpenSRS::Base.new("horizon.opensrs.net", "<YOUR_KEY>", "<YOUR_RESELLER_USER>", "<YOUR_PASSWORD>")
+
+Or configure MooMoo and you can initialize it without any arguments:
+
+    MooMoo.configure do |config|
+      config.host = "horizon.opensrs.net"
+      config.key = "<YOUR_KEY>"
+      config.user = "<YOUR_RESELLER_USER>"
+      config.pass = "<YOUR_PASSWORD>"
+    end
+
+    ...
+
+    opensrs = MooMoo::OpenSRS::Base.new
 
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
@@ -27,7 +40,7 @@ Here's how to check the availability of a domain name:
     true
     taken
 
-You can see that each method returns an OpenSRSResponse object which you can
+Each method returns an OpenSRSResponse object which you can
 use to determine if the call was successful and retrieve the response code
 and/or error message. The result variable is a hash that contains all of the
 relevant data returned by the call.
