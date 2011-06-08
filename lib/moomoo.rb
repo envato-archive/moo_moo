@@ -1,1 +1,0 @@
-require 'moo_moo'
