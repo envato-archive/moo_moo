@@ -45,7 +45,7 @@
             <item key="reason_code">domain_already_belongs_to_current_reseller</item>
             <item key="transferrable">0</item>
             <item key="noservice">0</item>
-            <item key="reason">Domain already exists in webserversystems&apos;s account</item>
+            <item key="reason">Domain already exists in user&apos;s account</item>
            </dt_assoc>
           </item>
           <item key="response_code">200</item>
