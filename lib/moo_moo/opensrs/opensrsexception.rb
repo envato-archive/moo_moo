@@ -1,4 +1,6 @@
 module MooMoo
-  class OpenSRSException < Exception
+  module OpenSRS
+    class OpenSRSException < Exception
+    end
   end
 end
