@@ -1,57 +1,34 @@
 require 'spec_helper'
-require 'moomoo/opensrs'
+require 'moo_moo/opensrs'
+require 'moo_moo/opensrs/utils'
 
 module MooMoo
+  module OpenSRS
+    describe OpenSRS do
+      include Utils
 
-  def random_domain
-    "domainthatsnottaken#{Time.now.to_i}.com"
-  end
-
-  describe OpenSRS do
-    before(:each) do
-      @opensrs = OpenSRS.new(@opensrs_host, @opensrs_key, @opensrs_user, @opensrs_password)
-    end
-
-    describe "OpenSRS" do
-      it "should use the default port" do
-        @opensrs.port.should == 55443
-      end
-    end
-
-    describe "can register?", :wip => true do
-      it "should return true for a valid, available domain" do
-        result = @opensrs.can_register?('opensrsgemtestingdomain.com')
-        result.should be_true
+      describe "Utils" do
+        it "raises an OpenSRSException" do
+          expect {try_opensrs { raise "Exception message" } }.to raise_error OpenSRSException
+        end
       end
 
-      it "should raise an exception for an invalid domain" do
-        expect { @opensrs.can_register?('example') }.to raise_error(OpenSRSException, /701/i)
-      end
+      describe "Config" do
+        it "loads default settings from config if none are provided" do
+          MooMoo.configure do |config|
+            config.host = 'host.com'
+            config.key = 'secret'
+            config.user = 'username'
+            config.pass = 'secret2'
+          end
 
-      it "should return false for an unavailable domain" do
-        result = @opensrs.can_register?('example.com')
-        result.should be_false
-      end
-    end
+          opensrs = OpenSRS::Base.new
 
-    describe "can register list?" do
-      it "should work" do
-        result = @opensrs.can_register_list?('example.com', random_domain, random_domain)
-p result.inspect
-      end
-    end
-
-    describe "register" do
-      it "should register a domain that is available" do
-        result = @opensrs.register(random_domain)
-        result["is_success"].to_i.should == 1 
-        result["response_code"].to_i.should == 200 
-      end
-
-      it "should not register a domain that is not available" do
-        result = @opensrs.register('example.com')
-        result["is_success"].to_i.should == 0 
-        result["response_code"].to_i.should == 485 
+          opensrs.host.should == 'host.com'
+          opensrs.key.should == 'secret'
+          opensrs.user.should == 'username'
+          opensrs.pass.should == 'secret2'
+        end
       end
     end
   end
