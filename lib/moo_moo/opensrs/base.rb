@@ -1,31 +1,13 @@
 module MooMoo
-  autoload :Command, 'moo_moo/opensrs/command'
-  autoload :OpenSRSException, 'moo_moo/opensrs/opensrsexception'
-  autoload :Utils, 'moo_moo/opensrs/utils'
-  autoload :LookupCommands, 'moo_moo/opensrs/lookup_commands'
-  autoload :ProvisioningCommands, 'moo_moo/opensrs/provisioning_commands'
-  autoload :TransferCommands, 'moo_moo/opensrs/transfer_commands'
-  autoload :NameserverCommands, 'moo_moo/opensrs/nameserver_commands'
-  autoload :CookieCommands, 'moo_moo/opensrs/cookie_commands'
-
   module OpenSRS
-#    require 'moo_moo/opensrs/command'
-    require 'moo_moo/opensrs/opensrsexception'
-    require 'moo_moo/opensrs/utils'
-    require 'moo_moo/opensrs/lookup_commands'
-    require 'moo_moo/opensrs/provisioning_commands'
-    require 'moo_moo/opensrs/transfer_commands'
-    require 'moo_moo/opensrs/nameserver_commands'
-    require 'moo_moo/opensrs/cookie_commands'
-
-=begin
     autoload :OpenSRSException, 'moo_moo/opensrs/opensrsexception'
+    autoload :Command, 'moo_moo/opensrs/command'
     autoload :Utils, 'moo_moo/opensrs/utils'
+    autoload :LookupCommands, 'moo_moo/opensrs/lookup_commands'
     autoload :ProvisioningCommands, 'moo_moo/opensrs/provisioning_commands'
     autoload :TransferCommands, 'moo_moo/opensrs/transfer_commands'
     autoload :NameserverCommands, 'moo_moo/opensrs/nameserver_commands'
     autoload :CookieCommands, 'moo_moo/opensrs/cookie_commands'
-=end
 
     class Base
       include LookupCommands
