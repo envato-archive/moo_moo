@@ -1,6 +1,6 @@
 module MooMoo
   autoload :Version, 'moo_moo/version'
-  autoload :Config, 'moo_moo/config'
+  autoload :Config,  'moo_moo/config'
   autoload :OpenSRS, 'moo_moo/opensrs'
 
   class << self
