@@ -19,8 +19,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 2.5.0'
   s.add_development_dependency 'fakeweb', '~> 1.3.0'
   s.add_development_dependency 'vcr', '~> 1.9.0'
-  s.add_development_dependency 'rcov', '>= 0.9.9'
-  s.add_development_dependency 'metric_fu', '>= 2.1.1'
+  if !defined?(RUBY_ENGINE) || RUBY_ENGINE != 'rbx'
+    s.add_development_dependency 'rcov', '>= 0.9.9'
+    s.add_development_dependency 'metric_fu', '>= 2.1.1'
+  end
 
   s.add_dependency 'extlib'
 
