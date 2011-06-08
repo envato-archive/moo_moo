@@ -1,7 +1,12 @@
 MooMoo
 ======
 
+[![Build Status](http://travis-ci.org/site5/moo_moo.png)](http://travis-ci.org/site5/moo_moo)
+
 Ruby library for using the Tucows OpenSRS XML API
+
+[RDoc](http://rdoc.info/github/site5/moo_moo/master/frames)
+
 
 Description
 ==========
