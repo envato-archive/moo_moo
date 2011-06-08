@@ -21,7 +21,7 @@ module MooMoo
       @one_of_params   ||= []
       @options = options
 
-      yield self 
+      yield self
 
       requires!
       booleans!
@@ -49,14 +49,14 @@ module MooMoo
     # Specifies which arguments take one of a set of arguments
     def one_of(*values)
       @optional_params.concat(values)
-      @one_of_params = values 
+      @one_of_params = values
     end
 
     protected
 
     # Verifies that all required arguments are present
     def requires!
-      @required_params.each do |param| 
+      @required_params.each do |param|
         key = (param.is_a?(Array) ? param.first : param)
         verify_required_param(key)
       end
@@ -84,7 +84,7 @@ module MooMoo
       if @one_of_params.size > 1
         specified = @options.keys.select { |key| @one_of_params.include?(key) }.uniq
         if specified.size > 1 || specified.size == 0
-          raise MooMoo::MooMooArgumentError.new("The parameters may include only one of '#{@one_of_params.join(', ')}'") 
+          raise MooMoo::MooMooArgumentError.new("The parameters may include only one of '#{@one_of_params.join(', ')}'")
         end
       else
         raise MooMoo::MooMooArgumentError.new("One of requires two or more items") unless @one_of_params.empty?
@@ -92,10 +92,10 @@ module MooMoo
     end
 
     private
-    
+
     # Internal method for verifiying required arguments
     def verify_required_param(param)
-      raise MooMoo::MooMooArgumentError.new("Missing required parameter: #{param}") unless @options.has_key?(param) 
+      raise MooMoo::MooMooArgumentError.new("Missing required parameter: #{param}") unless @options.has_key?(param)
       raise MooMoo::MooMooArgumentError.new("Required parameter cannot be blank: #{param}") if (@options[param].nil? || (@options[param].respond_to?(:empty?) && @options[param].empty?))
     end
 
