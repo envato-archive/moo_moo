@@ -1,0 +1,54 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://server.com:55443/
+    body: 
+    headers: 
+      content-type: 
+      - text/xml
+      x-username: 
+      - opensrs_user
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "684"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Thu, 26 May 2011 19:06:03 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "852"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">COOKIE</item>
+          <item key="response_text">Authentication Error.
+          This company may be contacted for domain login/passwords,
+          DNS/Nameserver
+            changes, and general domain support questions.
+      </item>
+          <item key="action">REPLY</item>
+          <item key="response_code">415</item>
+          <item key="is_success">0</item>
+          <item key="support_message"></item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

@@ -1,0 +1,49 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://server.com:55443/
+    body: 
+    headers: 
+      content-type: 
+      - text/xml
+      x-username: 
+      - opensrs_user
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "658"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Tue, 24 May 2011 16:11:31 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "553"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">TRANSFER</item>
+          <item key="response_text">Transfer request has been successfully sent. Admin contact email: admin@example.com</item>
+          <item key="action">REPLY</item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

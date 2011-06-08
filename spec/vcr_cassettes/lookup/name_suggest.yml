@@ -1,0 +1,396 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://server.com:55443/
+    body: 
+    headers: 
+      content-type: 
+      - text/xml
+      x-username: 
+      - opensrs_user
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "726"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Fri, 06 May 2011 20:13:26 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "11523"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="request_response_time">0.444</item>
+          <item key="response_text">Command completed successfully</item>
+          <item key="is_search_completed">1</item>
+          <item key="action">REPLY</item>
+          <item key="attributes">
+           <dt_assoc>
+            <item key="lookup">
+             <dt_assoc>
+              <item key="count">4</item>
+              <item key="response_text">Command completed successfully.</item>
+              <item key="response_code">200</item>
+              <item key="items">
+               <dt_array>
+                <item key="0">
+                 <dt_assoc>
+                  <item key="domain">randomdomain.com</item>
+                  <item key="status">taken</item>
+                 </dt_assoc>
+                </item>
+                <item key="1">
+                 <dt_assoc>
+                  <item key="domain">randomdomain.net</item>
+                  <item key="status">taken</item>
+                 </dt_assoc>
+                </item>
+                <item key="2">
+                 <dt_assoc>
+                  <item key="domain">random-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="3">
+                 <dt_assoc>
+                  <item key="domain">random-domain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+               </dt_array>
+              </item>
+              <item key="is_success">1</item>
+             </dt_assoc>
+            </item>
+            <item key="suggestion">
+             <dt_assoc>
+              <item key="count">49</item>
+              <item key="response_text">Command Successful</item>
+              <item key="response_code">200</item>
+              <item key="is_success">1</item>
+              <item key="items">
+               <dt_array>
+                <item key="0">
+                 <dt_assoc>
+                  <item key="domain">aimlessdomain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="1">
+                 <dt_assoc>
+                  <item key="domain">aimlessdomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="2">
+                 <dt_assoc>
+                  <item key="domain">aimlessname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="3">
+                 <dt_assoc>
+                  <item key="domain">aimlesssite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="4">
+                 <dt_assoc>
+                  <item key="domain">arbitraryname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="5">
+                 <dt_assoc>
+                  <item key="domain">arbitrarysite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="6">
+                 <dt_assoc>
+                  <item key="domain">casualname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="7">
+                 <dt_assoc>
+                  <item key="domain">chancedomain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="8">
+                 <dt_assoc>
+                  <item key="domain">chancedomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="9">
+                 <dt_assoc>
+                  <item key="domain">chancename.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="10">
+                 <dt_assoc>
+                  <item key="domain">chancesite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="11">
+                 <dt_assoc>
+                  <item key="domain">desultorydomain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="12">
+                 <dt_assoc>
+                  <item key="domain">desultorydomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="13">
+                 <dt_assoc>
+                  <item key="domain">desultoryname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="14">
+                 <dt_assoc>
+                  <item key="domain">desultorysite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="15">
+                 <dt_assoc>
+                  <item key="domain">fortuitousdomain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="16">
+                 <dt_assoc>
+                  <item key="domain">fortuitousdomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="17">
+                 <dt_assoc>
+                  <item key="domain">fortuitousname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="18">
+                 <dt_assoc>
+                  <item key="domain">fortuitoussite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="19">
+                 <dt_assoc>
+                  <item key="domain">odddomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="20">
+                 <dt_assoc>
+                  <item key="domain">randomdomainnames.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="21">
+                 <dt_assoc>
+                  <item key="domain">straydomain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="22">
+                 <dt_assoc>
+                  <item key="domain">straydomain.net</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="23">
+                 <dt_assoc>
+                  <item key="domain">strayname.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="24">
+                 <dt_assoc>
+                  <item key="domain">straysite.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="25">
+                 <dt_assoc>
+                  <item key="domain">aimless-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="26">
+                 <dt_assoc>
+                  <item key="domain">aimless-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="27">
+                 <dt_assoc>
+                  <item key="domain">aimless-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="28">
+                 <dt_assoc>
+                  <item key="domain">arbitrary-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="29">
+                 <dt_assoc>
+                  <item key="domain">arbitrary-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="30">
+                 <dt_assoc>
+                  <item key="domain">arbitrary-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="31">
+                 <dt_assoc>
+                  <item key="domain">casual-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="32">
+                 <dt_assoc>
+                  <item key="domain">casual-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="33">
+                 <dt_assoc>
+                  <item key="domain">casual-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="34">
+                 <dt_assoc>
+                  <item key="domain">chance-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="35">
+                 <dt_assoc>
+                  <item key="domain">chance-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="36">
+                 <dt_assoc>
+                  <item key="domain">desultory-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="37">
+                 <dt_assoc>
+                  <item key="domain">desultory-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="38">
+                 <dt_assoc>
+                  <item key="domain">desultory-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="39">
+                 <dt_assoc>
+                  <item key="domain">fortuitous-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="40">
+                 <dt_assoc>
+                  <item key="domain">fortuitous-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="41">
+                 <dt_assoc>
+                  <item key="domain">fortuitous-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="42">
+                 <dt_assoc>
+                  <item key="domain">odd-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="43">
+                 <dt_assoc>
+                  <item key="domain">odd-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="44">
+                 <dt_assoc>
+                  <item key="domain">odd-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="45">
+                 <dt_assoc>
+                  <item key="domain">random-domain-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="46">
+                 <dt_assoc>
+                  <item key="domain">stray-domain.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="47">
+                 <dt_assoc>
+                  <item key="domain">stray-name.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+                <item key="48">
+                 <dt_assoc>
+                  <item key="domain">stray-site.com</item>
+                  <item key="status">available</item>
+                 </dt_assoc>
+                </item>
+               </dt_array>
+              </item>
+             </dt_assoc>
+            </item>
+           </dt_assoc>
+          </item>
+          <item key="response_code">200</item>
+          <item key="is_success">1</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"

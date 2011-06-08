@@ -1,0 +1,60 @@
+--- 
+- !ruby/struct:VCR::HTTPInteraction 
+  request: !ruby/struct:VCR::Request 
+    method: :post
+    uri: https://server.com:55443/
+    body: 
+    headers: 
+      content-type: 
+      - text/xml
+      x-username: 
+      - opensrs_user
+      x-signature:
+      - 00000000000000000000000000000000
+      content-length: 
+      - "3469"
+  response: !ruby/struct:VCR::Response 
+    status: !ruby/struct:VCR::ResponseStatus 
+      code: 200
+      message: OK
+    headers: 
+      date: 
+      - Fri, 06 May 2011 20:58:55 GMT
+      server: 
+      - OpenSRS/XML-RSA Server
+      content-length: 
+      - "898"
+      content-type: 
+      - text/xml
+    body: |-
+      <?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE OPS_envelope SYSTEM "ops.dtd">
+      <OPS_envelope>
+       <header>
+        <version>0.9</version>
+        </header>
+       <body>
+        <data_block>
+         <dt_assoc>
+          <item key="protocol">XCP</item>
+          <item key="object">TRUST_SERVICE</item>
+          <item key="response_text">Permission denied for the specified reseller and product type</item>
+          <item key="action">SW_REGISTER:REPLY</item>
+          <item key="error_details">
+           <dt_array>
+            <item key="0">
+             <dt_assoc>
+              <item key="error_detail">Permission denied for the specified reseller and product type</item>
+              <item key="field_name">product_type</item>
+              <item key="error_code">501</item>
+             </dt_assoc>
+            </item>
+           </dt_array>
+          </item>
+          <item key="response_code">501</item>
+          <item key="is_success">0</item>
+         </dt_assoc>
+        </data_block>
+       </body>
+      </OPS_envelope>
+    http_version: "1.1"
