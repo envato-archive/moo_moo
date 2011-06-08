@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+function moo() {
+  echo " ______________________"
+  echo "< Feed me before I die >"
+  echo " ---------------------- "
+  echo "        \   ^__^"
+  echo "         \  (oo)\_______"
+  echo "            (__)\       )\\/\\"
+  echo "                ||----w |"
+  echo "                ||     ||"
+}
 # This is an RVM Project .rvmrc file, used to automatically load the ruby
 # development environment upon cd'ing into the directory
 
@@ -15,9 +25,11 @@ environment_id="ruby-1.9.2-p180@moomoo"
 if [[ -d "${rvm_path:-$HOME/.rvm}/environments" \
   && -s "${rvm_path:-$HOME/.rvm}/environments/$environment_id" ]] ; then
   \. "${rvm_path:-$HOME/.rvm}/environments/$environment_id"
+  moo
 else
   # If the environment file has not yet been created, use the RVM CLI to select.
   rvm --create use  "$environment_id"
+  moo
 fi
 
 #
