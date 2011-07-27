@@ -1,7 +1,10 @@
-MooMoo
-======
+MooMoo [![MooMoo Build Status][Build Icon]][Build Status]
+=========================================================
 
 Ruby library for using the Tucows OpenSRS XML API
+
+[Build Status]: http://travis-ci.org/site5/moo_moo
+[Build Icon]: https://secure.travis-ci.org/site5/moo_moo.png?branch=master
 
 Description
 ==========
