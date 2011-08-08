@@ -1,21 +1,11 @@
 module MooMoo
   module OpenSRS
-    autoload :OpenSRSException, 'moo_moo/opensrs/opensrsexception'
-    autoload :Command, 'moo_moo/opensrs/command'
-    autoload :Utils, 'moo_moo/opensrs/utils'
-    autoload :LookupCommands, 'moo_moo/opensrs/lookup_commands'
-    autoload :ProvisioningCommands, 'moo_moo/opensrs/provisioning_commands'
-    autoload :TransferCommands, 'moo_moo/opensrs/transfer_commands'
-    autoload :NameserverCommands, 'moo_moo/opensrs/nameserver_commands'
-    autoload :CookieCommands, 'moo_moo/opensrs/cookie_commands'
-
     class Base
       include LookupCommands
       include ProvisioningCommands
       include TransferCommands
       include NameserverCommands
       include CookieCommands
-      include Utils
 
       attr_reader :host, :key, :user, :pass, :port
 
@@ -31,7 +21,7 @@ module MooMoo
       #  * <tt>:port</tt> - port to connect on
       def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
         @host = host || MooMoo.config.host
-        @key = key || MooMoo.config.key
+        @key  = key  || MooMoo.config.key
         @user = user || MooMoo.config.user
         @pass = pass || MooMoo.config.pass
         @port = port || MooMoo.config.port
@@ -69,6 +59,14 @@ module MooMoo
         end
 
         arr_indexed
+      end
+
+      def try_opensrs
+        begin
+          yield
+        rescue Exception => e
+          raise OpenSRSException, e.message
+        end
       end
     end
   end

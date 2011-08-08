@@ -9,6 +9,22 @@ describe MooMoo do
 
   describe "::configure" do
     it { MooMoo.configure.should be_a MooMoo::Config }
+
+    it "loads default settings from config if none are provided" do
+      MooMoo.configure do |config|
+        config.host = 'host.com'
+        config.key  = 'secret'
+        config.user = 'username'
+        config.pass = 'secret2'
+      end
+
+      opensrs = MooMoo::OpenSRS::Base.new
+
+      opensrs.host.should == 'host.com'
+      opensrs.key.should  == 'secret'
+      opensrs.user.should == 'username'
+      opensrs.pass.should == 'secret2'
+    end
   end
 
   describe "::config" do
