@@ -65,7 +65,9 @@ module MooMoo
         begin
           yield
         rescue Exception => e
-          raise OpenSRSException, e.message
+          exception = OpenSRSException.new(e.message)
+          exception.set_backtrace(e.backtrace)
+          raise exception
         end
       end
     end
