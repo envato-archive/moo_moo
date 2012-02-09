@@ -4,7 +4,6 @@ describe MooMoo::OpenSRS::Base do
   describe "included modules" do
     subject { MooMoo::OpenSRS::Base }
     it { should include MooMoo::OpenSRS::CookieCommands }
-    it { should include MooMoo::OpenSRS::ProvisioningCommands }
     it { should include MooMoo::OpenSRS::TransferCommands }
   end
 
