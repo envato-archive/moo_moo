@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe MooMoo::OpenSRS::TransferCommands do
+describe MooMoo::Transfer do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Transfer.new
     @registered_domain = "domainthatsnottaken1302209138.com"
     @contacts = test_contacts
   end

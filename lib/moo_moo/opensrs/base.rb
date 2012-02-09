@@ -1,7 +1,6 @@
 module MooMoo
   module OpenSRS
     class Base
-      include TransferCommands
       include CookieCommands
 
       attr_reader :host, :key, :user, :pass, :port

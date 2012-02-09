@@ -3,8 +3,6 @@ module MooMoo
     autoload :Args,                 'moo_moo/opensrs/args'
     autoload :Base,                 'moo_moo/opensrs/base'
     autoload :Command,              'moo_moo/opensrs/command'
-    autoload :ProvisioningCommands, 'moo_moo/opensrs/provisioning_commands'
-    autoload :TransferCommands,     'moo_moo/opensrs/transfer_commands'
     autoload :CookieCommands,       'moo_moo/opensrs/cookie_commands'
     autoload :Response,             'moo_moo/opensrs/response'
   end

@@ -7,6 +7,7 @@ module MooMoo
   autoload :Lookup, 'moo_moo/lookup'
   autoload :Nameserver, 'moo_moo/nameserver'
   autoload :Provisioning, 'moo_moo/provisioning'
+  autoload :Transfer, 'moo_moo/transfer'
 
   class << self
     attr_accessor :config
