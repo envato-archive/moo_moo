@@ -1,5 +1,5 @@
 module MooMoo
-  class Lookup < OpenSRS::Base
+  class Lookup < Base
     # Determines whether a domain belongs to the reseller
     #
     # ==== Required

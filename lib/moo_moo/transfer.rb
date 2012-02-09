@@ -1,5 +1,5 @@
 module MooMoo
-  class Transfer < OpenSRS::Base
+  class Transfer < Base
     # Cancels a transfer that is pending owner approval
     #
     # ==== Required

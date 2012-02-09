@@ -1,5 +1,5 @@
 module MooMoo
-  class Provisioning < OpenSRS::Base
+  class Provisioning < Base
     # Cancels a Trust Service order
     #
     # ==== Required

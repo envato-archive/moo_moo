@@ -1,5 +1,5 @@
 module MooMoo
-  class Nameserver < OpenSRS::Base
+  class Nameserver < Base
     # Creates a nameserver
     #
     # ==== Required

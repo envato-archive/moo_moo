@@ -1,5 +1,5 @@
 module MooMoo
-  class Cookie < OpenSRS::Base
+  class Cookie < Base
     # Creates a cookie for a domain
     #
     # ==== Required

@@ -4,6 +4,7 @@ module MooMoo
   autoload :Version, 'moo_moo/version'
   autoload :Config,  'moo_moo/config'
   autoload :OpenSRS, 'moo_moo/opensrs'
+  autoload :Base, 'moo_moo/base'
   autoload :Lookup, 'moo_moo/lookup'
   autoload :Nameserver, 'moo_moo/nameserver'
   autoload :Provisioning, 'moo_moo/provisioning'
