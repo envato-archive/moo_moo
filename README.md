@@ -45,6 +45,9 @@ Or configure MooMoo and you can initialize it without any arguments:
 
     lookup = MooMoo::Lookup.new
 
+As an alternative, you can create a .moomoo.yml file in your project root with a default
+configuration for the library to use.
+
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 

@@ -13,11 +13,11 @@ module MooMoo
     # === Optional
     #  * <tt>:port</tt> - port to connect on
     def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
-      @host = host || MooMoo.config.host
-      @key  = key  || MooMoo.config.key
-      @user = user || MooMoo.config.user
-      @pass = pass || MooMoo.config.pass
-      @port = port || MooMoo.config.port
+      @host = host || MooMoo.config.host || raise(ArgumentError, "Host is required")
+      @key  = key  || MooMoo.config.key  || raise(ArgumentError, "Key is required")
+      @user = user || MooMoo.config.user || raise(ArgumentError, "User is required")
+      @pass = pass || MooMoo.config.pass || raise(ArgumentError, "Password is required")
+      @port = port || MooMoo.config.port || raise(ArgumentError, "Port is required")
     end
 
     # Runs a command
