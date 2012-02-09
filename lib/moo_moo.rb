@@ -8,6 +8,7 @@ module MooMoo
   autoload :Nameserver, 'moo_moo/nameserver'
   autoload :Provisioning, 'moo_moo/provisioning'
   autoload :Transfer, 'moo_moo/transfer'
+  autoload :Cookie, 'moo_moo/cookie'
 
   class << self
     attr_accessor :config

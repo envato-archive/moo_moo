@@ -48,7 +48,9 @@ describe MooMoo::Lookup do
   describe "#get domain" do
     it "returns all the info" do
       VCR.use_cassette("lookup/get_domain") do
-        res = @opensrs.set_cookie(
+        cookie = MooMoo::Cookie.new
+
+        res = cookie.set_cookie(
           :username => MooMoo.config.user,
           :password => MooMoo.config.pass,
           :domain   => @registered_domain

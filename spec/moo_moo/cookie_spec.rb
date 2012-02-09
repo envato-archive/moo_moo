@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe MooMoo::OpenSRS::CookieCommands do
+describe MooMoo::Cookie do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Cookie.new
     @registered_domain = "domainthatsnottaken1302209138.com"
   end
 

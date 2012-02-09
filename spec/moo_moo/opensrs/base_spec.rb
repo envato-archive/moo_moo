@@ -1,11 +1,6 @@
 require 'spec_helper'
 
 describe MooMoo::OpenSRS::Base do
-  describe "included modules" do
-    subject { MooMoo::OpenSRS::Base }
-    it { should include MooMoo::OpenSRS::CookieCommands }
-  end
-
   describe "#try_opensrs" do
     it "raises an OpenSRSException" do
       expect do
