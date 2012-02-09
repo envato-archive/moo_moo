@@ -9,7 +9,7 @@ describe MooMoo::Args do
           c.requires :arg2
         end
       }
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /Missing required parameter: arg2/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /Missing required parameter: arg2/)
     end
 
     it "does not raise an error with valid params" do
@@ -52,7 +52,7 @@ describe MooMoo::Args do
           c.booleans :arg1
         end
       }
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /Boolean parameter must be.*: arg1/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /Boolean parameter must be.*: arg1/)
     end
 
     it "raises an error with boolean params" do
@@ -96,7 +96,7 @@ describe MooMoo::Args do
         end
       }
 
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /Not a valid parameter: arg1/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /Not a valid parameter: arg1/)
     end
 
     it "does not raise an error with known params" do
@@ -137,7 +137,7 @@ describe MooMoo::Args do
         end
       }
 
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /One of requires two or more items/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /One of requires two or more items/)
     end
 
     it "allows two or more args" do
@@ -159,7 +159,7 @@ describe MooMoo::Args do
         end
       }
 
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /The parameters may include only one of 'arg1, arg2'/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /The parameters may include only one of 'arg1, arg2'/)
     end
 
     it "does not allow both args" do
@@ -170,7 +170,7 @@ describe MooMoo::Args do
         end
       }
 
-      expect { args.call }.to raise_error(MooMoo::MooMooArgumentError, /The parameters may include only one of 'arg1, arg2'/)
+      expect { args.call }.to raise_error(MooMoo::ArgumentError, /The parameters may include only one of 'arg1, arg2'/)
     end
   end
 end

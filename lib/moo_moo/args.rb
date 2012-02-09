@@ -3,7 +3,7 @@ module MooMoo
     attr_reader :required_params, :boolean_params, :optional_params, :one_of_params
     attr_reader :options
     # Check the included hash for the included parameters.
-    # Raises MooMooArgumentError when it's mising the proper params
+    # Raises MooMoo::ArgumentError when it's mising the proper params
     #
     # ==== Example
     #
@@ -73,7 +73,7 @@ module MooMoo
     # Verifies that only valid arguments were set
     def valid_options!
       @options.keys.uniq.each do |key|
-        raise MooMoo::MooMooArgumentError.new("Not a valid parameter: #{key}") unless @optional_params.include?(key)
+        raise MooMoo::ArgumentError.new("Not a valid parameter: #{key}") unless @optional_params.include?(key)
       end
     end
 
@@ -82,10 +82,10 @@ module MooMoo
       if @one_of_params.size > 1
         specified = @options.keys.select { |key| @one_of_params.include?(key) }.uniq
         if specified.size > 1 || specified.size == 0
-          raise MooMoo::MooMooArgumentError.new("The parameters may include only one of '#{@one_of_params.join(', ')}'")
+          raise MooMoo::ArgumentError.new("The parameters may include only one of '#{@one_of_params.join(', ')}'")
         end
       else
-        raise MooMoo::MooMooArgumentError.new("One of requires two or more items") unless @one_of_params.empty?
+        raise MooMoo::ArgumentError.new("One of requires two or more items") unless @one_of_params.empty?
       end
     end
 
@@ -93,14 +93,14 @@ module MooMoo
 
     # Internal method for verifiying required arguments
     def verify_required_param(param)
-      raise MooMoo::MooMooArgumentError.new("Missing required parameter: #{param}") unless @options.has_key?(param)
-      raise MooMoo::MooMooArgumentError.new("Required parameter cannot be blank: #{param}") if (@options[param].nil? || (@options[param].respond_to?(:empty?) && @options[param].empty?))
+      raise MooMoo::ArgumentError.new("Missing required parameter: #{param}") unless @options.has_key?(param)
+      raise MooMoo::ArgumentError.new("Required parameter cannot be blank: #{param}") if (@options[param].nil? || (@options[param].respond_to?(:empty?) && @options[param].empty?))
     end
 
     # Internal method for verifying boolean arguments
     def verify_boolean_param(param)
       if @options.include?(param) && ![true, false].include?(@options[param])
-        raise MooMoo::MooMooArgumentError.new("Boolean parameter must be \"true\" or \"false\": #{param}")
+        raise MooMoo::ArgumentError.new("Boolean parameter must be \"true\" or \"false\": #{param}")
       end
     end
   end
