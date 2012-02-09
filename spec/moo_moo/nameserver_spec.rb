@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe MooMoo::OpenSRS::NameserverCommands do
+describe MooMoo::Nameserver do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Nameserver.new
     @registered_domain = "domainthatsnottaken1302209138.com"
   end
 

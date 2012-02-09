@@ -53,3 +53,8 @@ RSpec::Core::RakeTask.new(:rcov) do |t|
 end
 
 task :default => [:spec]
+
+desc "Open an irb session preloaded with this library"
+task :console do
+  sh "irb -rubygems -r ./lib/moo_moo.rb"
+end

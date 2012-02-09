@@ -9,4 +9,42 @@ describe MooMoo::Config do
   it { @config.should have_attr_accessor :key  }
   it { @config.should have_attr_accessor :user }
   it { @config.should have_attr_accessor :pass }
+  it { @config.should have_attr_accessor :port }
+
+  describe "default configuration" do
+    before :each do
+      File.should_receive(:exists?).with(".moomoo.yml").and_return(true)
+      File.should_receive(:open).with(".moomoo.yml").and_return(
+        "
+        host: thehost
+        key: thekey
+        user: theuser
+        pass: thepass
+        port: theport
+        "
+      )
+
+      @config = MooMoo::Config.new
+    end
+
+    it "should set default host from default options file" do
+      @config.host.should == "thehost"
+    end
+
+    it "should set default key from default options file" do
+      @config.key.should == "thekey"
+    end
+
+    it "should set default user from default options file" do
+      @config.user.should == "theuser"
+    end
+
+    it "should set default pass from default options file" do
+      @config.pass.should == "thepass"
+    end
+
+    it "should set default port from default options file" do
+      @config.port.should == "theport"
+    end
+  end
 end

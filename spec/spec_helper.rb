@@ -18,7 +18,7 @@ VCR.config do |c|
 end
 
 def requires_attr(attr, &block)
-  expect { block.call }.to raise_error(MooMoo::MooMooArgumentError, /Missing required parameter: #{attr}/i)
+  expect { block.call }.to raise_error(MooMoo::ArgumentError, /Missing required parameter: #{attr}/i)
 end
 
 def live_test?
