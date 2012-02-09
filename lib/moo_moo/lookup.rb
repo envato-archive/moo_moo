@@ -66,7 +66,7 @@ module MooMoo
     #  * <tt>:start_date</tt> - beginning date of the expiration range
     #  * <tt>:end_date</tt> - ending date of the expiration range
     def get_domains_by_expiredate(attribs)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :start_date, :end_date
       end
 

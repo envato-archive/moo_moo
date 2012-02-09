@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe MooMoo::OpenSRS::Args do
+describe MooMoo::Args do
   context "#required_parms" do
     it "raises an error when missing" do
       options = {:arg1 => true}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.requires :arg2
         end
       }
@@ -14,7 +14,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "does not raise an error with valid params" do
       options = {:arg1 => true}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.requires :arg1
       }
 
@@ -24,7 +24,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "sets optional_params" do
       options = {:arg1 => true, :arg2 => 2}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.requires :arg1, :arg2
       }
 
@@ -36,7 +36,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "does not set boolean_params" do
       options = {:arg1 => true, :arg2 => 2}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.requires :arg1, :arg2
       }
 
@@ -48,7 +48,7 @@ describe MooMoo::OpenSRS::Args do
     it "raises an error when the param is not boolean" do
       options = {:arg1 => 'string'}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.booleans :arg1
         end
       }
@@ -57,7 +57,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "raises an error with boolean params" do
       options = {:arg1 => true}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.booleans :arg1
       }
 
@@ -67,7 +67,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "sets optional_params" do
       options = {:arg1 => true, :arg2 => false}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.booleans :arg1, :arg2
       }
 
@@ -79,7 +79,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "sets required_params" do
       options = {:arg1 => true, :arg2 => false}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.booleans :arg1, :arg2
       }
 
@@ -91,7 +91,7 @@ describe MooMoo::OpenSRS::Args do
     it "raises an error with unknown params" do
       options = {:arg1 => true}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.optionals :arg2
         end
       }
@@ -101,7 +101,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "does not raise an error with known params" do
       options = {:arg1 => true, :arg2 => 2}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.optionals :arg1, :arg2
       }
 
@@ -111,7 +111,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "does not set required_params" do
       options = {:arg1 => true, :arg2 => 2}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.optionals :arg1, :arg2
       }
 
@@ -120,7 +120,7 @@ describe MooMoo::OpenSRS::Args do
 
     it "does not set boolean_params" do
       options = {:arg1 => true, :arg2 => 2}
-      args =  MooMoo::OpenSRS::Args.new(options) { |c|
+      args =  MooMoo::Args.new(options) { |c|
         c.optionals :arg1, :arg2
       }
 
@@ -132,7 +132,7 @@ describe MooMoo::OpenSRS::Args do
     it "allows one arg" do
       options = {:arg1 => true}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.one_of :arg1
         end
       }
@@ -143,7 +143,7 @@ describe MooMoo::OpenSRS::Args do
     it "allows two or more args" do
       options = {:arg1 => true}
 
-      args = MooMoo::OpenSRS::Args.new(options) do |c|
+      args = MooMoo::Args.new(options) do |c|
         c.one_of :arg1, :arg2
       end
 
@@ -154,7 +154,7 @@ describe MooMoo::OpenSRS::Args do
     it "does not allow 0 params" do
       options = {}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.one_of :arg1, :arg2
         end
       }
@@ -165,7 +165,7 @@ describe MooMoo::OpenSRS::Args do
     it "does not allow both args" do
       options = {:arg1 => true, :arg2 => 2}
       args = lambda {
-        MooMoo::OpenSRS::Args.new(options) do |c|
+        MooMoo::Args.new(options) do |c|
           c.one_of :arg1, :arg2
         end
       }

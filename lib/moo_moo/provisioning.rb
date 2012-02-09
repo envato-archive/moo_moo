@@ -54,7 +54,7 @@ module MooMoo
     #  * <tt>:term</tt> - number of years to renew for
     #  * <tt>:current_expiration_year</tt> - current expiration year in YYYY format
     def renew_domain(attribs)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :domain, :term, :current_expiration_year
       end
 
@@ -101,7 +101,7 @@ module MooMoo
     #  * <tt>:term</tt> - number of years to register the domain for
     #  * <tt>:options</tt> - additional attributes to set
     def register_domain(attribs)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :domain, :contacts, :nameservers
         c.optionals :term, :options
       end

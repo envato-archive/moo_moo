@@ -30,11 +30,11 @@ module MooMoo
     #  * <tt>:params</tt> - parameters for the command
     #  * <tt>:cookie</tt> - cookie, if the command requires it
     def run_command(action, object, params = {}, cookie = nil)
-      cmd = OpenSRS::Command.new(action, object, params, cookie)
+      cmd = Command.new(action, object, params, cookie)
 
       try_opensrs do
         result = cmd.run(@host, @key, @user, @port)
-        OpenSRS::Response.new(result, params[:key])
+        Response.new(result, params[:key])
       end
     end
 

@@ -10,7 +10,7 @@ module MooMoo
     # ==== Optional
     #  * <tt>:cookie</tt> - cookie for domain
     def create_nameserver(attribs)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :name, :ip, :domain
         c.optionals :cookie
       end
@@ -29,7 +29,7 @@ module MooMoo
     # ==== Optional
     #  * <tt>:cookie</tt> - cookie for domain
     def delete_nameserver(attribs, cookie = nil)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :name, :ip, :domain
         c.optionals :cookie
       end
@@ -58,7 +58,7 @@ module MooMoo
     #  * <tt>:new_name</tt> - new name for the nameserver
     #  * <tt>:domain</tt> - domain profile the nameserver was created for
     def modify_nameserver(attribs)
-      OpenSRS::Args.new(attribs) do |c|
+      Args.new(attribs) do |c|
         c.requires :name, :ip, :new_name, :domain
       end
 
