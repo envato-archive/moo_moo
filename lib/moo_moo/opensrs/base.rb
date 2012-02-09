@@ -3,7 +3,6 @@ module MooMoo
     class Base
       include ProvisioningCommands
       include TransferCommands
-      include NameserverCommands
       include CookieCommands
 
       attr_reader :host, :key, :user, :pass, :port

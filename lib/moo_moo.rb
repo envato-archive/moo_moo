@@ -5,6 +5,7 @@ module MooMoo
   autoload :Config,  'moo_moo/config'
   autoload :OpenSRS, 'moo_moo/opensrs'
   autoload :Lookup, 'moo_moo/lookup'
+  autoload :Nameserver, 'moo_moo/nameserver'
 
   class << self
     attr_accessor :config
