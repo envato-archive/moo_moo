@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'date'
 
-describe MooMoo::OpenSRS::LookupCommands do
+describe MooMoo::Lookup do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Lookup.new
     @registered_domain = "domainthatsnottaken1302209138.com"
   end
 

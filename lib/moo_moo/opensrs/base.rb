@@ -1,7 +1,6 @@
 module MooMoo
   module OpenSRS
     class Base
-      include LookupCommands
       include ProvisioningCommands
       include TransferCommands
       include NameserverCommands
