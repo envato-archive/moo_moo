@@ -23,9 +23,9 @@ documentation of the OpenSRS XML API see
 Usage
 -----
 
-First, create an opensrs object from which all commands are called:
+First, create an opensrs object for the namespace you want to use:
 
-    opensrs = MooMoo::OpenSRS::Base.new(
+    lookup = MooMoo::Lookup.new(
       "horizon.opensrs.net",
       "<YOUR_KEY>",
       "<YOUR_RESELLER_USER>",
@@ -43,12 +43,15 @@ Or configure MooMoo and you can initialize it without any arguments:
 
     ...
 
-    opensrs = MooMoo::OpenSRS::Base.new
+    lookup = MooMoo::Lookup.new
+
+As an alternative, you can create a .moomoo.yml file in your project root with a default
+configuration for the library to use.
 
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 
-    res = opensrs.lookup_domain('example.com')
+    res = lookup.lookup_domain('example.com')
     p res.success?
     p res.result['status']
 
@@ -59,6 +62,14 @@ Each method returns an `OpenSRSResponse` object which you can use to determine
 if the call was successful and retrieve the response code and/or error
 message. The result variable is a hash that contains all of the relevant data
 returned by the call.
+
+Currently, there is support for the following services:
+
+  * Cookie
+  * Lookup
+  * Nameserver
+  * Provisioning
+  * Transfer
 
 Note on Patches/Pull Requests
 -----------------------------

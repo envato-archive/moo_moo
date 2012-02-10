@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe MooMoo::OpenSRS::TransferCommands do
+describe MooMoo::Transfer do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Transfer.new
     @registered_domain = "domainthatsnottaken1302209138.com"
     @contacts = test_contacts
   end
@@ -102,23 +102,6 @@ describe MooMoo::OpenSRS::TransferCommands do
       res.success?.should be_false
       res.error_code.should == 465
       res.error_msg.should match(/transfer permission denied/i)
-    end
-  end
-
-  describe "#transfer" do
-    use_vcr_cassette "transfer/transfer"
-
-    it "initiates the transfer" do
-      res = @opensrs.register_domain(
-        :domain      => 'testingdomain.com',
-        :contacts    => @contacts,
-        :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
-        :term        => 1,
-        :options     => { :reg_type => :transfer }
-      )
-      res.success?.should be_true
-      res.result['id'].to_i.should == 1885789
-      res.result['registration_text'].should match(/transfer request initiated/i)
     end
   end
 end

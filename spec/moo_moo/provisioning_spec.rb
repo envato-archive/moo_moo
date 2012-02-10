@@ -1,10 +1,9 @@
 require 'spec_helper'
 require 'date'
 
-
-describe MooMoo::OpenSRS::ProvisioningCommands do
+describe MooMoo::Provisioning do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Provisioning.new
     @registered_domain = "domainthatsnottaken1302209138.com"
     @contacts = test_contacts
   end
@@ -147,6 +146,21 @@ describe MooMoo::OpenSRS::ProvisioningCommands do
           :options => {:handle => :save})
         res.success?.should be_true
         res.result['id'].to_i.should == 1888032
+      end
+    end
+
+    it "registers a domain transfer" do
+      VCR.use_cassette("transfer/transfer") do
+        res = @opensrs.register_domain(
+          :domain      => 'testingdomain.com',
+          :contacts    => @contacts,
+          :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
+          :term        => 1,
+          :options     => { :reg_type => :transfer }
+        )
+        res.success?.should be_true
+        res.result['id'].to_i.should == 1885789
+        res.result['registration_text'].should match(/transfer request initiated/i)
       end
     end
 

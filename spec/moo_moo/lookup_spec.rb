@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'date'
 
-describe MooMoo::OpenSRS::LookupCommands do
+describe MooMoo::Lookup do
   before(:each) do
-    @opensrs = MooMoo::OpenSRS::Base.new
+    @opensrs = MooMoo::Lookup.new
     @registered_domain = "domainthatsnottaken1302209138.com"
   end
 
@@ -48,7 +48,9 @@ describe MooMoo::OpenSRS::LookupCommands do
   describe "#get domain" do
     it "returns all the info" do
       VCR.use_cassette("lookup/get_domain") do
-        res = @opensrs.set_cookie(
+        cookie = MooMoo::Cookie.new
+
+        res = cookie.set_cookie(
           :username => MooMoo.config.user,
           :password => MooMoo.config.pass,
           :domain   => @registered_domain
