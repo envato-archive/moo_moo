@@ -2,6 +2,32 @@ module MooMoo
   class Base
     attr_reader :host, :key, :user, :pass, :port
 
+    # Register an api service for the current class.
+    #
+    #     register_service :action_one, :object_one
+    #
+    # That will generate the following method for this class:
+    #
+    #    def action_one(params)
+    #      run_command :action_one, :object_one, params, cookie
+    #    end
+    #
+    # === Parameters
+    #
+    # * <tt>method_name</tt> - the method name
+    # * <tt>object</tt> - the object
+    # * <tt>action_name</tt> - the api action to be called; by default it is the same as method_name
+    def self.register_service(method_name, object, action_name = nil, &block)
+      define_method(method_name) do |params = {}|
+        params[:key] = 'attributes'
+        cookie = params.delete :cookie
+
+        instance_exec(params, &block) if block
+
+        run_command action_name, object, params, cookie
+      end
+    end
+
     # Constructor
     #
     # === Required

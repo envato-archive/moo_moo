@@ -11,7 +11,7 @@ describe MooMoo::Provisioning do
   describe "#cancel_order" do
     it "cancels a trust service order" do
       VCR.use_cassette("provisioning/cancel_order") do
-        res = @opensrs.cancel_order(123456)
+        res = @opensrs.cancel_order(:order_id => 123456)
         res.success?.should be_true
         res.result['order_id'].to_i.should == 123456
         res.result['domain'].should == "example.com"
@@ -20,7 +20,7 @@ describe MooMoo::Provisioning do
 
     it "doesn't cancel an invalid trust service order" do
       VCR.use_cassette("provisioning/cancel_order_invalid") do
-        res = @opensrs.cancel_order(111111)
+        res = @opensrs.cancel_order(:order_id => 111111)
         res.success?.should be_false
         res.error_code.should == 405
       end
@@ -31,7 +31,7 @@ describe MooMoo::Provisioning do
     use_vcr_cassette "provisioning/cancel_pending_orders"
 
     it "cancels all pending orders" do
-      result = @opensrs.cancel_pending_orders(1302890914).result
+      result = @opensrs.cancel_pending_orders(:to_date => 1302890914).result
       result['total'].to_i.should == 0
       result['cancelled'].should be_a_kind_of(Hash)
       result['cancelled'].should be_empty
@@ -66,7 +66,7 @@ describe MooMoo::Provisioning do
     use_vcr_cassette "provisioning/process_pending"
 
     it "processes the pending order" do
-      result = @opensrs.process_pending(1878084).result
+      result = @opensrs.process_pending(:order_id => 1878084).result
       result['order_id'].to_i.should == 1878084
       result['id'].to_i.should == 730001
       result['f_auto_renew'].should == "Y"
@@ -75,18 +75,6 @@ describe MooMoo::Provisioning do
 
   describe "#renew_domain" do
     use_vcr_cassette "provisioning/renew_domain"
-
-    it "requires a domain", :wip => true do
-      requires_attr(:domain) { @opensrs.renew_domain(:term => 1, :current_expiration_year => 2011) }
-    end
-
-    it "requires a term", :wip => true do
-      requires_attr(:term) { @opensrs.renew_domain(:domain => 'example.com', :current_expiration_year => 2011) }
-    end
-
-    it "requires a current_expiration_year", :wip => true do
-      requires_attr(:current_expiration_year) { @opensrs.renew_domain(:domain => 'example.com', :term => 1) }
-    end
 
     it "renews the domain" do
       result = @opensrs.renew_domain(
@@ -111,24 +99,13 @@ describe MooMoo::Provisioning do
   end
 
   describe "#register" do
-    it "requires a domain", :wip => true do
-      requires_attr(:domain) { @opensrs.register_domain(:contacts => @contacts, :nameservers => ['ns1.blah.com']) }
-    end
-
-    it "requires a contacts", :wip => true do
-      requires_attr(:contacts) { @opensrs.register_domain(:domain => 'example.com', :nameservers => []) }
-    end
-
-    it "requires a nameservers", :wip => true do
-      requires_attr(:nameservers) { @opensrs.register_domain(:domain => 'example.com', :contacts => @contacts) }
-    end
 
     it "registers a domain" do
       VCR.use_cassette("provisioning/register_domain") do
         res = @opensrs.register_domain(
           :domain => 'fdsafsfsafafsaexample.com',
           :contacts => @contacts,
-          :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
+          :nameserver_list => ["ns1.systemdns.com", "ns2.systemdns.com"],
           :term => 1)
         result = res.result
         result['registration_text'].should match(/successfully completed/i)
@@ -141,7 +118,7 @@ describe MooMoo::Provisioning do
         res = @opensrs.register_domain(
           :domain => 'fdsajfkdajfkljfklajfdkljflaexample.com',
           :contacts => @contacts,
-          :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
+          :nameserver_list => ["ns1.systemdns.com", "ns2.systemdns.com"],
           :term => 1,
           :options => {:handle => :save})
         res.success?.should be_true
@@ -154,7 +131,7 @@ describe MooMoo::Provisioning do
         res = @opensrs.register_domain(
           :domain      => 'testingdomain.com',
           :contacts    => @contacts,
-          :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
+          :nameserver_list => ["ns1.systemdns.com", "ns2.systemdns.com"],
           :term        => 1,
           :options     => { :reg_type => :transfer }
         )
@@ -169,7 +146,7 @@ describe MooMoo::Provisioning do
         res = @opensrs.register_domain(
           :domain => 'example.com',
           :contacts => @contacts,
-          :nameservers => ["ns1.systemdns.com", "ns2.systemdns.com"],
+          :nameserver_list => ["ns1.systemdns.com", "ns2.systemdns.com"],
           :term => 1)
         res.success?.should be_false
       end
