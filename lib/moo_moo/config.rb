@@ -9,7 +9,7 @@ module MooMoo
     attr_accessor :port
 
     def initialize
-      @host = default_option("host") || 'horizion.opensrs.net'
+      @host = default_option("host") || 'horizon.opensrs.net'
       @key  = default_option("key")
       @user = default_option("user")
       @pass = default_option("pass")
