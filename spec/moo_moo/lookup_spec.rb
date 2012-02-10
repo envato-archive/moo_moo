@@ -10,14 +10,14 @@ describe MooMoo::Lookup do
   describe "#belongs_to_rsp" do
     it "returns false for a domain that is not owned by the rsp" do
       VCR.use_cassette("lookup/belongs_to_rsp") do
-        res = @opensrs.belongs_to_rsp?('example.com')
+        res = @opensrs.belongs_to_rsp(:domain => 'example.com')
         res.result['belongs_to_rsp'].to_i.should == 0
       end
     end
 
     it "returns true for a domain owned by the rsp" do
       VCR.use_cassette("lookup/belongs_to_rsp_negative") do
-        res = @opensrs.belongs_to_rsp?(@registered_domain)
+        res = @opensrs.belongs_to_rsp(:domain => @registered_domain)
         res.result['belongs_to_rsp'].to_i.should == 1
       end
     end
@@ -66,35 +66,15 @@ describe MooMoo::Lookup do
   describe "#get_domains_contacts" do
     it "returns the domain's contacts" do
       VCR.use_cassette("lookup/get_domains_contacts") do
-        result = @opensrs.get_domains_contacts(@registered_domain).result
+        result = @opensrs.get_domains_contacts(:domain_list => [@registered_domain]).result
         result[@registered_domain]['contact_set']['owner']['address2'].should == "Suite 500"
         result[@registered_domain]['contact_set']['billing']['org_name'].should == "Example Inc."
-      end
-    end
-
-    it "fails for a domain that is not in the registry" do
-      VCR.use_cassette("lookup/get_domains_contacts_fail") do
-        res = @opensrs.get_domains_contacts('example.com')
-        res.success?.should be_true
-        res.result['example.com']['error'].should match(/Domain does not belong to the reseller/i)
       end
     end
   end
 
   describe "#get_domains_by_expiredate" do
     use_vcr_cassette "lookup/get_domains_by_expiredate"
-
-    it "requires a start date", :wip => true do
-      requires_attr(:start_date) do
-        @opensrs.get_domains_by_expiredate(:end_date => Date.parse('2011-04-21'))
-      end
-    end
-
-    it "requires an end date", :wip => true do
-      requires_attr(:end_date) do
-        @opensrs.get_domains_by_expiredate(:start_date => Date.parse('2011-04-21'))
-      end
-    end
 
     it "returns domains within an expiration range" do
       result = @opensrs.get_domains_by_expiredate(
@@ -112,25 +92,9 @@ describe MooMoo::Lookup do
   describe "#get_notes" do
     it "returns the notes for a domain" do
       VCR.use_cassette("lookup/get_notes_for_domain") do
-        result = @opensrs.get_notes_for_domain(@registered_domain).result
+        result = @opensrs.get_notes(:domain => "thedomain").result
         result['total'].to_i.should == 4
         result['notes']['1']['note'].should match(/Order.*?\d+.*?Domain Registration.*?1 year/i)
-      end
-    end
-
-    it "returns the notes for an order" do
-      VCR.use_cassette("lookup/get_notes_for_order") do
-        result = @opensrs.get_notes_for_order(:domain => @registered_domain, :order_id => 1855625).result
-        result['page'].to_i.should == 1
-        result['notes'].should be_a_kind_of(Hash)
-        result['notes'].should be_empty
-      end
-    end
-
-    it "returns the notes for a transfer" do
-      VCR.use_cassette("lookup/get_notes_for_transfer") do
-        res = @opensrs.get_notes_for_transfer(:domain => "testingdomain.com", :transfer_id => 37021)
-        res.success?.should be_true
       end
     end
   end
@@ -139,7 +103,7 @@ describe MooMoo::Lookup do
     use_vcr_cassette "lookup/get_order_info"
 
     it "returns the order info" do
-      result = @opensrs.get_order_info(1855625).result['field_hash']
+      result = @opensrs.get_order_info(:order_id => 1855625).result['field_hash']
       result['owner_address2'].should == "Suite 500"
       result['billing_org_name'].should == "Example Inc."
       result['period'].to_i.should == 1
@@ -150,7 +114,7 @@ describe MooMoo::Lookup do
     use_vcr_cassette "lookup/get_orders_by_domain"
 
     it "returns the orders for a domain" do
-      result = @opensrs.get_orders_by_domain(@registered_domain).result
+      result = @opensrs.get_orders_by_domain(:domain => @registered_domain).result
       result['orders'].should be_a_kind_of(Hash)
       result['orders'].should have(2).domains
       result['orders']['0']['id'].to_i.should == 1862773
@@ -161,7 +125,7 @@ describe MooMoo::Lookup do
     use_vcr_cassette "lookup/get_price"
 
     it "returns the price" do
-      res = @opensrs.get_price('example.com')
+      res = @opensrs.get_price(:domain => 'example.com')
       res.result['price'].to_f.should == 11.62
     end
   end
@@ -170,7 +134,7 @@ describe MooMoo::Lookup do
     use_vcr_cassette "lookup/get_product_info"
 
     it "fails to find an invalid product" do
-      res = @opensrs.get_product_info(99)
+      res = @opensrs.get_product_info(:product_id => 99)
       res.success?.should be_false
       res.error_code.should == 405
       res.error_msg.should match(/cannot be found/i)
@@ -180,14 +144,14 @@ describe MooMoo::Lookup do
   describe "#lookup domain" do
     it "returns the availbility of an available domain" do
       VCR.use_cassette("lookup/lookup_domain_available") do
-        result = @opensrs.lookup_domain('example.com').result
+        result = @opensrs.lookup_domain(:domain => 'example.com').result
         result['status'].should == "available"
       end
     end
 
     it "returns the availability of a registered domain" do
       VCR.use_cassette("lookup/lookup_domain_registered") do
-        result = @opensrs.lookup_domain(@registered_domain).result
+        result = @opensrs.lookup_domain(:domain => @registered_domain).result
         result['status'].should == "taken"
       end
     end
@@ -197,7 +161,7 @@ describe MooMoo::Lookup do
     use_vcr_cassette "lookup/name_suggest"
 
     it "returns suggested names for a domain" do
-      result = @opensrs.name_suggest("random_domain", [".com", ".net"]).result
+      result = @opensrs.name_suggest(:domain => "random_domain", :tlds => [".com", ".net"]).result
       result['lookup']['count'].to_i.should == 4
       result['lookup']['items']['0']['domain'].should == "randomdomain.com"
       result['lookup']['items']['0']['status'].should == "taken"
