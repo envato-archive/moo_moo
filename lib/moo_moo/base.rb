@@ -21,9 +21,7 @@ module MooMoo
       define_method(method_name) do |params = {}|
         params[:key] = 'attributes'
         cookie = params.delete :cookie
-
         instance_exec(params, &block) if block
-
         run_command action_name, object, params, cookie
       end
     end

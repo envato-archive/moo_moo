@@ -11,7 +11,7 @@ end
 describe MooMoo::Base do
 
   before :each do
-    @service = SampleService.new
+    @service = SampleService.new("thehost", "thekey", "theuser", "thepass", "theport")
   end
 
   describe "class methods" do
@@ -52,11 +52,16 @@ describe MooMoo::Base do
   end
 
   describe "run_command" do
-    it "should parse result as a hash" do
-      xml = File.open("spec/fixtures/success_response.xml")
-      FakeWeb.register_uri(:post, "https://server.com:55443/", :body => xml)
+    it "should encapsulate response" do
+      result  = {:the => :result}
+      command = stub()
+      MooMoo::Command.should_receive(:new)
+                     .with("theaction", "theobject", {}, "thecookie")
+                     .and_return(command)
+      command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
 
-      @service.run_command(:action, :object).result["response_text"].should == "Command Successful"
+      response = @service.run_command("theaction", "theobject", {}, "thecookie")
+      response.result.should == result
     end
   end
 
