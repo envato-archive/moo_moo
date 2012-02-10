@@ -3,7 +3,6 @@ require 'moo_moo/exceptions'
 module MooMoo
   autoload :Version,      'moo_moo/version'
   autoload :Config,       'moo_moo/config'
-  autoload :Args,         'moo_moo/args'
   autoload :Command,      'moo_moo/command'
   autoload :Response,     'moo_moo/response'
   autoload :Base,         'moo_moo/base'
