@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('jruby-openssl', '~> 0.7.3') if RUBY_PLATFORM == 'java'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rspec', '~> 2.8.0'
+  s.add_development_dependency 'rdoc', '~> 3.12'
   s.add_development_dependency 'fakeweb', '~> 1.3.0'
   s.add_development_dependency 'vcr', '~> 1.11.3'
 
