@@ -49,6 +49,11 @@ module MooMoo
       #http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
       res = http.post(URI.encode("/"), xml, headers)
 
+      # Checks for invalid http status
+      unless (200..299).include?(res.code.to_i)
+        raise OpenSRSException, "Bad HTTP Status: #{res.code}"
+      end
+
       @returned_parameters = parse_response(res.body)
     end
 
