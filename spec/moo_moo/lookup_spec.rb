@@ -48,17 +48,8 @@ describe MooMoo::Lookup do
   describe "#get domain" do
     it "returns all the info" do
       VCR.use_cassette("lookup/get_domain") do
-        cookie = MooMoo::Cookie.new
-
-        res = cookie.set_cookie(
-          :username => MooMoo.config.user,
-          :password => MooMoo.config.pass,
-          :domain   => @registered_domain
-        )
-        result = @opensrs.get_domain(:cookie => res.result['cookie']).result
-        result['auto_renew'].to_i.should == 1
-        result['contact_set']['admin']['org_name'].should == "Example Inc."
-        result['nameserver_list']['0']['name'].should == "ns2.systemdns.com"
+        result = @opensrs.get_domain.result
+        result['auto_renew'].to_i.should == 0
       end
     end
   end

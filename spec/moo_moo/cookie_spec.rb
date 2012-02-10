@@ -9,7 +9,7 @@ describe MooMoo::Cookie do
   describe "#set_cookie" do
     it "sets the cookie" do
       VCR.use_cassette("cookie/set_cookie") do
-        res = @opensrs.set_cookie(
+        res = @opensrs.set(
           :username => MooMoo.config.user,
           :password => MooMoo.config.pass,
           :domain   => @registered_domain
@@ -18,30 +18,13 @@ describe MooMoo::Cookie do
         res.result['cookie'].should == "0000000000000000:000000:00000"
       end
     end
-
-    it "fails to set the cookie" do
-      VCR.use_cassette("cookie/set_cookie_fail") do
-        res = @opensrs.set_cookie(
-          :username => MooMoo.config.user,
-          :password => 'password',
-          :domain   => 'example.com'
-        )
-        res.success?.should be_false
-        res.error_code.should == 415
-      end
-    end
   end
 
   describe "#delete_cookie" do
     use_vcr_cassette "cookie/delete_cookie"
 
     it "destroys the cookie" do
-      res = @opensrs.set_cookie(
-        :username => MooMoo.config.user,
-        :password => MooMoo.config.pass,
-        :domain   => @registered_domain
-      )
-      res = @opensrs.delete_cookie(res.result['cookie'])
+      res = @opensrs.delete(:cookie => "thecookie")
       res.success?.should be_true
     end
   end
@@ -50,15 +33,10 @@ describe MooMoo::Cookie do
     use_vcr_cassette "cookie/update_cookie"
 
     it "updates the cookie's domain" do
-      res = @opensrs.set_cookie(
-        :username => MooMoo.config.user,
-        :password => MooMoo.config.pass,
-        :domain   => @registered_domain
-      )
-      res = @opensrs.update_cookie(
+      res = @opensrs.update(
         :old_domain => @registered_domain,
         :new_domain => @registered_domain,
-        :cookie     => res.result['cookie']
+        :cookie     => "thecookie"
       )
       res.success?.should be_true
       res.result['domain_count'].to_i.should == 1
