@@ -1,3 +1,5 @@
+require 'yaml'
+
 module MooMoo
   class Config
     attr_accessor :host
