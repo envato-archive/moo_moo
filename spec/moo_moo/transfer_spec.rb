@@ -30,7 +30,7 @@ describe MooMoo::Transfer do
   describe "#check_transfer" do
     it "shows in progress if the transfer is in progress" do
       VCR.use_cassette("transfer/check_transfer") do
-        res = @opensrs.check_transfer('exampledomain.com')
+        res = @opensrs.check_transfer(:domain => 'exampledomain.com')
         res.result['transferrable'].to_i.should == 0
         res.result['reason'].should match(/Transfer in progress/i)
       end
@@ -38,7 +38,7 @@ describe MooMoo::Transfer do
 
     it "says the domain already exists if it does" do
       VCR.use_cassette("transfer/check_transfer_exists") do
-        res = @opensrs.check_transfer(@registered_domain)
+        res = @opensrs.check_transfer(:domain => @registered_domain)
         res.result['transferrable'].to_i.should == 0
         res.result['reason'].should match(/Domain already exists in.*account/i)
       end
@@ -85,7 +85,7 @@ describe MooMoo::Transfer do
     use_vcr_cassette "transfer/send_password"
 
     it "resends email message to admin contact" do
-      result = @opensrs.send_password('fdsafsfsafafsaexample.com')
+      result = @opensrs.send_password(:domain_name => 'fdsafsfsafafsaexample.com')
     end
   end
 
