@@ -102,7 +102,6 @@ module MooMoo
     #  * <tt>:cookie</tt> - cookie for the domain if the command requires it
     def build_command(action, object, attributes = nil, cookie = nil)
       xml = <<-XML
-
       <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
       <!DOCTYPE OPS_envelope SYSTEM 'ops.dtd'>
       <OPS_envelope>

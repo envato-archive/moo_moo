@@ -10,13 +10,12 @@ end
 
 describe MooMoo::Base do
 
+  before :each do
+    @service = SampleService.new
+  end
+
   describe "class methods" do
     describe "register_service" do
-
-      before :each do
-        @service = SampleService.new
-      end
-
       context "calls the services with the given parameters" do
         it "service1" do
           params = {:the => :params, :cookie => "thecookie"}
@@ -49,6 +48,15 @@ describe MooMoo::Base do
           @service.service3(params).should == "theresult"
         end
       end
+    end
+  end
+
+  describe "run_command" do
+    it "should parse result as a hash" do
+      xml = File.open("spec/fixtures/success_response.xml")
+      FakeWeb.register_uri(:post, "https://server.com:55443/", :body => xml)
+
+      @service.run_command(:action, :object).result["response_text"].should == "Command Successful"
     end
   end
 
