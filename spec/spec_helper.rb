@@ -3,13 +3,6 @@ require 'moo_moo'
 require 'vcr'
 require 'extlib'
 
-MooMoo.configure do |config|
-  config.host = ENV['OPENSRS_TEST_URL']
-  config.key = ENV['OPENSRS_TEST_KEY']
-  config.user = ENV['OPENSRS_TEST_USER']
-  config.pass = ENV['OPENSRS_TEST_PASS']
-end
-
 VCR.config do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
   c.stub_with :fakeweb
@@ -59,15 +52,13 @@ end
 RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
   c.before(:each) do
-    if live_test?
-      MooMoo.configure do |config|
-        config.host = ENV['OPENSRS_TEST_URL']
-        config.key = ENV['OPENSRS_TEST_KEY']
-        config.user = ENV['OPENSRS_TEST_USER']
-        config.pass = ENV['OPENSRS_TEST_PASS']
-      end
-    else
-      MooMoo.configure do |config|
+    MooMoo.configure do |config|
+      if live_test?
+        config.host = ENV['OPENSRS_TEST_URL']  if ENV['OPENSRS_TEST_URL']
+        config.key  = ENV['OPENSRS_TEST_KEY']  if ENV['OPENSRS_TEST_KEY']
+        config.user = ENV['OPENSRS_TEST_USER'] if ENV['OPENSRS_TEST_USER']
+        config.pass = ENV['OPENSRS_TEST_PASS'] if ENV['OPENSRS_TEST_PASS']
+      else
         config.host = 'server.com'
         config.key = '123key'
         config.user = 'opensrs_user'
