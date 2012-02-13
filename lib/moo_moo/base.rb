@@ -18,7 +18,9 @@ module MooMoo
     # * <tt>object</tt> - the object
     # * <tt>action_name</tt> - the api action to be called; by default it is the same as method_name
     def self.register_service(method_name, object, action_name = method_name, &block)
-      define_method(method_name) do |params = {}|
+      define_method(method_name) do |*args|
+        params = args.first || {}
+
         params[:key] = 'attributes'
         cookie = params.delete :cookie
         instance_exec(params, &block) if block
