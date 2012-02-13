@@ -1,18 +1,12 @@
 require 'rspec'
 require 'moo_moo'
+require 'webmock/rspec'
 require 'vcr'
 require 'extlib'
 
-MooMoo.configure do |config|
-  config.host = ENV['OPENSRS_TEST_URL']
-  config.key = ENV['OPENSRS_TEST_KEY']
-  config.user = ENV['OPENSRS_TEST_USER']
-  config.pass = ENV['OPENSRS_TEST_PASS']
-end
-
 VCR.config do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
-  c.stub_with :fakeweb
+  c.stub_with :webmock
 
   c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:uri]}
 end
@@ -59,19 +53,13 @@ end
 RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
   c.before(:each) do
+    MooMoo.config = MooMoo::Config.new
     if live_test?
       MooMoo.configure do |config|
-        config.host = ENV['OPENSRS_TEST_URL']
-        config.key = ENV['OPENSRS_TEST_KEY']
-        config.user = ENV['OPENSRS_TEST_USER']
-        config.pass = ENV['OPENSRS_TEST_PASS']
-      end
-    else
-      MooMoo.configure do |config|
-        config.host = 'server.com'
-        config.key = '123key'
-        config.user = 'opensrs_user'
-        config.pass = 'password'
+        config.host = ENV['OPENSRS_TEST_URL'] if ENV['OPENSRS_TEST_URL']
+        config.key  = ENV['OPENSRS_TEST_KEY']  || raise(ArgumentError, "OPENSRS_TEST_KEY is required")
+        config.user = ENV['OPENSRS_TEST_USER'] || raise(ArgumentError, "OPENSRS_TEST_USER is required")
+        config.pass = ENV['OPENSRS_TEST_PASS'] || raise(ArgumentError, "OPENSRS_TEST_PASS is required")
       end
     end
   end
@@ -84,5 +72,21 @@ RSpec::Matchers.define :have_attr_accessor do |attribute|
 
   description do
     "have attr_accessor :#{attribute}"
+  end
+end
+
+RSpec::Matchers.define :have_registered_service do |method_name, object_name, action_name = method_name|
+  match do |object|
+    parameters = {:the => :params, :cookie => "thecookie"}
+    object.should_receive(:run_command)
+                  .with(action_name, object_name, parameters, "thecookie")
+                  .and_return("theresult")
+
+
+    object.send(method_name, parameters) == "theresult"
+  end
+
+  description do
+    "have registered service :#{method_name} delegating to action :#{action_name} and object :#{object_name}"
   end
 end

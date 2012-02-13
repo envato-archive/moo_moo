@@ -1,33 +1,30 @@
 module MooMoo
   class Lookup < Base
-    # Determines whether a domain belongs to the reseller
+
+    ##
+    # Determines whether the domain belongs to the RSP who issued the command.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to check ownership of
-    def belongs_to_rsp?(domain)
-      run_command :belongs_to_rsp, :domain, {
-        :domain => domain,
-        :key => 'attributes'
-      }
-    end
+    register_service :belongs_to_rsp, :domain
 
-    # Returns the balance of the reseller's account
-    #
-    def get_balance
-      run_command :get_balance, :balance, {
-        :key => 'attributes'
-      }
-    end
+    ##
+    # Queries the requester's account, and returns the total amount of money in the account and
+    # the amount that is allocated to pending transactions.
+    register_service :get_balance, :balance
 
-    # Lists domains that have been deleted due to expiration or request
-    #
-    def get_deleted_domains
-      run_command :get_deleted_domains, :domain, {
-        :key => 'attributes'
-      }
-    end
+    ##
+    # Lists domains that have been deleted due to expiration or deleted by request (revoked).
+    # This command applies to all domains in a Reseller's profile. Results include the domain,
+    # status, and deleted date.
+    register_service :get_deleted_domains, :domain
 
-    # Queries various types of data associated with a domain
+    ##
+    # Queries various types of data regarding the user's domain. For example, the all_info type
+    # allows you to retrieve all data for the domain linked to the current cookie. The list type
+    # queries the list of domains associated with the user's profile. The list type can also be
+    # used to return a list of domains that expire within a specified range. The nameservers type
+    # returns the nameservers currently acting as DNS servers for the domain.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to query
@@ -35,159 +32,78 @@ module MooMoo
     #
     # ==== Optional
     #  * <tt>:type</tt> - type of query to perform
-    def get_domain(params)
-      params[:type] = 'all_info' unless params[:type]
+    register_service :get_domain, :domain, :get
 
-      run_command :get, :domain, {
-        :type => params[:type],
-        :key => 'attributes'
-      }, params[:cookie]
-    end
-
-    # Queries contact information for a list of domains
+    ##
+    # Queries contact information for a list of domains.
     #
     # ==== Required
     #  * <tt>:domains</tt> - domains to get contact information for
-    def get_domains_contacts(*domains)
-      domain_list = {}
-      domains.each_with_index do |domain, index|
-        domain_list[index] = domain
-      end
+    register_service :get_domains_contacts, :domain
 
-      run_command :get_domains_contacts, :domain, {
-        :domain_list => domain_list,
-        :key => 'attributes'
-      }
-    end
-
-    # Queries the domains expiring within the specified date range
+    ##
+    # Retrieves domains that expire within a specified date range.
     #
     # ==== Required
     #  * <tt>:start_date</tt> - beginning date of the expiration range
     #  * <tt>:end_date</tt> - ending date of the expiration range
-    def get_domains_by_expiredate(attribs)
-      Args.new(attribs) do |c|
-        c.requires :start_date, :end_date
-      end
+    register_service :get_domains_by_expiredate, :domain
 
-      run_command :get_domains_by_expiredate, :domain, {
-        :exp_from => attribs[:start_date].to_s,
-        :exp_to => attribs[:end_date].to_s,
-        :key => 'attributes'
-      }
-    end
-
-    # Retrieves the domain notes that detail the history of the domain (renewals, transfers, etc.)
+    ##
+    # Retrieves the domain notes that detail the history of the domain, for example, renewals and
+    # transfers.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to get the notes for
-    def get_notes_for_domain(domain)
-      run_command :get_notes, :domain, {
-        :domain => domain,
-        :type => 'domain',
-        :key => 'attributes'
-      }
-    end
+    register_service :get_notes, :domain
 
-    # Retrieves the domain notes based on an order
-    #
-    # ==== Required
-    #  * <tt>:domain</tt> - domain to get the notes for
-    #  * <tt>:order_id</tt> - ID of the order
-    def get_notes_for_order(params)
-      run_command :get_notes, :domain, {
-        :domain => params[:domain],
-        :order_id => params[:order_id],
-        :type => 'order',
-        :key => 'attributes'
-      }
-    end
-
-    # Retrieves the domain notes based on a transfer ID
-    #
-    # ==== Required
-    #  * <tt>:domain</tt> - domain to get the notes for
-    #  * <tt>:transfer_id</tt> - ID of the transfer
-    def get_notes_for_transfer(params)
-      run_command :get_notes, :domain, {
-        :domain => params[:domain],
-        :transfer_id => params[:transfer_id],
-        :type => 'transfer',
-        :key => 'attributes'
-      }
-    end
-
-    # Queries all information related to an order
+    ##
+    # Queries all the information for an order, but does not return sensitive information such as
+    # username, password, and Authcode.
     #
     # ==== Required
     #  * <tt>:order_id</tt> - ID of the order
-    def get_order_info(order_id)
-      run_command :get_order_info, :domain, {
-        :order_id => order_id,
-        :key => 'attributes'
-      }
-    end
+    register_service :get_order_info, :domain
 
-    # Retrieves information about orders placed for a specific domain
+    ##
+    # Retrieves information about orders placed for a specific domain.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to get orders for
-    def get_orders_by_domain(domain)
-      run_command :get_orders_by_domain, :domain, {
-        :domain => domain,
-        :key => 'attributes'
-      }
-    end
+    register_service :get_orders_by_domain, :domain
 
-    # Queries the price of a domain
+    ##
+    # Queries the price of a domain, and can be used to determine the cost of a billable transaction
+    # for any TLD. A returned price for a given domain does not guarantee the availability of the
+    # domain, but indicates that the requested action is supported by the system and calculates the
+    # cost to register the domain (if available).
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to query the price of
-    def get_price(domain)
-      run_command :get_price, :domain, {
-        :domain => domain,
-        :key => 'attributes'
-      }
-    end
+    register_service :get_price, :domain
 
+    ##
     # Queries the properties of the specified Trust Service product
     #
     # ==== Required
     #  * <tt>:product_id</tt> - ID of the product
-    def get_product_info(product_id)
-      run_command :get_product_info, :trust_service, {
-        :product_id => product_id,
-        :key => 'attributes'
-      }
-    end
+    register_service :get_product_info, :trust_service
 
-    # Determines the availability of a domain
+    ##
+    # Determines the availability of a specified domain name.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain to check availability of
-    def lookup_domain(domain)
-      run_command :lookup, :domain, {
-        :domain => domain,
-        :key => 'attributes'
-      }
-    end
+    register_service :lookup_domain, :domain, :lookup
 
-    # Provides suggestions for a domain name for the specified TLDs
+    ##
+    # Checks whether a specified name, word, or phrase is available for registration in gTLDs and
+    # ccTLDs, suggests other similar domain names for .COM, .NET, .ORG, .INFO, .BIZ, .US, and .MOBI
+    # domains, and checks whether they are available. Reseller must be enabled for the specified TLDs.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain
     #  * <tt>:tlds</tt> - list of TLDs to make suggestions with
-    def name_suggest(domain, tlds)
-      tlds_indexed = {}
-      tlds.each_with_index do |tld, index|
-        tlds_indexed[index] = tld
-      end
-
-      run_command :name_suggest, :domain, {
-        :searchstring => domain,
-        :tlds => tlds_indexed,
-        :key => 'attributes'
-      }
-    end
+    register_service :name_suggest, :domain
   end
 end

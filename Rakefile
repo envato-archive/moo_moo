@@ -16,6 +16,22 @@ rescue LoadError
   puts "Can't load metric_fu"
 end
 
+begin
+  require 'rdoc/task'
+  Rake::RDocTask.new do |rdoc|
+    version = MooMoo::VERSION
+
+    rdoc.rdoc_dir = 'rdoc'
+    rdoc.title = "solusvm #{version}"
+    rdoc.rdoc_files.include('README*')
+    rdoc.rdoc_files.include('lib/**/*.rb')
+  end
+rescue LoadError
+  task :rdoc do
+    abort "rdoc is not available. In order to run rdoc, you must: sudo gem install rdoc"
+  end
+end
+
 desc "Sanitize sensitive info from cassettes"
 task :sanitize_cassettes do
   if ENV['OPENSRS_TEST_KEY'] && ENV['OPENSRS_TEST_URL'] && ENV['OPENSRS_TEST_USER'] && ENV['OPENSRS_TEST_PASS']
