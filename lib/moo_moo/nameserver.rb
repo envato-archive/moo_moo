@@ -42,5 +42,23 @@ module MooMoo
     #  * <tt>:new_name</tt> - new name for the nameserver
     #  * <tt>:domain</tt> - domain profile the nameserver was created for
     register_service :modify, :nameserver
+
+    ##
+    # Adds nameservers to a domain, or adds or removes nameservers for a domain that already has
+    # nameservers assigned to it. This command does not create a nameserver; the nameserver must
+    # already exist (see "create (nameserver)").
+    #
+    # This command is not supported for the following domains:.AT, .CH, .DK, .FR, .LI, and .MX.
+    # Use the update_all_info command to change the nameservers for any of these domains.
+    register_service :advanced_update, :domain, :advanced_update_nameservers
+
+    ##
+    # Adds a nameserver to one or all registries to which a Reseller has access. This command does
+    # not create a nameserver; a nameserver must already be created..
+    register_service :registry_add, :nameserver, :registry_add_ns
+
+    ##
+    # Verifies whether a nameserver exists at a particular registry.
+    register_service :registry_check, :nameserver, :registry_check_nameserver
   end
 end
