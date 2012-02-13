@@ -1,6 +1,8 @@
 module MooMoo
   class Nameserver < Base
-    # Creates a nameserver
+
+    ##
+    # Creates a nameserver in the same domain space as the cookie's domain.
     #
     # ==== Required
     #  * <tt>:name</tt> - name of the nameserver
@@ -9,17 +11,10 @@ module MooMoo
     #
     # ==== Optional
     #  * <tt>:cookie</tt> - cookie for domain
-    def create_nameserver(attribs)
-      Args.new(attribs) do |c|
-        c.requires :name, :ip, :domain
-        c.optionals :cookie
-      end
+    register_service :create, :nameserver
 
-      cookie = attribs.delete :cookie
-      run_command :create, :nameserver, attribs, cookie
-    end
-
-    # Deletes a nameserver
+    ##
+    # Deletes a nameserver.
     #
     # ==== Required
     #  * <tt>:name</tt> - name of the nameserver
@@ -28,41 +23,24 @@ module MooMoo
     #
     # ==== Optional
     #  * <tt>:cookie</tt> - cookie for domain
-    def delete_nameserver(attribs, cookie = nil)
-      Args.new(attribs) do |c|
-        c.requires :name, :ip, :domain
-        c.optionals :cookie
-      end
+    register_service :delete, :nameserver
 
-      cookie = attribs.delete :cookie
-      run_command :delete, :nameserver, attribs, cookie
-    end
-
-    # Queries nameservers that exist for the given domain
+    ##
+    # Queries nameservers that exist in the current user profile (current cookie). These nameservers
+    # may or may not be currently assigned to a domain.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain profile to query
-    def get_nameserver(domain)
-      run_command :get, :nameserver, {
-        :name => 'all',
-        :domain => domain,
-        :key => 'attributes'
-      }
-    end
+    register_service :get, :nameserver
 
-    # Renames a nameserver
+    ##
+    # Renames a nameserver.
     #
     # ==== Required
     #  * <tt>:name</tt> - current name of the nameserver
     #  * <tt>:ip</tt> - ip address of the name server
     #  * <tt>:new_name</tt> - new name for the nameserver
     #  * <tt>:domain</tt> - domain profile the nameserver was created for
-    def modify_nameserver(attribs)
-      Args.new(attribs) do |c|
-        c.requires :name, :ip, :new_name, :domain
-      end
-
-      run_command :modify, :nameserver, attribs
-    end
+    register_service :modify, :nameserver
   end
 end
