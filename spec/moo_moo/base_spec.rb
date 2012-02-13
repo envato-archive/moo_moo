@@ -55,10 +55,10 @@ describe MooMoo::Base do
     it "should encapsulate response" do
       result  = {:the => :result}
       command = stub()
+      command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
       MooMoo::Command.should_receive(:new)
                      .with("theaction", "theobject", {}, "thecookie")
                      .and_return(command)
-      command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
 
       response = @service.run_command("theaction", "theobject", {}, "thecookie")
       response.result.should == result
