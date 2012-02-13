@@ -13,7 +13,8 @@ module MooMoo
   autoload :Cookie,        'moo_moo/cookie'
   autoload :SubReseller,   'moo_moo/sub_reseller'
   autoload :PersonalNames, 'moo_moo/personal_names'
-  autoload :BulkChanges, 'moo_moo/bulk_changes'
+  autoload :BulkChanges,   'moo_moo/bulk_changes'
+  autoload :DnsZones,      'moo_moo/dns_zones'
 
   class << self
     attr_accessor :config
