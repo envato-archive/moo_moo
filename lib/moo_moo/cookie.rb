@@ -2,7 +2,7 @@ module MooMoo
   class Cookie < Base
 
     ##
-    # Creates a cookie for a domain
+    # Creates a cookie for use in commands where a cookie is required to access OpenSRS.
     #
     # ==== Required
     #  * <tt>:username</tt> - username of the registrant
@@ -11,14 +11,14 @@ module MooMoo
     register_service :set, :cookie
 
     ##
-    # Deletes a cookie that was previously set
+    # Deletes a cookie.
     #
     # ==== Required
     #  * <tt>:cookie</tt> - cookie to delete
     register_service :delete, :cookie
 
     ##
-    # Updates a cookie to be valid for a different domain
+    # Allows the client to change the domain associated with the current cookie.
     #
     # ==== Required
     #  * <tt>:old_domain</tt> - domain the cookie is currently set for
@@ -27,8 +27,7 @@ module MooMoo
     register_service :update, :cookie
 
     ##
-    # Cleanly terminates the connection
-    #
+    # Cleanly terminates the connection.
     register_service :quit_session, :session, :quit
   end
 end

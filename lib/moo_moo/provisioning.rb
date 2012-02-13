@@ -9,14 +9,16 @@ module MooMoo
     register_service :cancel_order, :trust_service
 
     ##
-    # Cancels pending or declined orders
+    # Cancels orders with a status of pending or declined.
     #
     # ==== Required
     #  * <tt>:to_date</tt> - date before which to cancel orders
     register_service :cancel_pending_orders, :order
 
     ##
-    # Changes information associated with a domain
+    # Changes information associated with a domain, such as contact info. The action request message
+    # is different depending on the type of modification being made, and is shown separately for each
+    # type.
     #
     # ==== Required
     #  * <tt>:type</tt> - type of data to modify
@@ -27,14 +29,16 @@ module MooMoo
     register_service :modify, :domain
 
     ##
-    # Processes or cancels a pending order
+    # Processes or cancels pending orders; also applicable to any order that is declined. The order
+    # is cancelled and a new order is created. Can also be used to process cancelled orders, provided
+    # the cancelled order was a new order or a transfer.
     #
     # ==== Required
     #  * <tt>:order_id</tt> - ID of the pending order to process
     register_service :process_pending, :domain
 
     ##
-    # Renews a domain name
+    # Renews a domain and allows you to set the auto-renewal flag on a domain.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain name to renew
@@ -43,7 +47,8 @@ module MooMoo
     register_service :renew_domain, :domain, :renew
 
     ##
-    # Removes the domain at the registry
+    # Removes the domain at the registry. Use this command to request a refund for a domain purchase.
+    # This call can refund/revoke only one domain at the time.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain name to remove
@@ -51,7 +56,8 @@ module MooMoo
     register_service :revoke, :domain
 
     ##
-    # Submits a domain contact information update
+    # Submits a domain-contact information update to the OpenSRS system. Each contact object is
+    # submitted as a whole to OpenSRS, and changes are parsed against the existing information.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain name to update the contacts of
@@ -60,7 +66,8 @@ module MooMoo
     register_service :update_contacts, :domain
 
     ##
-    # Submits a new registration request or transfer order
+    # Submits a new domain registration or transfer order that obeys the Reseller's 'process
+    # immediately' flag setting.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain name to register

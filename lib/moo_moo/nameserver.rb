@@ -2,7 +2,7 @@ module MooMoo
   class Nameserver < Base
 
     ##
-    # Creates a nameserver
+    # Creates a nameserver in the same domain space as the cookie's domain.
     #
     # ==== Required
     #  * <tt>:name</tt> - name of the nameserver
@@ -14,7 +14,7 @@ module MooMoo
     register_service :create, :nameserver
 
     ##
-    # Deletes a nameserver
+    # Deletes a nameserver.
     #
     # ==== Required
     #  * <tt>:name</tt> - name of the nameserver
@@ -26,14 +26,15 @@ module MooMoo
     register_service :delete, :nameserver
 
     ##
-    # Queries nameservers that exist for the given domain
+    # Queries nameservers that exist in the current user profile (current cookie). These nameservers
+    # may or may not be currently assigned to a domain.
     #
     # ==== Required
     #  * <tt>:domain</tt> - domain profile to query
     register_service :get, :nameserver
 
     ##
-    # Renames a nameserver
+    # Renames a nameserver.
     #
     # ==== Required
     #  * <tt>:name</tt> - current name of the nameserver
