@@ -53,17 +53,13 @@ end
 RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
   c.before(:each) do
-    MooMoo.configure do |config|
-      if live_test?
-        config.host = ENV['OPENSRS_TEST_URL']  if ENV['OPENSRS_TEST_URL']
-        config.key  = ENV['OPENSRS_TEST_KEY']  if ENV['OPENSRS_TEST_KEY']
-        config.user = ENV['OPENSRS_TEST_USER'] if ENV['OPENSRS_TEST_USER']
-        config.pass = ENV['OPENSRS_TEST_PASS'] if ENV['OPENSRS_TEST_PASS']
-      else
-        config.host = 'server.com'
-        config.key = '123key'
-        config.user = 'opensrs_user'
-        config.pass = 'password'
+    MooMoo.config = MooMoo::Config.new
+    if live_test?
+      MooMoo.configure do |config|
+        config.host = ENV['OPENSRS_TEST_URL'] if ENV['OPENSRS_TEST_URL']
+        config.key  = ENV['OPENSRS_TEST_KEY']  || raise(ArgumentError, "OPENSRS_TEST_KEY is required")
+        config.user = ENV['OPENSRS_TEST_USER'] || raise(ArgumentError, "OPENSRS_TEST_USER is required")
+        config.pass = ENV['OPENSRS_TEST_PASS'] || raise(ArgumentError, "OPENSRS_TEST_PASS is required")
       end
     end
   end
