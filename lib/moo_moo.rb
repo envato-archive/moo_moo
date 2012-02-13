@@ -11,6 +11,7 @@ module MooMoo
   autoload :Provisioning, 'moo_moo/provisioning'
   autoload :Transfer,     'moo_moo/transfer'
   autoload :Cookie,       'moo_moo/cookie'
+  autoload :SubReseller,       'moo_moo/sub_reseller'
 
   class << self
     attr_accessor :config
