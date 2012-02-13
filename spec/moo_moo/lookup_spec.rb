@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'date'
 
 describe MooMoo::Lookup do
   it { should have_registered_service(:belongs_to_rsp, :domain) }

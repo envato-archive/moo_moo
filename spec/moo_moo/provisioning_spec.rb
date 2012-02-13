@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'date'
 
 describe MooMoo::Provisioning do
   it { should have_registered_service(:cancel_order, :trust_service) }
