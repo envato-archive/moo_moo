@@ -20,9 +20,9 @@ describe MooMoo::Base do
         it "service1" do
           params = {:the => :params, :cookie => "thecookie"}
 
-          @service.should_receive(:run_command)
-                  .with(:service1, :object1, params, "thecookie")
-                  .and_return("theresult")
+          @service.should_receive(:run_command).
+                  with(:service1, :object1, params, "thecookie").
+                  and_return("theresult")
 
           @service.service1(params).should == "theresult"
         end
@@ -30,9 +30,9 @@ describe MooMoo::Base do
         it "service2" do
           params = {:the => :params, :cookie => "thecookie"}
 
-          @service.should_receive(:run_command)
-                  .with(:action2, :object2, params, "thecookie")
-                  .and_return("theresult")
+          @service.should_receive(:run_command).
+                  with(:action2, :object2, params, "thecookie").
+                  and_return("theresult")
 
           @service.service2(params).should == "theresult"
         end
@@ -41,9 +41,9 @@ describe MooMoo::Base do
           params = {:the => :params, :cookie => "thecookie"}
           expected_params = {:the => :params, :key => "attributes", :example => "theexample"}
 
-          @service.should_receive(:run_command)
-                  .with(:service3, :object3, expected_params, "thecookie")
-                  .and_return("theresult")
+          @service.should_receive(:run_command).
+                  with(:service3, :object3, expected_params, "thecookie").
+                  and_return("theresult")
 
           @service.service3(params).should == "theresult"
         end
@@ -56,9 +56,9 @@ describe MooMoo::Base do
       result  = {:the => :result}
       command = stub()
       command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
-      MooMoo::Command.should_receive(:new)
-                     .with("theaction", "theobject", {}, "thecookie")
-                     .and_return(command)
+      MooMoo::Command.should_receive(:new).
+                     with("theaction", "theobject", {}, "thecookie").
+                     and_return(command)
 
       response = @service.run_command("theaction", "theobject", {}, "thecookie")
       response.result.should == result
