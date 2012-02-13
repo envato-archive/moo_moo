@@ -4,7 +4,12 @@ describe MooMoo::Command do
 
   let(:action)  { "theaction" }
   let(:object)  { "theobject" }
-  let(:params)  { {:string => "stringparam", :hash => {:the => "hashparam"}, :array => [{"0".to_sym => {:param => "arrayvalue"}}]} }
+  let(:params)  { {
+    :string => "stringparam",
+    :hash => {:the => "hashparam"},
+    :array => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
+    :array_list => ["arrayvalue1", "arrayvalue2"]
+  } }
   let(:cookie)  { "thecookie" }
 
   let(:command) { MooMoo::Command.new(action, object, params, cookie) }
@@ -72,7 +77,13 @@ describe MooMoo::Command do
       end
 
       it "should set array params" do
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array']/dt_array/item[@key='0']/dt_assoc/item[@key='param']"].text.should == "arrayvalue"
+        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array']/dt_array/item[@key='0']/dt_assoc/item[@key='param']"].text.should == "arrayvalue1"
+        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array']/dt_array/item[@key='1']/dt_assoc/item[@key='param']"].text.should == "arrayvalue2"
+      end
+
+      it "should set array list params" do
+        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array_list']/dt_array/item[@key='0']"].text.should == "arrayvalue1"
+        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array_list']/dt_array/item[@key='1']"].text.should == "arrayvalue2"
       end
     end
   end

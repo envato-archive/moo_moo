@@ -57,30 +57,21 @@ module MooMoo
     # ==== Required
     #  * <tt>:elem</tt> - XML element to add the child nodes to
     #  * <tt>:coll</tt> - collection that will be added as XML child elements
-    def xml_add_collection_as_child(elem, coll)
-      # default collection type is array
-      dt_type = 'dt_array'
-
-      # if it's a hash, make sure the keys aren't numeric
+    def build_child(elem, coll)
       if coll.is_a?(Hash)
-        begin
-          Float(coll.keys.first)
-        rescue
-          # the keys weren't numeric, so it really is an association (hash)
-          dt_type = 'dt_assoc'
+        elem = elem.add_element("dt_assoc")
+        coll.each do |key, val|
+          child = elem.add_element('item', {'key' => key})
+          build_child(child, val)
         end
-      end
-
-      elem = elem.add_element(dt_type)
-      coll = coll.first if coll.is_a? Array
-
-      coll.each do |key, value|
-        child = elem.add_element('item', {'key' => key})
-        if value.is_a?(Hash) || value.is_a?(Array)
-          xml_add_collection_as_child(child, value)
-        else
-          child.text = value
+      elsif coll.is_a?(Array)
+        elem = elem.add_element("dt_array")
+        coll.each_with_index do |val, key|
+          child = elem.add_element('item', {'key' => key})
+          build_child(child, val)
         end
+      else
+        elem.text = coll
       end
     end
 
@@ -117,15 +108,7 @@ module MooMoo
 
       unless @params.nil?
         elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'attributes'})
-        elem = elem.add_element('dt_assoc')
-        @params.each_pair do |key, value|
-          attrib_elem = elem.add_element('item', {'key' => key})
-          if value.is_a?(Hash) || value.is_a?(Array)
-            xml_add_collection_as_child(attrib_elem, value)
-          else
-            attrib_elem.text = (value.is_a?(String) ? value.dup : value)
-          end
-        end
+        build_child(elem, @params)
       end
 
       doc
