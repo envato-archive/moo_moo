@@ -15,7 +15,7 @@ describe MooMoo::Base do
   end
 
   describe "class methods" do
-    describe "register_service" do
+    describe "#register_service" do
       context "calls the services with the given parameters" do
         it "service1" do
           params = {:the => :params, :cookie => "thecookie"}
@@ -51,7 +51,7 @@ describe MooMoo::Base do
     end
   end
 
-  describe "run_command" do
+  describe "#run_command" do
     it "should encapsulate response" do
       result  = {:the => :result}
       command = stub()
@@ -73,5 +73,9 @@ describe MooMoo::Base do
         end
       end.to raise_error MooMoo::OpenSRSException
     end
+  end
+
+  it "shoul PROGRAM SPECS FOR EACH register_service" do
+    false.should be_true
   end
 end

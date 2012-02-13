@@ -28,26 +28,19 @@ module MooMoo
     #  * <tt>:user</tt> - username for the account
     #  * <tt>:port</tt> - port to connect to
     def run(host, key, user, port)
-      xml = build_command(@action, @object, @params, @cookie)
-
-      md5_signature = Digest::MD5.hexdigest(
-        Digest::MD5.hexdigest(
-          xml + key
-        ) + key
-      )
-
+      body    = build_command.to_s
       headers = {
         'Content-Type' => 'text/xml',
         'X-Username' => user,
-        'X-Signature' => md5_signature,
-        'Content-Length' => xml.size.to_s
+        'X-Signature' => signature(body, key),
+        'Content-Length' => body.size.to_s
       }
 
       http = Net::HTTP.new(URI.encode(host), port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       #http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
-      res = http.post(URI.encode("/"), xml, headers)
+      res = http.post(URI.encode("/"), body, headers)
 
       # Checks for invalid http status
       unless (200..299).include?(res.code.to_i)
@@ -92,15 +85,7 @@ module MooMoo
     end
 
     # Builds an XML string of the command which can be sent to OpenSRS
-    #
-    # ==== Required
-    #  * <tt>:action</tt> - action of the command
-    #  * <tt>:object</tt> - object the command operates on
-    #
-    # ==== Optional
-    #  * <tt>:attributes</tt> - additional attributes for the command
-    #  * <tt>:cookie</tt> - cookie for the domain if the command requires it
-    def build_command(action, object, attributes = nil, cookie = nil)
+    def build_command
       xml = <<-XML
       <?xml version='1.0' encoding='UTF-8' standalone='no' ?>
       <!DOCTYPE OPS_envelope SYSTEM 'ops.dtd'>
@@ -122,18 +107,18 @@ module MooMoo
       XML
 
       doc = REXML::Document.new(xml)
-      doc.root.elements["body/data_block/dt_assoc/item[@key='action']"].text = action
-      doc.root.elements["body/data_block/dt_assoc/item[@key='object']"].text = object
+      doc.root.elements["body/data_block/dt_assoc/item[@key='action']"].text = @action
+      doc.root.elements["body/data_block/dt_assoc/item[@key='object']"].text = @object
 
-      unless cookie.nil?
+      unless @cookie.nil?
         cookie_elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'cookie'})
-        cookie_elem.text = cookie
+        cookie_elem.text = @cookie
       end
 
-      unless attributes.nil?
+      unless @params.nil?
         elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'attributes'})
         elem = elem.add_element('dt_assoc')
-        attributes.each_pair do |key, value|
+        @params.each_pair do |key, value|
           attrib_elem = elem.add_element('item', {'key' => key})
           if value.is_a?(Hash) || value.is_a?(Array)
             xml_add_collection_as_child(attrib_elem, value)
@@ -143,7 +128,7 @@ module MooMoo
         end
       end
 
-      doc.to_s
+      doc
     end
 
     # Parses an XML response from the OpenSRS registry and generates a
@@ -187,6 +172,14 @@ module MooMoo
       end
 
       data_hash
+    end
+
+    def signature(content, key)
+      Digest::MD5.hexdigest(
+        Digest::MD5.hexdigest(
+          content + key
+        ) + key
+      )
     end
   end
 end

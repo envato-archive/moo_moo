@@ -1,11 +1,12 @@
 require 'rspec'
 require 'moo_moo'
+require 'webmock/rspec'
 require 'vcr'
 require 'extlib'
 
 VCR.config do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
-  c.stub_with :fakeweb
+  c.stub_with :webmock
 
   c.default_cassette_options = {:record => :new_episodes, :match_requests_on => [:uri]}
 end
