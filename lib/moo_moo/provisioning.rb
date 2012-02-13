@@ -57,9 +57,7 @@ module MooMoo
     #  * <tt>:domain</tt> - domain name to update the contacts of
     #  * <tt>:contact_set</tt> - contact set with updated values
     #  * <tt>:types</tt> - list of contact types that are to be updated
-    register_service :update_contacts, :domain do |params|
-      params[:types] = index_array(params[:types])
-    end
+    register_service :update_contacts, :domain
 
     ##
     # Submits a new registration request or transfer order
@@ -72,11 +70,7 @@ module MooMoo
     # ==== Optional
     #  * <tt>:term</tt> - number of years to register the domain for
     #  * <tt>:options</tt> - additional attributes to set
-    register_service :register_domain, :domain, :sw_register do |params|
-      if params[:nameserver_list]
-        params[:nameserver_list] = format_nameservers(params[:nameserver_list])
-      end
-    end
+    register_service :register_domain, :domain, :sw_register
 
     ##
     # Submits a new registration request or transfer order
@@ -89,20 +83,5 @@ module MooMoo
     #  * <tt>:attribs</tt> - additional attributes to set
     #  * <tt>:term</tt> - number of years to register the trust service for
     register_service :register_trust_service, :trust_service
-
-    private
-
-    def format_nameservers(nameservers)
-      [
-        "0".to_sym => {
-          :sortorder => 1,
-          :name => nameservers.first
-        },
-        "1".to_sym => {
-          :sortorder => 2,
-          :name => nameservers.size == 2 ? nameservers[1] : nameservers.first
-        },
-      ]
-    end
   end
 end

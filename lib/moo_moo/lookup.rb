@@ -34,14 +34,7 @@ module MooMoo
     #
     # ==== Required
     #  * <tt>:domains</tt> - domains to get contact information for
-    register_service :get_domains_contacts, :domain do |params|
-      domain_list = {}
-      params[:domain_list].each_with_index do |domain, index|
-        domain_list[index] = domain
-      end
-
-      params[:domain_list] = domain_list
-    end
+    register_service :get_domains_contacts, :domain
 
     ##
     # Queries the domains expiring within the specified date range
@@ -99,13 +92,6 @@ module MooMoo
     # ==== Required
     #  * <tt>:domain</tt> - domain
     #  * <tt>:tlds</tt> - list of TLDs to make suggestions with
-    register_service :name_suggest, :domain do |params|
-      tlds_indexed = {}
-      params[:tlds].each_with_index do |tld, index|
-        tlds_indexed[index] = tld
-      end
-
-      params[:tlds] = tlds_indexed
-    end
+    register_service :name_suggest, :domain
   end
 end

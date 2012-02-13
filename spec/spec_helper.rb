@@ -78,3 +78,19 @@ RSpec::Matchers.define :have_attr_accessor do |attribute|
     "have attr_accessor :#{attribute}"
   end
 end
+
+RSpec::Matchers.define :have_registered_service do |method_name, object_name, action_name = method_name|
+  match do |object|
+    parameters = {:the => :params, :cookie => "thecookie"}
+    object.should_receive(:run_command)
+                  .with(action_name, object_name, parameters, "thecookie")
+                  .and_return("theresult")
+
+
+    object.send(method_name, parameters) == "theresult"
+  end
+
+  description do
+    "have registered service :#{method_name} delegating to action :#{action_name} and object :#{object_name}"
+  end
+end

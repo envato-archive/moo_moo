@@ -74,8 +74,4 @@ describe MooMoo::Base do
       end.to raise_error MooMoo::OpenSRSException
     end
   end
-
-  it "shoul PROGRAM SPECS FOR EACH register_service" do
-    false.should be_true
-  end
 end
