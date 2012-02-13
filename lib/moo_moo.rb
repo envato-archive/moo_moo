@@ -16,6 +16,7 @@ module MooMoo
   autoload :BulkChanges,      'moo_moo/bulk_changes'
   autoload :DnsZones,         'moo_moo/dns_zones'
   autoload :DomainForwarding, 'moo_moo/domain_forwarding'
+  autoload :User,             'moo_moo/user'
 
   class << self
     attr_accessor :config
