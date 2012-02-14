@@ -63,15 +63,17 @@ describe MooMoo::Base do
       response = @service.run_command("theaction", "theobject", {}, "thecookie")
       response.result.should == result
     end
-  end
 
-  describe "#try_opensrs" do
-    it "raises an OpenSRSException" do
-      expect do
-        MooMoo::Base.new.instance_eval do
-          try_opensrs { raise "Exception message" }
-        end
-      end.to raise_error MooMoo::OpenSRSException
+    [Timeout::Error, Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET,
+     Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse,
+     Net::HTTPHeaderSyntaxError, Net::ProtocolError].each do |exception|
+      it "raises an OpenSRSException on #{exception}" do
+        MooMoo::Command.any_instance.should_receive(:run).and_raise(exception)
+
+        expect do
+          @service.run_command("theaction", "theobject")
+        end.to raise_error MooMoo::OpenSRSException
+      end
     end
   end
 end

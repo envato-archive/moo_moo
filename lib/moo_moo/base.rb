@@ -58,35 +58,13 @@ module MooMoo
     def run_command(action, object, params = {}, cookie = nil)
       cmd = Command.new(action, object, params, cookie)
 
-      try_opensrs do
+      begin
         result = cmd.run(@host, @key, @user, @port)
         Response.new(result, params[:key])
-      end
-    end
-
-    private
-
-    # Indexes an array by building a hash with numeric keys
-    #
-    # === Required
-    #  * <tt>:arr</tt> - array to build an indexed hash of
-    def index_array(arr)
-      arr_indexed = {}
-
-      arr.each_with_index do |item, index|
-        arr_indexed[index] = item
-      end
-
-      arr_indexed
-    end
-
-    def try_opensrs
-      begin
-        yield
-      rescue Exception => e
-        exception = OpenSRSException.new(e.message)
-        exception.set_backtrace(e.backtrace)
-        raise exception
+      rescue Timeout::Error, Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET,
+             Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse,
+             Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+        raise OpenSRSException.new(e)
       end
     end
   end
