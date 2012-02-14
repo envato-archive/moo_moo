@@ -21,7 +21,6 @@ module MooMoo
       define_method(method_name) do |*args|
         params = args.first || {}
 
-        params[:key] = 'attributes'
         cookie = params.delete :cookie
         instance_exec(params, &block) if block
         run_command action_name, object, params, cookie
@@ -60,7 +59,7 @@ module MooMoo
 
       begin
         result = cmd.run(@host, @key, @user, @port)
-        Response.new(result, params[:key])
+        Response.new(result)
       rescue Timeout::Error, Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET,
              Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse,
              Net::HTTPHeaderSyntaxError, Net::ProtocolError => e

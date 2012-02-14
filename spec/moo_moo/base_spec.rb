@@ -39,7 +39,7 @@ describe MooMoo::Base do
 
         it "service3" do
           params = {:the => :params, :cookie => "thecookie"}
-          expected_params = {:the => :params, :key => "attributes", :example => "theexample"}
+          expected_params = {:the => :params, :example => "theexample"}
 
           @service.should_receive(:run_command).
                   with(:service3, :object3, expected_params, "thecookie").
@@ -61,7 +61,7 @@ describe MooMoo::Base do
                      and_return(command)
 
       response = @service.run_command("theaction", "theobject", {}, "thecookie")
-      response.result.should == result
+      response[:the].should == :result
     end
 
     [Timeout::Error, Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET,
