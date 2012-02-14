@@ -124,8 +124,6 @@ module MooMoo
     def parse_response(data)
       doc = REXML::Document.new(data)
 
-      values = {}
-
       elements = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
         item.is_a? REXML::Element
       }

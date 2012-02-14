@@ -39,7 +39,7 @@ describe MooMoo::Base do
 
         it "service3" do
           params = {:the => :params, :cookie => "thecookie"}
-          expected_params = {:the => :params, :key => "attributes", :example => "theexample"}
+          expected_params = {:the => :params, :example => "theexample"}
 
           @service.should_receive(:run_command).
                   with(:service3, :object3, expected_params, "thecookie").
@@ -61,17 +61,19 @@ describe MooMoo::Base do
                      and_return(command)
 
       response = @service.run_command("theaction", "theobject", {}, "thecookie")
-      response.result.should == result
+      response[:the].should == :result
     end
-  end
 
-  describe "#try_opensrs" do
-    it "raises an OpenSRSException" do
-      expect do
-        MooMoo::Base.new.instance_eval do
-          try_opensrs { raise "Exception message" }
-        end
-      end.to raise_error MooMoo::OpenSRSException
+    [Timeout::Error, Errno::ETIMEDOUT, Errno::EINVAL, Errno::ECONNRESET,
+     Errno::ECONNREFUSED, EOFError, Net::HTTPBadResponse,
+     Net::HTTPHeaderSyntaxError, Net::ProtocolError].each do |exception|
+      it "raises an OpenSRSException on #{exception}" do
+        MooMoo::Command.any_instance.should_receive(:run).and_raise(exception)
+
+        expect do
+          @service.run_command("theaction", "theobject")
+        end.to raise_error MooMoo::OpenSRSException
+      end
     end
   end
 end
