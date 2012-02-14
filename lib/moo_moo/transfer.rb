@@ -64,5 +64,9 @@ module MooMoo
     #  * <tt>:password</tt> - password of the registrant
     #  * <tt>:reseller</tt> - name of the gaining reseller
     register_service :push_transfer, :domain, :rsp2rsp_push_transfer
+
+    ##
+    # Transfers ownership of a .EU or .BE domain name from one registrant to another.
+    register_service :trade_domain, :domain
   end
 end

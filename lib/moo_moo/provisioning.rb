@@ -90,5 +90,23 @@ module MooMoo
     #  * <tt>:attribs</tt> - additional attributes to set
     #  * <tt>:term</tt> - number of years to register the trust service for
     register_service :register_trust_service, :trust_service
+
+    ##
+    # Removes the domain at the registry. Use this command to request a refund for a domain purchase.
+    # This call can refund/revoke only one domain at the time.
+    register_service :revoke_domain, :domain, :revoke
+
+    ##
+    # Creates a new Reseller account.
+    register_service :create_reseller, :reseller, :create
+
+    ##
+    # Queries the status of a queued request.
+    register_service :query_queued_request, :trust_service
+
+    ##
+    # Redeems a .COM, .NET, .CA, .IT, or .NL domain that has expired but is within the redemption
+    # grace period.
+    register_service :redeem_domain, :domain, :redeem
   end
 end

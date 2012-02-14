@@ -53,23 +53,33 @@ Here's how to check the availability of a domain name:
 
     res = lookup.lookup_domain('example.com')
     p res.success?
-    p res.result['status']
+    p res.attributes.status
 
     true
     taken
 
 Each method returns an `OpenSRSResponse` object which you can use to determine
-if the call was successful and retrieve the response code and/or error
-message. The result variable is a hash that contains all of the relevant data
-returned by the call.
+if the call was successful and retrieve other available response attributes.
+`OpenSRSResponse` behaves like a hash itself and an object through the Hashie library,
+so you can retrieve attributes with two methods:
+
+    res['attributes']['status']
+    res.attributes.status
 
 Currently, there is support for the following services:
 
+  * Authentication
+  * BulkChanges
   * Cookie
+  * DnsZones
+  * DomainForwarding
   * Lookup
   * Nameserver
+  * PersonalNames
   * Provisioning
+  * SubReseller
   * Transfer
+  * User
 
 Note on Patches/Pull Requests
 -----------------------------

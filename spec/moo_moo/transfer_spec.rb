@@ -9,4 +9,5 @@ describe MooMoo::Transfer do
   it { should have_registered_service(:process_transfer, :transfer) }
   it { should have_registered_service(:send_password, :transfer) }
   it { should have_registered_service(:push_transfer, :domain, :rsp2rsp_push_transfer) }
+  it { should have_registered_service(:trade_domain, :domain) }
 end
