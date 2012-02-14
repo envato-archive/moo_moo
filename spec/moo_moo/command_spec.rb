@@ -89,9 +89,21 @@ describe MooMoo::Command do
   end
 
   describe "#parse_response" do
-    it "should retrieve the response" do
+    before :each do
       xml = File.open("spec/fixtures/success_response.xml")
-      command.send(:parse_response, xml)["response_text"].should == "Command Successful"
+      @response = command.send(:parse_response, xml)
+    end
+
+    it "should parse key values" do
+      @response['protocol'].should == "XCP"
+    end
+
+    it "should parse nested" do
+      @response['attributes']['page_size'].should == "100"
+    end
+
+    it "should parse deep nesting" do
+      @response['attributes']['notes']['0']['note'].should == "Domain taken"
     end
   end
 end
