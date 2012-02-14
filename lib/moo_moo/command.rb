@@ -122,20 +122,18 @@ module MooMoo
     # ==== Required
     #  * <tt>data</tt> - data of the response
     def parse_response(data)
-      doc = REXML::Document.new(data)
-
-      elements = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
+      elements = REXML::Document.new(data).elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
         item.is_a? REXML::Element
       }
 
-      build_xml_hash(elements)
+      xml_to_hash(elements)
     end
 
     # Builds a hash from a collection of XML elements
     #
     # ==== Required
     #  * <tt>elements</tt> - collection of elemenents
-    def build_xml_hash(elements)
+    def xml_to_hash(elements)
       data_hash = {}
 
       elements.each do |elem|
@@ -143,9 +141,9 @@ module MooMoo
 
         if elem.elements.size > 0
           if key.nil?
-            data_hash.merge!(build_xml_hash(elem.elements))
+            data_hash.merge!(xml_to_hash(elem.elements))
           else
-            data_hash[key] = build_xml_hash(elem.elements)
+            data_hash[key] = xml_to_hash(elem.elements)
           end
         else
           data_hash[key] = elem.text unless key.nil?
