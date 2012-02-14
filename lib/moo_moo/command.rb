@@ -36,18 +36,9 @@ module MooMoo
         'Content-Length' => body.size.to_s
       }
 
-      http = Net::HTTP.new(URI.encode(host), port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      #http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
-      res = http.post(URI.encode("/"), body, headers)
-
-      # Checks for invalid http status
-      unless (200..299).include?(res.code.to_i)
-        raise OpenSRSException, "Bad HTTP Status: #{res.code}"
-      end
-
-      @returned_parameters = parse_response(res.body)
+      @returned_parameters = parse_response(
+        post(host, port, body, headers)
+      )
     end
 
     private
@@ -153,12 +144,29 @@ module MooMoo
       data_hash
     end
 
+    # Signs a content with a given key
     def signature(content, key)
       Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(
           content + key
         ) + key
       )
+    end
+
+    # Sends a request to the remote API
+    def post(host, port, body, headers)
+      http = Net::HTTP.new(URI.encode(host), port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      #http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
+      response = http.post(URI.encode("/"), body, headers)
+
+      # Checks for invalid http status
+      unless (200..299).include?(response.code.to_i)
+        raise OpenSRSException, "Bad HTTP Status: #{response.code}"
+      end
+
+      response.body
     end
   end
 end
