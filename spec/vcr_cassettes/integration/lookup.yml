@@ -2,7 +2,7 @@
 - !ruby/struct:VCR::HTTPInteraction
   request: !ruby/struct:VCR::Request
     method: :post
-    uri: https://horizon.opensrs.net:55443/
+    uri: https://testhost.com:55443/
     body: ! "<?xml version='1.0' encoding='UTF-8' standalone='no'?>      \n      <!DOCTYPE
       OPS_envelope SYSTEM \"ops.dtd\"><OPS_envelope>\n        <header>\n          <version>0.9</version>\n
       \       </header>\n        <body>\n          <data_block>\n            <dt_assoc>\n

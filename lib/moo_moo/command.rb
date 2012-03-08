@@ -1,6 +1,8 @@
 require 'rexml/document'
 require 'digest/md5'
-require 'net/http'
+require 'faraday'
+
+Faraday.register_middleware :response, :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS
 
 module MooMoo
   class Command
@@ -28,26 +30,22 @@ module MooMoo
     #  * <tt>:user</tt> - username for the account
     #  * <tt>:port</tt> - port to connect to
     def run(host, key, user, port)
-      body    = build_command.to_s
-      headers = {
-        'Content-Type' => 'text/xml',
-        'X-Username' => user,
-        'X-Signature' => signature(body, key),
-        'Content-Length' => body.size.to_s
-      }
-
-      http = Net::HTTP.new(URI.encode(host), port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      #http.ca_file = File.join(File.dirname(__FILE__), "../..", "cacert.pem")
-      res = http.post(URI.encode("/"), body, headers)
-
-      # Checks for invalid http status
-      unless (200..299).include?(res.code.to_i)
-        raise OpenSRSException, "Bad HTTP Status: #{res.code}"
+      conn = Faraday.new(:url => "https://#{host}:#{port}", :ssl => {:verify_mode => OpenSSL::SSL::VERIFY_NONE}) do |c|
+        c.response :parse_open_srs
+        c.response :open_srs_errors
+        c.adapter :net_http
       end
-
-      @returned_parameters = parse_response(res.body)
+      
+      body = build_command.to_s
+      @returned_parameters = conn.post do |r|
+        r.body = body
+        r.headers = {
+          'Content-Type' => 'text/xml',
+          'X-Username' => user,
+          'X-Signature' => signature(body, key),
+          'Content-Length' => body.size.to_s
+        }
+      end.body
     end
 
     private
@@ -112,49 +110,6 @@ module MooMoo
       end
 
       doc
-    end
-
-    # Parses an XML response from the OpenSRS registry and generates a
-    # hash containing all of the data. Elements with child elements
-    # are converted into hashes themselves, with the :element_text entry
-    # containing any raw text
-    #
-    # ==== Required
-    #  * <tt>data</tt> - data of the response
-    def parse_response(data)
-      doc = REXML::Document.new(data)
-
-      values = {}
-
-      elements = doc.elements["/OPS_envelope/body/data_block/dt_assoc"].select { |item|
-        item.is_a? REXML::Element
-      }
-
-      build_xml_hash(elements)
-    end
-
-    # Builds a hash from a collection of XML elements
-    #
-    # ==== Required
-    #  * <tt>elements</tt> - collection of elemenents
-    def build_xml_hash(elements)
-      data_hash = {}
-
-      elements.each do |elem|
-        key = elem.attributes['key']
-
-        if elem.elements.size > 0
-          if key.nil?
-            data_hash.merge!(build_xml_hash(elem.elements))
-          else
-            data_hash[key] = build_xml_hash(elem.elements)
-          end
-        else
-          data_hash[key] = elem.text unless key.nil?
-        end
-      end
-
-      data_hash
     end
 
     def signature(content, key)
