@@ -11,8 +11,8 @@ module MooMoo
   autoload :Provisioning,   'moo_moo/provisioning'
   autoload :Transfer,       'moo_moo/transfer'
   autoload :Cookie,         'moo_moo/cookie'
-  autoload :OpenSRSErrors,  'moo_moo/open_srs_errors'
-  autoload :ParseOpenSRS,  'moo_moo/parse_open_srs'
+  autoload :OpenSRSErrors,  'moo_moo/middleware/open_srs_errors'
+  autoload :ParseOpenSRS,  'moo_moo/middleware/parse_open_srs'
 
   class << self
     attr_accessor :config
