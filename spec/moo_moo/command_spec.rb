@@ -17,21 +17,10 @@ describe MooMoo::Command do
   describe "#run" do
     describe "success response" do
       let(:xml)      { "xmlcontent" }
-      let(:response) { {:the => :response} }
+      let(:response) { {:status => 200, :body => File.open("spec/fixtures/success_response.xml")} }
 
       before :each do
-        command.stub(:build_command => xml, :parse_response => response, :signature => "thesignature")
-
-        @request = stub_request(:post, "https://thehost.com:12345/").with(
-          :body => xml,
-          :headers => {
-            'Content-Type'   => 'text/xml',
-            'Content-Length' => xml.size.to_s,
-            'X-Username'     => "theuser",
-            'X-Signature'    => "thesignature"
-          }
-        )
-
+        @request = stub_request(:post, "https://thehost.com:12345/").to_return(response)
         @response = command.run("thehost.com", "thekey", "theuser", "12345")
       end
 
@@ -40,7 +29,7 @@ describe MooMoo::Command do
       end
 
       it "returns the response" do
-        @response.should == response
+        @response["response_text"].should == "Command Successful"
       end
     end
 
@@ -50,48 +39,4 @@ describe MooMoo::Command do
     end
   end
 
-  describe "#build_command" do
-    before :each do
-      @body = command.send(:build_command)
-    end
-
-    it "should set the action" do
-      @body.root.elements["body/data_block/dt_assoc/item[@key='action']"].text.should == "theaction"
-    end
-
-    it "should set the object" do
-      @body.root.elements["body/data_block/dt_assoc/item[@key='object']"].text.should == "theobject"
-    end
-
-    it "should set the the cookie" do
-      @body.root.elements["body/data_block/dt_assoc/item[@key='cookie']"].text.should == "thecookie"
-    end
-
-    describe "attributes" do
-      it "should set string params" do
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='string']"].text.should == "stringparam"
-      end
-
-      it "should set hash params" do
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='hash']/dt_assoc/item[@key='the']"].text.should == "hashparam"
-      end
-
-      it "should set array params" do
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array']/dt_array/item[@key='0']/dt_assoc/item[@key='param']"].text.should == "arrayvalue1"
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array']/dt_array/item[@key='1']/dt_assoc/item[@key='param']"].text.should == "arrayvalue2"
-      end
-
-      it "should set array list params" do
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array_list']/dt_array/item[@key='0']"].text.should == "arrayvalue1"
-        @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='array_list']/dt_array/item[@key='1']"].text.should == "arrayvalue2"
-      end
-    end
-  end
-
-  describe "#parse_response" do
-    it "should retrieve the response" do
-      xml = File.open("spec/fixtures/success_response.xml")
-      command.send(:parse_response, xml)["response_text"].should == "Command Successful"
-    end
-  end
 end
