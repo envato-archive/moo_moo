@@ -30,7 +30,7 @@ module MooMoo
     #  * <tt>:user</tt> - username for the account
     #  * <tt>:port</tt> - port to connect to
     def run(host, key, user, port)
-      conn = Faraday.new(:url => "https://#{host}:#{port}", :ssl => {:verify_mode => OpenSSL::SSL::VERIFY_NONE}) do |c|
+      conn = Faraday.new(:url => "https://#{host}:#{port}", :ssl => {:verify => true}) do |c|
         c.response :parse_open_srs
         c.response :open_srs_errors
         c.adapter :net_http
