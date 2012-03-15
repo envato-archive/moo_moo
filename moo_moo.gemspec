@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'vcr', '~> 1.11.3'
 
   s.add_dependency 'extlib'
+  s.add_runtime_dependency 'faraday', '~> 0.8.0.rc2'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
