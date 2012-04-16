@@ -10,6 +10,7 @@ module MooMoo
   autoload :Nameserver,        'moo_moo/nameserver'
   autoload :Provisioning,      'moo_moo/provisioning'
   autoload :Transfer,          'moo_moo/transfer'
+  autoload :DnsZone,           'moo_moo/dns_zone'
   autoload :Cookie,            'moo_moo/cookie'
   autoload :OpenSRSErrors,     'moo_moo/middleware/open_srs_errors'
   autoload :ParseOpenSRS,      'moo_moo/middleware/parse_open_srs'
