@@ -1,4 +1,5 @@
 require 'moo_moo/exceptions'
+require 'faraday'
 
 module MooMoo
   autoload :Version,           'moo_moo/version'
@@ -27,3 +28,6 @@ module MooMoo
 
   self.config = Config.new
 end
+
+Faraday.register_middleware :request, :open_srs_xml_builder => MooMoo::OpenSRSXMLBuilder
+Faraday.register_middleware :response, :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS

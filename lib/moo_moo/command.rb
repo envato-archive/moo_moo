@@ -1,8 +1,3 @@
-require 'faraday'
-
-Faraday.register_middleware :request, :open_srs_xml_builder => MooMoo::OpenSRSXMLBuilder
-Faraday.register_middleware :response, :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS
-
 module MooMoo
   class Command
     # Constructor
