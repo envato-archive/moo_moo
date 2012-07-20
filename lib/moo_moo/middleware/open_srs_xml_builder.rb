@@ -2,7 +2,7 @@ module MooMoo
   class OpenSRSXMLBuilder < Faraday::Middleware
     dependency 'rexml/document'
     dependency 'digest/md5'
-      
+
     def initialize(app, *args)
       @action = args[0]
       @object = args[1]
@@ -58,13 +58,18 @@ module MooMoo
       end
 
       unless @params.nil?
+        if @params[:domain]
+          domain = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'domain'})
+          domain.text = @params.delete(:domain)
+        end
+
         elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'attributes'})
         build_child(elem, @params)
       end
 
       doc
     end
-    
+
     # Adds XML child elements to the specified XML element for a given collection
     #
     # ==== Required
@@ -87,7 +92,7 @@ module MooMoo
         elem.text = coll
       end
     end
-    
+
 
     def signature(content)
       Digest::MD5.hexdigest(
@@ -96,6 +101,6 @@ module MooMoo
         ) + @key
       )
     end
- 
+
   end
 end

@@ -5,12 +5,13 @@ describe MooMoo::OpenSRSXMLBuilder do
   describe "#build_command" do
     before :each do
       params =  {
+        :domain => "mydomain.com",
         :string => "stringparam",
         :hash => {:the => "hashparam"},
         :array => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
         :array_list => ["arrayvalue1", "arrayvalue2"]
       }
-      
+
       middleware = described_class.new(lambda{|env| env}, "theaction", "theobject", "thecookie", params, "key")
       env = {:body => nil, :request_headers => Faraday::Utils::Headers.new}
       result = middleware.call(env)
@@ -30,6 +31,10 @@ describe MooMoo::OpenSRSXMLBuilder do
     end
 
     describe "attributes" do
+      it "should set the domain param" do
+        @body.root.elements["body/data_block/dt_assoc/item[@key='domain']"].text.should == "mydomain.com"
+      end
+
       it "should set string params" do
         @body.root.elements["body/data_block/dt_assoc/item[@key='attributes']/dt_assoc/item[@key='string']"].text.should == "stringparam"
       end
