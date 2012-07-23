@@ -21,7 +21,6 @@ module MooMoo
       define_method(method_name) do |*args|
         params = args.first || {}
 
-        params[:key] = 'attributes'
         cookie = params.delete :cookie
         instance_exec(params, &block) if block
         run_command action_name, object, params, cookie
@@ -59,8 +58,7 @@ module MooMoo
       cmd = Command.new(action, object, params, cookie)
 
       try_opensrs do
-        result = cmd.run(@host, @key, @user, @port)
-        Response.new(result, params[:key])
+        Response.new(cmd.run(@host, @key, @user, @port))
       end
     end
 
