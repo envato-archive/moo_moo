@@ -87,7 +87,7 @@ RSpec::Matchers.define(:have_registered_service) do |*args|
   match do |object|
     parameters = {:the => :params, :cookie => "thecookie"}
     object.should_receive(:run_command).
-                  with(action_name, object_name, parameters, "thecookie").
+                  with(action_name, object_name, parameters).
                   and_return("theresult")
 
 

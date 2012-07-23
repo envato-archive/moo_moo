@@ -21,7 +21,7 @@ describe MooMoo::Base do
           params = {:the => :params, :cookie => "thecookie"}
 
           @service.should_receive(:run_command).
-                  with(:service1, :object1, params, "thecookie").
+                  with(:service1, :object1, params).
                   and_return("theresult")
 
           @service.service1(params).should == "theresult"
@@ -31,7 +31,7 @@ describe MooMoo::Base do
           params = {:the => :params, :cookie => "thecookie"}
 
           @service.should_receive(:run_command).
-                  with(:action2, :object2, params, "thecookie").
+                  with(:action2, :object2, params).
                   and_return("theresult")
 
           @service.service2(params).should == "theresult"
@@ -39,10 +39,10 @@ describe MooMoo::Base do
 
         it "service3" do
           params = {:the => :params, :cookie => "thecookie"}
-          expected_params = {:the => :params, :example => "theexample"}
+          expected_params = {:the => :params, :cookie => "thecookie", :example => "theexample"}
 
           @service.should_receive(:run_command).
-                  with(:service3, :object3, expected_params, "thecookie").
+                  with(:service3, :object3, expected_params).
                   and_return("theresult")
 
           @service.service3(params).should == "theresult"
@@ -57,21 +57,11 @@ describe MooMoo::Base do
       command = stub()
       command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
       MooMoo::Command.should_receive(:new).
-                     with("theaction", "theobject", {}, "thecookie").
+                     with("theaction", "theobject", {"the" => "params"}).
                      and_return(command)
 
-      response = @service.run_command("theaction", "theobject", {}, "thecookie")
+      response = @service.run_command("theaction", "theobject", {"the" => "params"})
       response.hash.should == result
-    end
-  end
-
-  describe "#try_opensrs" do
-    it "raises an OpenSRSException" do
-      expect do
-        MooMoo::Base.new.instance_eval do
-          try_opensrs { raise "Exception message" }
-        end
-      end.to raise_error MooMoo::OpenSRSException
     end
   end
 end

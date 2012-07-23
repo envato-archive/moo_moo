@@ -6,10 +6,9 @@ module MooMoo
     def initialize(app, *args)
       @action = args[0]
       @object = args[1]
-      @cookie = args[2]
-      @params = args[3]
-      @key    = args[4]
-      @user   = args[5]
+      @params = args[2] || {}
+      @key    = args[3]
+      @user   = args[4]
       super(app)
     end
 
@@ -24,7 +23,7 @@ module MooMoo
       @app.call(env)
     end
 
-  private
+    private
 
     # Builds an XML string of the command which can be sent to OpenSRS
     def build_command
@@ -52,19 +51,9 @@ module MooMoo
       doc.root.elements["body/data_block/dt_assoc/item[@key='action']"].text = @action
       doc.root.elements["body/data_block/dt_assoc/item[@key='object']"].text = @object
 
-      unless @cookie.nil?
-        cookie_elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'cookie'})
-        cookie_elem.text = @cookie
-      end
-
-      unless @params.nil?
-        if @params[:domain]
-          domain = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'domain'})
-          domain.text = @params.delete(:domain)
-        end
-
-        elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => 'attributes'})
-        build_child(elem, @params)
+      @params.each do |key, value|
+        elem = doc.root.elements["body/data_block/dt_assoc"].add_element('item', {'key' => key})
+        build_child(elem, value)
       end
 
       doc
@@ -93,7 +82,6 @@ module MooMoo
       end
     end
 
-
     def signature(content)
       Digest::MD5.hexdigest(
         Digest::MD5.hexdigest(
@@ -101,6 +89,5 @@ module MooMoo
         ) + @key
       )
     end
-
   end
 end

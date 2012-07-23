@@ -21,9 +21,8 @@ module MooMoo
       define_method(method_name) do |*args|
         params = args.first || {}
 
-        cookie = params.delete :cookie
         instance_exec(params, &block) if block
-        run_command action_name, object, params, cookie
+        run_command action_name, object, params
       end
     end
 
@@ -38,11 +37,11 @@ module MooMoo
     # === Optional
     #  * <tt>:port</tt> - port to connect on
     def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
-      @host = host || MooMoo.config.host || raise(ArgumentError, "Host is required")
-      @key  = key  || MooMoo.config.key  || raise(ArgumentError, "Key is required")
-      @user = user || MooMoo.config.user || raise(ArgumentError, "User is required")
-      @pass = pass || MooMoo.config.pass || raise(ArgumentError, "Password is required")
-      @port = port || MooMoo.config.port || raise(ArgumentError, "Port is required")
+      @host = host || MooMoo.config.host || raise(OpenSRSException, "Host is required")
+      @key  = key  || MooMoo.config.key  || raise(OpenSRSException, "Key is required")
+      @user = user || MooMoo.config.user || raise(OpenSRSException, "User is required")
+      @pass = pass || MooMoo.config.pass || raise(OpenSRSException, "Password is required")
+      @port = port || MooMoo.config.port || raise(OpenSRSException, "Port is required")
     end
 
     # Runs a command
@@ -53,13 +52,8 @@ module MooMoo
     #
     # === Optional
     #  * <tt>:params</tt> - parameters for the command
-    #  * <tt>:cookie</tt> - cookie, if the command requires it
-    def run_command(action, object, params = {}, cookie = nil)
-      cmd = Command.new(action, object, params, cookie)
-
-      try_opensrs do
-        Response.new(cmd.run(@host, @key, @user, @port))
-      end
+    def run_command(action, object, params = {})
+      Response.new Command.new(action, object, params).run(@host, @key, @user, @port)
     end
 
     private
@@ -76,16 +70,6 @@ module MooMoo
       end
 
       arr_indexed
-    end
-
-    def try_opensrs
-      begin
-        yield
-      rescue Exception => e
-        exception = OpenSRSException.new(e.message)
-        exception.set_backtrace(e.backtrace)
-        raise exception
-      end
     end
   end
 end

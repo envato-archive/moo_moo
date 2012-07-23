@@ -13,7 +13,7 @@ module MooMoo
 
     # Returns whether or not the command executed was successful
     def success?
-      @hash['is_success'] == '1'
+      @hash['is_success'].to_i == 1
     end
 
     # Returns the response code if one is present

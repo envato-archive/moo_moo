@@ -5,14 +5,17 @@ describe MooMoo::OpenSRSXMLBuilder do
   describe "#build_command" do
     before :each do
       params =  {
-        :domain => "mydomain.com",
-        :string => "stringparam",
-        :hash => {:the => "hashparam"},
-        :array => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
-        :array_list => ["arrayvalue1", "arrayvalue2"]
+        :cookie     => "thecookie",
+        :domain     => "mydomain.com",
+        :attributes => {
+          :string     => "stringparam",
+          :hash       => {:the => "hashparam"},
+          :array      => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
+          :array_list => ["arrayvalue1", "arrayvalue2"]
+        }
       }
 
-      middleware = described_class.new(lambda{|env| env}, "theaction", "theobject", "thecookie", params, "key")
+      middleware = described_class.new(lambda{|env| env}, "theaction", "theobject", params, "key")
       env = {:body => nil, :request_headers => Faraday::Utils::Headers.new}
       result = middleware.call(env)
       @body = REXML::Document.new(result[:body])

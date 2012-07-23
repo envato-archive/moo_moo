@@ -6,14 +6,10 @@ module MooMoo
     #  * <tt>:action</tt> - action of the command
     #  * <tt>:object</tt> - object the command operates on
     #  * <tt>:params</tt> - additional parameters for the command
-    #
-    # ==== Optional
-    #  * <tt>:cookie</tt> - a cookie for the domain if the command requires it
-    def initialize(action, object, params = {}, cookie = nil)
+    def initialize(action, object, params = {})
       @action = action
       @object = object
       @params = params
-      @cookie = cookie
     end
 
     # Runs the command against OpenSRS server
@@ -25,7 +21,7 @@ module MooMoo
     #  * <tt>:port</tt> - port to connect to
     def run(host, key, user, port)
       @returned_parameters = Faraday.new(:url => "https://#{host}:#{port}", :ssl => {:verify => true}) do |c|
-        c.request :open_srs_xml_builder, @action, @object, @cookie, @params, key, user
+        c.request :open_srs_xml_builder, @action, @object, @params, key, user
         c.response :parse_open_srs
         c.response :open_srs_errors
         c.adapter :net_http

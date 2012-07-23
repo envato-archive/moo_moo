@@ -51,12 +51,10 @@ configuration for the library to use.
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 
-    res = lookup.lookup_domain('example.com')
+    res = lookup.lookup_domain(:attributes => { :domain => 'example.com' })
     p res.success?
-    p res.result['status']
 
     true
-    taken
 
 Each method returns an `OpenSRSResponse` object which you can use to determine
 if the call was successful and retrieve the response code and/or error
