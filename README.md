@@ -35,10 +35,10 @@ First, create an opensrs object for the namespace you want to use:
 Or configure MooMoo and you can initialize it without any arguments:
 
     MooMoo.configure do |config|
-      config.host = "horizon.opensrs.net"
-      config.key  = "<YOUR_KEY>"
-      config.user = "<YOUR_RESELLER_USER>"
-      config.pass = "<YOUR_PASSWORD>"
+      config.host     = "horizon.opensrs.net"
+      config.key      = "<YOUR_KEY>"
+      config.username = "<YOUR_RESELLER_USER>"
+      config.password = "<YOUR_PASSWORD>"
     end
 
     ...
@@ -51,12 +51,10 @@ configuration for the library to use.
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 
-    res = lookup.lookup_domain('example.com')
+    res = lookup.lookup_domain(:attributes => { :domain => 'example.com' })
     p res.success?
-    p res.result['status']
 
     true
-    taken
 
 Each method returns an `OpenSRSResponse` object which you can use to determine
 if the call was successful and retrieve the response code and/or error

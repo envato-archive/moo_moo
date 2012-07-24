@@ -7,8 +7,7 @@ describe "Real World integration" do
 
     VCR.use_cassette("integration/lookup") do
       response = lookup.lookup_domain(:domain => "opensrs.net")
-      pp response
-      response.result["status"].should == "taken"
+      response.attributes["status"].should == "taken"
     end
   end
 

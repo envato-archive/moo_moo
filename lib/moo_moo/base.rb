@@ -1,6 +1,6 @@
 module MooMoo
   class Base
-    attr_reader :host, :key, :user, :pass, :port
+    attr_reader :host, :key, :username, :password, :port
 
     # Register an api service for the current class.
     #
@@ -21,10 +21,8 @@ module MooMoo
       define_method(method_name) do |*args|
         params = args.first || {}
 
-        params[:key] = 'attributes'
-        cookie = params.delete :cookie
         instance_exec(params, &block) if block
-        run_command action_name, object, params, cookie
+        run_command action_name, object, params
       end
     end
 
@@ -33,17 +31,17 @@ module MooMoo
     # === Required
     #  * <tt>:host</tt> - host of the OpenSRS server
     #  * <tt>:key</tt> - private key
-    #  * <tt>:user</tt> - username of the reseller
-    #  * <tt>:pass</tt> - password of the rseller
+    #  * <tt>:username</tt> - username of the reseller
+    #  * <tt>:password</tt> - password of the rseller
     #
     # === Optional
     #  * <tt>:port</tt> - port to connect on
-    def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
-      @host = host || MooMoo.config.host || raise(ArgumentError, "Host is required")
-      @key  = key  || MooMoo.config.key  || raise(ArgumentError, "Key is required")
-      @user = user || MooMoo.config.user || raise(ArgumentError, "User is required")
-      @pass = pass || MooMoo.config.pass || raise(ArgumentError, "Password is required")
-      @port = port || MooMoo.config.port || raise(ArgumentError, "Port is required")
+    def initialize(params = {})
+      @host     = params[:host]     || MooMoo.config.host     || raise(OpenSRSException, "Host is required")
+      @key      = params[:key]      || MooMoo.config.key      || raise(OpenSRSException, "Key is required")
+      @username = params[:username] || MooMoo.config.username || raise(OpenSRSException, "Username is required")
+      @password = params[:password] || MooMoo.config.password || raise(OpenSRSException, "Password is required")
+      @port     = params[:port]     || MooMoo.config.port     || 55443
     end
 
     # Runs a command
@@ -54,14 +52,8 @@ module MooMoo
     #
     # === Optional
     #  * <tt>:params</tt> - parameters for the command
-    #  * <tt>:cookie</tt> - cookie, if the command requires it
-    def run_command(action, object, params = {}, cookie = nil)
-      cmd = Command.new(action, object, params, cookie)
-
-      try_opensrs do
-        result = cmd.run(@host, @key, @user, @port)
-        Response.new(result, params[:key])
-      end
+    def run_command(action, object, params = {})
+      Response.new Command.new(action, object, params).run(@host, @key, @username, @port)
     end
 
     private
@@ -78,16 +70,6 @@ module MooMoo
       end
 
       arr_indexed
-    end
-
-    def try_opensrs
-      begin
-        yield
-      rescue Exception => e
-        exception = OpenSRSException.new(e.message)
-        exception.set_backtrace(e.backtrace)
-        raise exception
-      end
     end
   end
 end

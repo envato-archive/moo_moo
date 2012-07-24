@@ -10,9 +10,8 @@ describe MooMoo::Command do
     :array => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
     :array_list => ["arrayvalue1", "arrayvalue2"]
   } }
-  let(:cookie)  { "thecookie" }
 
-  let(:command) { MooMoo::Command.new(action, object, params, cookie) }
+  let(:command) { MooMoo::Command.new(action, object, params) }
 
   describe "#run" do
     describe "success response" do

@@ -4,13 +4,13 @@ module MooMoo
     def on_complete(env)
       env[:body] = parse_response(env[:body])
     end
-    
+
     def response_values(env)
       {:status => env[:status], :headers => env[:response_headers], :body => env[:body]}
     end
-    
+
   private
-    
+
     # Parses an XML response from the OpenSRS registry and generates a
     # hash containing all of the data. Elements with child elements
     # are converted into hashes themselves, with the :element_text entry

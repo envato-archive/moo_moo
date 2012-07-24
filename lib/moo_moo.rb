@@ -1,22 +1,15 @@
 require 'moo_moo/exceptions'
 require 'faraday'
+require 'moo_moo/version'
+require 'moo_moo/config'
+require 'moo_moo/command'
+require 'moo_moo/response'
+require 'moo_moo/base'
+require 'moo_moo/middleware/open_srs_errors'
+require 'moo_moo/middleware/parse_open_srs'
+require 'moo_moo/middleware/open_srs_xml_builder'
 
 module MooMoo
-  autoload :Version,           'moo_moo/version'
-  autoload :Config,            'moo_moo/config'
-  autoload :Command,           'moo_moo/command'
-  autoload :Response,          'moo_moo/response'
-  autoload :Base,              'moo_moo/base'
-  autoload :Lookup,            'moo_moo/lookup'
-  autoload :Nameserver,        'moo_moo/nameserver'
-  autoload :Provisioning,      'moo_moo/provisioning'
-  autoload :Transfer,          'moo_moo/transfer'
-  autoload :DnsZone,           'moo_moo/dns_zone'
-  autoload :Cookie,            'moo_moo/cookie'
-  autoload :OpenSRSErrors,     'moo_moo/middleware/open_srs_errors'
-  autoload :ParseOpenSRS,      'moo_moo/middleware/parse_open_srs'
-  autoload :OpenSRSXMLBuilder, 'moo_moo/middleware/open_srs_xml_builder'
-
   class << self
     attr_accessor :config
   end
@@ -28,6 +21,13 @@ module MooMoo
 
   self.config = Config.new
 end
+
+require 'moo_moo/services/lookup'
+require 'moo_moo/services/nameserver'
+require 'moo_moo/services/provisioning'
+require 'moo_moo/services/transfer'
+require 'moo_moo/services/dns_zone'
+require 'moo_moo/services/cookie'
 
 Faraday.register_middleware :request, :open_srs_xml_builder => MooMoo::OpenSRSXMLBuilder
 Faraday.register_middleware :response, :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS
