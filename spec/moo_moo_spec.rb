@@ -12,18 +12,18 @@ describe MooMoo do
 
     it "loads default settings from config if none are provided" do
       MooMoo.configure do |config|
-        config.host = 'host.com'
-        config.key  = 'secret'
-        config.user = 'username'
-        config.pass = 'secret2'
+        config.host     = 'host.com'
+        config.key      = 'secret'
+        config.username = 'username'
+        config.password = 'secret2'
       end
 
       opensrs = MooMoo::Base.new
 
-      opensrs.host.should == 'host.com'
-      opensrs.key.should  == 'secret'
-      opensrs.user.should == 'username'
-      opensrs.pass.should == 'secret2'
+      opensrs.host.should     == 'host.com'
+      opensrs.key.should      == 'secret'
+      opensrs.username.should == 'username'
+      opensrs.password.should == 'secret2'
     end
   end
 

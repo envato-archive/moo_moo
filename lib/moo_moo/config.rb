@@ -4,16 +4,16 @@ module MooMoo
   class Config
     attr_accessor :host
     attr_accessor :key
-    attr_accessor :user
-    attr_accessor :pass
+    attr_accessor :username
+    attr_accessor :password
     attr_accessor :port
 
     def initialize
-      @host = default_option("host") || 'horizon.opensrs.net'
-      @key  = default_option("key")
-      @user = default_option("user")
-      @pass = default_option("pass")
-      @port = default_option("port")
+      @host     = default_option("host") || 'horizon.opensrs.net'
+      @key      = default_option("key")
+      @username = default_option("username")
+      @password = default_option("password")
+      @port     = default_option("port")
     end
 
     private

@@ -55,15 +55,15 @@ RSpec.configure do |c|
   c.before(:each) do
     MooMoo.configure do |config|
       if live_test?
-        config.host = ENV['OPENSRS_TEST_URL'] if ENV['OPENSRS_TEST_URL']
-        config.key  = ENV['OPENSRS_TEST_KEY']  || raise(ArgumentError, "OPENSRS_TEST_KEY is required")
-        config.user = ENV['OPENSRS_TEST_USER'] || raise(ArgumentError, "OPENSRS_TEST_USER is required")
-        config.pass = ENV['OPENSRS_TEST_PASS'] || raise(ArgumentError, "OPENSRS_TEST_PASS is required")
+        config.host     = ENV['OPENSRS_TEST_URL'] if ENV['OPENSRS_TEST_URL']
+        config.key      = ENV['OPENSRS_TEST_KEY']  || raise(ArgumentError, "OPENSRS_TEST_KEY is required")
+        config.username = ENV['OPENSRS_TEST_USER'] || raise(ArgumentError, "OPENSRS_TEST_USER is required")
+        config.password = ENV['OPENSRS_TEST_PASS'] || raise(ArgumentError, "OPENSRS_TEST_PASS is required")
       else
-        config.host = "testhost.com"
-        config.key  = "testkey"
-        config.user = "testuser"
-        config.pass = "testpass"
+        config.host     = "testhost.com"
+        config.key      = "testkey"
+        config.username = "testuser"
+        config.password = "testpass"
       end
     end
   end

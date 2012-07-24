@@ -1,6 +1,6 @@
 module MooMoo
   class Base
-    attr_reader :host, :key, :user, :pass, :port
+    attr_reader :host, :key, :username, :password, :port
 
     # Register an api service for the current class.
     #
@@ -31,17 +31,17 @@ module MooMoo
     # === Required
     #  * <tt>:host</tt> - host of the OpenSRS server
     #  * <tt>:key</tt> - private key
-    #  * <tt>:user</tt> - username of the reseller
-    #  * <tt>:pass</tt> - password of the rseller
+    #  * <tt>:username</tt> - username of the reseller
+    #  * <tt>:password</tt> - password of the rseller
     #
     # === Optional
     #  * <tt>:port</tt> - port to connect on
-    def initialize(host = nil, key = nil, user = nil, pass = nil, port = 55443)
-      @host = host || MooMoo.config.host || raise(OpenSRSException, "Host is required")
-      @key  = key  || MooMoo.config.key  || raise(OpenSRSException, "Key is required")
-      @user = user || MooMoo.config.user || raise(OpenSRSException, "User is required")
-      @pass = pass || MooMoo.config.pass || raise(OpenSRSException, "Password is required")
-      @port = port || MooMoo.config.port || raise(OpenSRSException, "Port is required")
+    def initialize(params = {})
+      @host     = params[:host]     || MooMoo.config.host     || raise(OpenSRSException, "Host is required")
+      @key      = params[:key]      || MooMoo.config.key      || raise(OpenSRSException, "Key is required")
+      @username = params[:username] || MooMoo.config.username || raise(OpenSRSException, "Username is required")
+      @password = params[:password] || MooMoo.config.password || raise(OpenSRSException, "Password is required")
+      @port     = params[:port]     || MooMoo.config.port     || 55443
     end
 
     # Runs a command
@@ -53,7 +53,7 @@ module MooMoo
     # === Optional
     #  * <tt>:params</tt> - parameters for the command
     def run_command(action, object, params = {})
-      Response.new Command.new(action, object, params).run(@host, @key, @user, @port)
+      Response.new Command.new(action, object, params).run(@host, @key, @username, @port)
     end
 
     private

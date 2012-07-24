@@ -11,7 +11,8 @@ end
 describe MooMoo::Base do
 
   before :each do
-    @service = SampleService.new("thehost", "thekey", "theuser", "thepass", "theport")
+    @service = SampleService.new(:host => "thehost", :key => "thekey",
+      :username => "theuser", :password => "thepass", :port => "theport")
   end
 
   describe "class methods" do

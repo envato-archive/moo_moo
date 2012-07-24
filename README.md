@@ -35,10 +35,10 @@ First, create an opensrs object for the namespace you want to use:
 Or configure MooMoo and you can initialize it without any arguments:
 
     MooMoo.configure do |config|
-      config.host = "horizon.opensrs.net"
-      config.key  = "<YOUR_KEY>"
-      config.user = "<YOUR_RESELLER_USER>"
-      config.pass = "<YOUR_PASSWORD>"
+      config.host     = "horizon.opensrs.net"
+      config.key      = "<YOUR_KEY>"
+      config.username = "<YOUR_RESELLER_USER>"
+      config.password = "<YOUR_PASSWORD>"
     end
 
     ...
