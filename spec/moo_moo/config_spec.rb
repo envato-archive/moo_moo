@@ -7,8 +7,8 @@ describe MooMoo::Config do
 
   it { @config.should have_attr_accessor :host }
   it { @config.should have_attr_accessor :key  }
-  it { @config.should have_attr_accessor :user }
-  it { @config.should have_attr_accessor :pass }
+  it { @config.should have_attr_accessor :username }
+  it { @config.should have_attr_accessor :password }
   it { @config.should have_attr_accessor :port }
 
   describe "default configuration" do
@@ -18,8 +18,8 @@ describe MooMoo::Config do
         "
         host: thehost
         key: thekey
-        user: theuser
-        pass: thepass
+        username: theuser
+        password: thepass
         port: theport
         "
       )
@@ -36,11 +36,11 @@ describe MooMoo::Config do
     end
 
     it "should set default user from default options file" do
-      @config.user.should == "theuser"
+      @config.username.should == "theuser"
     end
 
     it "should set default pass from default options file" do
-      @config.pass.should == "thepass"
+      @config.password.should == "thepass"
     end
 
     it "should set default port from default options file" do

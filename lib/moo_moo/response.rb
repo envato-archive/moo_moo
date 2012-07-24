@@ -1,39 +1,34 @@
 module MooMoo
+  # Based on opensrs_xmlapi.pdf page 25.
   class Response
+    attr_reader :hash
+
     # Constructor
     #
     # ==== Required
-    #  * <tt>:hash</tt> - hash of the response
-    #
-    # ==== Optional
-    #  * <tt>:key</tt> - primary key to use when indexing the hash
-    def initialize(hash, key = nil)
+    #  * <tt>:hash</tt> - response hash
+    def initialize(hash)
       @hash = hash
-      @key = key
     end
 
     # Returns whether or not the command executed was successful
-    #
     def success?
-      @hash['is_success'].nil? ? true : @hash['is_success'].to_i == 1
-    end
-
-    # Returns the error message if one is present
-    #
-    def error_msg
-      @hash['response_text']
+      @hash['is_success'].to_i == 1
     end
 
     # Returns the response code if one is present
-    #
-    def error_code
+    def code
       @hash['response_code'].to_i
     end
 
-    # Returns the result hash
-    #
-    def result
-      @key.nil? ? @hash : @hash[@key]
+    # Returns the response message if one is present
+    def text
+      @hash['response_text']
+    end
+
+    # Returns the response attributes.
+    def attributes
+      @hash['attributes']
     end
   end
 end
