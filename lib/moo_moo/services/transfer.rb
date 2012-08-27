@@ -1,5 +1,5 @@
 module MooMoo
-  class Transfer < Base
+  class Transfer < BaseCommand
 
     ##
     # Cancels transfers that are pending owner approval.

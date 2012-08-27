@@ -1,5 +1,5 @@
 module MooMoo
-  class DnsZone < Base
+  class DnsZone < BaseCommand
 
     ##
     # Creates a custom DNS zone for managed DNS service.
@@ -14,7 +14,7 @@ module MooMoo
     register_service :delete_dns_zone, :domain
 
     ##
-    # Changes the nameservers on your domain to use the 
+    # Changes the nameservers on your domain to use the
     # nameservers for managed DNS service.
     #
     # http://www.opensrs.com/docs/apidomains/Request_parameters_for_force_dns_nameservers.htm
@@ -28,8 +28,8 @@ module MooMoo
 
     ##
     # Sets the DNS zone to the values in the specified template.
-    # If a template is not specified in the command, the records 
-    # are set to what was in the template that was used to enable 
+    # If a template is not specified in the command, the records
+    # are set to what was in the template that was used to enable
     # the DNS service.
     #
     # http://www.opensrs.com/docs/apidomains/reset_dns_zone_request.htm

@@ -1,5 +1,5 @@
 module MooMoo
-  class Lookup < Base
+  class Lookup < BaseCommand
 
     ##
     # Determines whether the domain belongs to the RSP who issued the command.

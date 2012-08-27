@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class SampleService < MooMoo::Base
+class SampleService < MooMoo::BaseCommand
   register_service :service1, :object1
   register_service :service2, :object2, :action2
   register_service :service3, :object3 do |params|
@@ -8,7 +8,7 @@ class SampleService < MooMoo::Base
   end
 end
 
-describe MooMoo::Base do
+describe MooMoo::BaseCommand do
 
   before :each do
     @service = SampleService.new(:host => "thehost", :key => "thekey",

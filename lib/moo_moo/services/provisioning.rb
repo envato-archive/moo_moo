@@ -1,5 +1,5 @@
 module MooMoo
-  class Provisioning < Base
+  class Provisioning < BaseCommand
 
     ##
     # Cancels a Trust Service order

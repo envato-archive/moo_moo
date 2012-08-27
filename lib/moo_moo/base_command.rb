@@ -1,5 +1,5 @@
 module MooMoo
-  class Base
+  class BaseCommand
     attr_reader :host, :key, :username, :password, :port
 
     # Register an api service for the current class.

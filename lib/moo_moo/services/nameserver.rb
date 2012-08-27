@@ -1,5 +1,5 @@
 module MooMoo
-  class Nameserver < Base
+  class Nameserver < BaseCommand
 
     ##
     # Creates a nameserver in the same domain space as the cookie's domain.

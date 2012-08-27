@@ -1,5 +1,5 @@
 module MooMoo
-  class Cookie < Base
+  class Cookie < BaseCommand
 
     ##
     # Creates a cookie for use in commands where a cookie is required to access OpenSRS.
