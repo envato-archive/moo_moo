@@ -31,7 +31,7 @@ module MooMoo
     # Renews a domain and allows you to set the auto-renewal flag on a domain.
     #
     # http://www.opensrs.com/docs/apidomains/renew_domain.htm
-    register_service :renew_domain, :domain, :renew
+    register_service :renew, :domain
 
     ##
     # Removes the domain at the registry. Use this command to request a refund for a domain purchase.
@@ -53,10 +53,54 @@ module MooMoo
     #
     # http://www.opensrs.com/docs/apidomains/sw_register.htm
     # Note: Requirements vary depending on TLD
-    register_service :register_domain, :domain, :sw_register
+    register_service :sw_register, :domain
 
     ##
     # Submits a new registration request or transfer order
     register_service :register_trust_service, :trust_service
+
+    ##
+    # Updates contact information for a domain using modify.
+    #
+    # * <tt>:domain</tt> - the domain to update for. E.g.: "domain1.com"
+    # * <tt>:attributes</tt> - a contact attributes hash like:
+    #     {
+    #       type:        "type", # admin, billing, etc
+    #       first_name:  "first_name",
+    #       last_name:   "last_name"
+    #       ... other attributes ...
+    #     }
+    #
+    # In case of errors, an errors array like this will be returned:
+    #
+    #     ["Error1", "Error2"]
+    def update_contact(domain, contact_attributes)
+      contact_set = {
+        contact_attributes[:type] => contact_attributes
+      }
+
+      # Removes the type key from contact_attributes
+      contact_set[contact_attributes[:type]].delete(:type)
+
+      response = api_modify(params_with_domain(domain).merge({
+        :attributes => {
+          :affect_domains => "0",
+          :data =>           "contact_info",
+          :contact_set =>    contact_set
+        }
+      }))
+
+      if successful?
+        response
+      else
+        attributes["details"][domain]["response_text"].split("\n")
+      end
+    end
+
+    private
+
+    def params_with_domain(domain)
+      { :domain => domain }
+    end
   end
 end

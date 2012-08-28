@@ -55,6 +55,6 @@ module MooMoo
     # transferred and so no charges are incurred.
     #
     # http://www.opensrs.com/docs/apidomains/rsp2rsp_push_transfer.htm
-    register_service :push_transfer, :domain, :rsp2rsp_push_transfer
+    register_service :rsp2rsp_push_transfer, :domain
   end
 end

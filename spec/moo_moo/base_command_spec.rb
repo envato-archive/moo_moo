@@ -2,67 +2,78 @@ require 'spec_helper'
 
 class SampleService < MooMoo::BaseCommand
   register_service :service1, :object1
-  register_service :service2, :object2, :action2
-  register_service :service3, :object3 do |params|
-    params[:example] = "theexample"
-  end
 end
 
 describe MooMoo::BaseCommand do
 
-  before :each do
-    @service = SampleService.new(:host => "thehost", :key => "thekey",
-      :username => "theuser", :password => "thepass", :port => "theport")
-  end
+  subject { SampleService.new(:host => "thehost.com", :key => "thekey",
+      :username => "theuser", :password => "thepass", :port => "12345") }
+
+  let(:response) { double("Response", :body => {"attributes" => { :the => :attrs }})}
 
   describe "class methods" do
     describe "#register_service" do
-      context "calls the services with the given parameters" do
-        it "service1" do
-          params = {:the => :params, :cookie => "thecookie"}
+      let(:request_params) { {:the => :params, :cookie => "thecookie"} }
 
-          @service.should_receive(:run_command).
-                  with(:service1, :object1, params).
-                  and_return("theresult")
+      it "service1" do
+        subject.should_receive(:faraday_request).
+                with(:service1, :object1, request_params).
+                and_return(response)
 
-          @service.service1(params).should == "theresult"
-        end
-
-        it "service2" do
-          params = {:the => :params, :cookie => "thecookie"}
-
-          @service.should_receive(:run_command).
-                  with(:action2, :object2, params).
-                  and_return("theresult")
-
-          @service.service2(params).should == "theresult"
-        end
-
-        it "service3" do
-          params = {:the => :params, :cookie => "thecookie"}
-          expected_params = {:the => :params, :cookie => "thecookie", :example => "theexample"}
-
-          @service.should_receive(:run_command).
-                  with(:service3, :object3, expected_params).
-                  and_return("theresult")
-
-          @service.service3(params).should == "theresult"
-        end
+        subject.api_service1(request_params).should == {:the => :attrs}
       end
     end
   end
 
-  describe "#run_command" do
-    it "should encapsulate response" do
-      result  = {:the => :result}
-      command = stub()
-      command.should_receive(:run).with("thehost", "thekey", "theuser", "theport").and_return(result)
-      MooMoo::Command.should_receive(:new).
-                     with("theaction", "theobject", {"the" => "params"}).
-                     and_return(command)
+  describe "#successful?" do
+    it "is successful" do
+      subject.instance_variable_set("@response",
+        double("Response", :body => { "is_success" => "1" }))
 
-      response = @service.run_command("theaction", "theobject", {"the" => "params"})
-      response.hash.should == result
+      subject.should be_successful
+    end
+
+    it "is not successful" do
+      subject.instance_variable_set("@response",
+        double("Response", :body => { "is_success" => "0" }))
+
+      subject.should_not be_successful
+    end
+  end
+
+  describe "#message" do
+    it "retrives the response text" do
+      subject.instance_variable_set("@response",
+        double("Response", :body => { "response_text" => "thetext" }))
+
+      subject.message.should == "thetext"
+    end
+  end
+
+  describe "#response_attributes" do
+    it "retrives the response attributes" do
+      subject.instance_variable_set("@response",
+        double("Response", :body => { "attributes" => { :the => :attributes } }))
+
+      subject.attributes.should == { :the => :attributes }
+    end
+  end
+
+  describe "#perform" do
+    let(:xml)      { "xmlcontent" }
+    let(:response) { {:status => 200, :body => File.open("spec/fixtures/success_response.xml")} }
+
+    before :each do
+      @request  = stub_request(:post, "https://thehost.com:12345/").to_return(response)
+      subject.send(:perform, :service1, :object1)
+    end
+
+    it "posts with correct parameters" do
+      @request.should have_been_made
+    end
+
+    it "returns the response" do
+      subject.message.should == "Command Successful"
     end
   end
 end

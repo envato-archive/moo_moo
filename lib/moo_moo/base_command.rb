@@ -1,28 +1,33 @@
 module MooMoo
+  # Defines the basic command structure.
+  #
+  # For OpenSRS api methods, create them like this, using the proper api action
+  # name and object:
+  #
+  #     register_service :action_one, :object_one
+  #
+  # If you need customized responses, create a custom method:
+  #
+  #     def custom_action(parameter)
+  #       api_action_one(... custom parameter ...)
+  #       ... custom response processing ...
+  #     end
   class BaseCommand
-    attr_reader :host, :key, :username, :password, :port
+    attr_reader :host, :key, :username, :password, :port, :response
 
     # Register an api service for the current class.
     #
     #     register_service :action_one, :object_one
     #
-    # That will generate the following method for this class:
-    #
-    #    def action_one(params)
-    #      run_command :action_one, :object_one, params, cookie
-    #    end
+    # A method called "api_action_one" will then be created.
     #
     # === Parameters
     #
-    # * <tt>method_name</tt> - the method name
+    # * <tt>action_name</tt> - the api action to be called
     # * <tt>object</tt> - the object
-    # * <tt>action_name</tt> - the api action to be called; by default it is the same as method_name
-    def self.register_service(method_name, object, action_name = method_name, &block)
-      define_method(method_name) do |*args|
-        params = args.first || {}
-
-        instance_exec(params, &block) if block
-        run_command action_name, object, params
+    def self.register_service(action_name, object)
+      define_method("api_#{action_name}") do |*args|
+        perform(action_name, object, args.first || {})
       end
     end
 
@@ -44,6 +49,23 @@ module MooMoo
       @port     = params[:port]     || MooMoo.config.port     || 55443
     end
 
+    # Returns whether or not the command executed was successful
+    def successful?
+      response.body['is_success'].to_i == 1
+    end
+
+    # Returns the response message if one is present
+    def message
+      response.body['response_text']
+    end
+
+    # Returns the response attributes.
+    def attributes
+      response.body['attributes']
+    end
+
+    private
+
     # Runs a command
     #
     # === Required
@@ -52,11 +74,19 @@ module MooMoo
     #
     # === Optional
     #  * <tt>:params</tt> - parameters for the command
-    def run_command(action, object, params = {})
-      Response.new Command.new(action, object, params).run(@host, @key, @username, @port)
+    def perform(action, object, params = {})
+      (@response = faraday_request(action, object, params)) && attributes
     end
 
-    private
+    # Performs the Faraday request.
+    def faraday_request(action, object, params)
+      Faraday.new(:url => "https://#{host}:#{port}", :ssl => {:verify => true}) do |c|
+        c.request  :open_srs_xml_builder, action, object, params, key, username
+        c.response :parse_open_srs
+        c.response :open_srs_errors
+        c.adapter  :net_http
+      end.post
+    end
 
     # Indexes an array by building a hash with numeric keys
     #

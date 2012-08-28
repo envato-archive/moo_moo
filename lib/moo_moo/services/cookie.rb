@@ -23,6 +23,6 @@ module MooMoo
     # Cleanly terminates the connection.
     #
     # http://www.opensrs.com/docs/apidomains/quit_session.htm
-    register_service :quit_session, :session, :quit
+    register_service :quit, :session
   end
 end

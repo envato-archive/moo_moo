@@ -86,12 +86,13 @@ RSpec::Matchers.define(:have_registered_service) do |*args|
 
   match do |object|
     parameters = {:the => :params, :cookie => "thecookie"}
-    object.should_receive(:run_command).
+    response   = double("Response", :body => {"attributes" => { :the => :attrs }})
+
+    object.should_receive(:faraday_request).
                   with(action_name, object_name, parameters).
-                  and_return("theresult")
+                  and_return(response)
 
-
-    object.send(method_name, parameters) == "theresult"
+    object.send("api_#{method_name}", parameters) == { :the => :attrs }
   end
 
   description do
