@@ -18,7 +18,7 @@ describe MooMoo do
         config.password = 'secret2'
       end
 
-      opensrs = MooMoo::Base.new
+      opensrs = MooMoo::BaseCommand.new
 
       opensrs.host.should     == 'host.com'
       opensrs.key.should      == 'secret'

@@ -51,15 +51,18 @@ configuration for the library to use.
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 
-    res = lookup.lookup_domain(:attributes => { :domain => 'example.com' })
-    p res.success?
+    lookup.api_lookup(:attributes => { :domain => 'example.com' })
+    p lookup.successful?
 
     true
 
-Each method returns an `OpenSRSResponse` object which you can use to determine
-if the call was successful and retrieve the response code and/or error
-message. The result variable is a hash that contains all of the relevant data
-returned by the call.
+After calling the service method, you can use the following methods to access
+the response:
+
+  response    - the http response
+  message     - the "response_text"
+  attributes  - the "attributes" hash with relevant data
+  successful? - wheater the request was successful or not
 
 Currently, there is support for the following services:
 
@@ -68,6 +71,14 @@ Currently, there is support for the following services:
   * Nameserver
   * Provisioning
   * Transfer
+
+API services are namespaced with api. For example, for the Lookup "get" api method,
+it will be named "api_get".
+
+MooMoo provides custom methods that should make it easier to deal with the OpenSRS
+api (e.g. Lookup :domain_contacts). This custom methods are not namespaced.
+Check their documentation to see what parameters does it expect and what responses
+does it return.
 
 Note on Patches/Pull Requests
 -----------------------------

@@ -6,8 +6,8 @@ describe "Real World integration" do
     lookup = MooMoo::Lookup.new
 
     VCR.use_cassette("integration/lookup") do
-      response = lookup.lookup_domain(:domain => "opensrs.net")
-      response.attributes["status"].should == "taken"
+      lookup.api_lookup(:domain => "opensrs.net")
+      lookup.attributes["status"].should == "taken"
     end
   end
 
