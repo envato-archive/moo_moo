@@ -1,6 +1,5 @@
 module MooMoo
-  class Lookup < Base
-
+  class Lookup < BaseCommand
     ##
     # Determines whether the domain belongs to the RSP who issued the command.
     #
@@ -30,9 +29,8 @@ module MooMoo
     # returns the nameservers currently acting as DNS servers for the domain.
     #
     # http://www.opensrs.com/docs/apidomains/get_domain.htm
-    register_service :get_domain, :domain, :get
+    register_service :get, :domain
 
-    ##
     # Queries contact information for a list of domains.
     #
     # http://www.opensrs.com/docs/apidomains/get_domains_contacts.htm
@@ -84,7 +82,7 @@ module MooMoo
     # Determines the availability of a specified domain name.
     #
     # http://www.opensrs.com/docs/apidomains/lookup_domain.htm
-    register_service :lookup_domain, :domain, :lookup
+    register_service :lookup, :domain
 
     ##
     # Checks whether a specified name, word, or phrase is available for registration in gTLDs and
@@ -93,5 +91,42 @@ module MooMoo
     #
     # http://www.opensrs.com/docs/apidomains/name_suggest_domain.htm
     register_service :name_suggest, :domain
+
+    ##
+    # Queries contact information for a domain using get_domains_contacts.
+    #
+    # * <tt>:domain</tt> - the domain to query for. E.g.: "domain1.com"
+    #
+    # Returns an array like:
+    #     [
+    #       {
+    #         :type =>       "type", # admin, billing, etc
+    #         :first_name => "first_name",
+    #         :last_name =>  "last_name"
+    #         ... other attributes ...
+    #       }
+    #     ]
+    def domain_contacts(domain)
+      api_get_domains_contacts({ :attributes => { :domain_list => [domain] }})
+
+      attributes[domain]["contact_set"].map do |(type, attributes)|
+         {
+          :type =>       type,
+          :first_name => attributes["first_name"],
+          :last_name =>  attributes["last_name"],
+          :org_name =>   attributes["org_name"],
+          :address1 =>   attributes["address1"],
+          :address2 =>   attributes["address2"],
+          :address3 =>   attributes["address3"],
+          :city =>       attributes["city"],
+          :state =>      attributes["state"],
+          :country =>    attributes["country"],
+          :postal_code =>attributes["postal_code"],
+          :phone =>      attributes["phone"],
+          :fax =>        attributes["fax"],
+          :email =>      attributes["email"]
+        }
+      end
+    end
   end
 end
