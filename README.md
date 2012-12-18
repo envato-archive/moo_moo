@@ -80,6 +80,24 @@ api (e.g. Lookup :domain_contacts). This custom methods are not namespaced.
 Check their documentation to see what parameters does it expect and what responses
 does it return.
 
+TLD List
+--------
+
+MooMoo::Lookup provides a `tlds` method that is used to list top level domains
+that OpenSRS support. At this time, OpenSRS has no API method that does that,
+so we keep that in a custom configuration file (config/tlds.yml).
+
+The top level domains data comes from http://www.opensrs.com/site/services/domains/tlds.
+OpenSRS also provides a CSV file for country code top level domains at
+http://opensrs.com/images/elements/cctld-pricing.csv.
+
+In order to generate our own config/tlds.yml file, we use the scripts/parse_cctld_csv
+script to parse OpenSRS csv file. In order to do that, place an updated cctld-pricing.csv
+under config, and run scripts/parse_cctld_csv.
+
+For non country code top level domains, the scripts/parse_cctld_csv `defaults`
+list needs to be updated.
+
 Note on Patches/Pull Requests
 -----------------------------
 

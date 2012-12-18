@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+#
+# Converts an OpenSRS Country Code Top Level Domains pricing csv file to a list of TLD
+# and stores them in a yml file. For non country code tlds, as OpenSRS does not
+# provide a csv file, we keep them in a custom list.
+#
+# Sources:
+#   - http://opensrs.com/images/elements/cctld-pricing.csv
+#   - http://www.opensrs.com/site/services/domains/tlds
+
+require 'csv'
+
+csv_file = File.expand_path("../../config/cctld-pricing.csv", __FILE__)
+yml_file = File.expand_path("../../config/tlds.yml", __FILE__)
+
+# Non Country Code Top Level Domains
+defaults = %w(com net org info biz mobi pro name asia tel co me tv ws xxx jobs aero coop)
+
+File.open(yml_file, 'w') do |file|
+  # Writes domains that are not part of the cctld-pricing.csv file
+  defaults.each do |tld|
+    file.write("- #{tld}\n")
+  end
+
+  CSV.foreach(csv_file, col_sep: ",", headers: true, return_headers: false) do |row|
+    if row[2]
+      row[2].split(";").each do |tld|
+        file.write("- #{tld.strip}\n")
+      end
+    end
+  end
+end
