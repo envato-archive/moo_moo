@@ -65,4 +65,10 @@ describe MooMoo::Lookup do
         ]
     end
   end
+
+  describe "#tlds" do
+    it "lists top level domains opensrs supports" do
+      subject.tlds.should == YAML.load_file(MooMoo::Lookup::TLDS_FILE)
+    end
+  end
 end

@@ -1,5 +1,9 @@
+require 'yaml'
+
 module MooMoo
   class Lookup < BaseCommand
+    TLDS_FILE = File.expand_path("../../../../config/tlds.yml", __FILE__)
+
     ##
     # Determines whether the domain belongs to the RSP who issued the command.
     #
@@ -127,6 +131,13 @@ module MooMoo
           :email =>      attributes["email"]
         }
       end
+    end
+
+    # Public: Lists top level domain OpenSRS supports. At this point, OpenSRS
+    # does not have an api call to do that, so we keep our own list of supported
+    # top level domains.
+    def tlds
+      @tlds ||= YAML.load_file(TLDS_FILE)
     end
   end
 end
