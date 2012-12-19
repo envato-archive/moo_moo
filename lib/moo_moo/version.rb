@@ -1,3 +1,3 @@
 module MooMoo
-  VERSION = Version = "0.4.0"
+  VERSION = Version = "0.5.0"
 end
