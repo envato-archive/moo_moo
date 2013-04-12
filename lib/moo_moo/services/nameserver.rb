@@ -1,6 +1,11 @@
 module MooMoo
   class Nameserver < BaseCommand
 
+    # Adds nameservers to a domain, or adds or removes nameservers for a domain that already has nameservers assigned to it.
+    #
+    # http://www.opensrs.com/docs/apidomains/advanced_update_nameservers.htm
+    register_service :advanced_update_nameservers, :domain
+
     ##
     # Creates a nameserver in the same domain space as the cookie's domain.
     #
