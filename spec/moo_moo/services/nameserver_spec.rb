@@ -5,4 +5,5 @@ describe MooMoo::Nameserver do
   it { should have_registered_service(:delete, :nameserver) }
   it { should have_registered_service(:get, :nameserver) }
   it { should have_registered_service(:modify, :nameserver) }
+  it { should have_registered_service(:advanced_update_nameservers, :nameserver) }
 end
