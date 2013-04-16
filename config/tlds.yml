@@ -42,8 +42,10 @@
 - asn.au
 - id.au
 - org.au
+- be
 - com.br
 - bz
+- org.bz
 - ca
 - cc
 - cd
@@ -86,10 +88,15 @@
 - net.gg
 - org.gg
 - gl
-- co.go
+- co.gl
 - com.gl
 - net.gl
 - org.gl
+- gr
+- com.gr
+- net.gr
+- org.gr
+- edu.gr
 - gs
 - gy
 - co.gy
@@ -210,6 +217,7 @@
 - org.so
 - sr
 - st
+- sx
 - tc
 - tf
 - tk
@@ -228,6 +236,7 @@
 - net.uk
 - org.uk
 - plc.uk
+- us
 - com.uy
 - vc
 - com.vc
