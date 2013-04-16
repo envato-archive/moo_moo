@@ -24,7 +24,7 @@ File.open(yml_file, 'w') do |file|
 
   CSV.foreach(csv_file, col_sep: ",", headers: true, return_headers: false) do |row|
     if row[2]
-      row[2].split(";").each do |tld|
+      row[2].gsub(";", "").split(", ").each do |tld|
         file.write("- #{tld.strip}\n")
       end
     end
