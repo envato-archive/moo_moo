@@ -30,5 +30,11 @@ module MooMoo
     #
     # http://www.opensrs.com/docs/apidomains/modify_nameserver.htm
     register_service :modify, :nameserver
+
+    ##
+    # Verifies whether a nameserver exists at a particular registry.
+    #
+    # https://opensrs.com/docs/apidomains/registry_check_nameserver.htm
+    register_service :registry_check_nameserver, :nameserver
   end
 end
