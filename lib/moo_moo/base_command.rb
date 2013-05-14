@@ -84,6 +84,7 @@ module MooMoo
         c.request  :open_srs_xml_builder, action, object, params, key, username
         c.response :parse_open_srs
         c.response :open_srs_errors
+        c.response :moo_moo_logger
         c.adapter  :net_http
       end.post
     end
