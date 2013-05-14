@@ -1,6 +1,7 @@
 require 'moo_moo/exceptions'
 require 'faraday'
 require 'moo_moo/version'
+require 'moo_moo/logger'
 require 'moo_moo/config'
 require 'moo_moo/base_command'
 require 'moo_moo/middleware/open_srs_errors'

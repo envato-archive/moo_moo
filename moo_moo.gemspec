@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "opensrs"
 
   s.add_runtime_dependency 'extlib', '~> 0.9.15'
-  s.add_runtime_dependency 'faraday', '~> 0.8.0.rc2'
+  s.add_runtime_dependency 'faraday', '~> 0.8.0'
   s.add_runtime_dependency 'jruby-openssl', '~> 0.7.3' if RUBY_PLATFORM == 'java'
 
   s.add_development_dependency 'rake', '~> 0.9.2.2'

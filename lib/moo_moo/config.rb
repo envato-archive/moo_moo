@@ -7,6 +7,7 @@ module MooMoo
     attr_accessor :username
     attr_accessor :password
     attr_accessor :port
+    attr_accessor :logger
 
     def initialize
       @host     = default_option("host") || 'horizon.opensrs.net'

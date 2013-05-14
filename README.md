@@ -98,6 +98,17 @@ under config, and run scripts/parse_cctld_csv.
 For non country code top level domains, the scripts/parse_cctld_csv `defaults`
 list needs to be updated.
 
+Debugging
+---------
+
+If you need to debug requests and responses, you can set a logger object, and
+MooMoo will `debug` the request/response XMLs. Make sure the log level is set to
+`debug`.
+
+    MooMoo.configure do |config|
+      config.logger = my_logger
+    end
+
 Note on Patches/Pull Requests
 -----------------------------
 
