@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{Implements OpenSRS XML API}
   s.description = %q{Implements OpenSRS XML API}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "opensrs"
 
