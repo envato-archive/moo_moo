@@ -5,9 +5,10 @@ describe MooMoo::OpenSRSXMLBuilder do
   describe "#build_command" do
     before :each do
       params =  {
-        :cookie     => "thecookie",
-        :domain     => "mydomain.com",
-        :attributes => {
+        :cookie        => "thecookie",
+        :domain        => "mydomain.com",
+        :registrant_ip => "theregistrantip",
+        :attributes    => {
           :string     => "stringparam",
           :hash       => {:the => "hashparam"},
           :array      => [{:param => "arrayvalue1"}, {:param => "arrayvalue2"}],
@@ -27,6 +28,10 @@ describe MooMoo::OpenSRSXMLBuilder do
 
     it "should set the object" do
       @body.root.elements["body/data_block/dt_assoc/item[@key='object']"].text.should == "theobject"
+    end
+
+    it "should set the registrant_ip" do
+      @body.root.elements["body/data_block/dt_assoc/item[@key='registrant_ip']"].text.should == "theregistrantip"
     end
 
     it "should set the the cookie" do
