@@ -40,7 +40,6 @@ module MooMoo
               <item key="protocol">XCP</item>
               <item key="action">GET_BALANCE</item>
               <item key="object">BALANCE</item>
-              <item key="registrant_ip"/>
             </dt_assoc>
           </data_block>
         </body>
