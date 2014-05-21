@@ -24,25 +24,28 @@ Usage
 
 First, create an opensrs object for the namespace you want to use:
 
-    lookup = MooMoo::Lookup.new(
-      "horizon.opensrs.net",
-      "<YOUR_KEY>",
-      "<YOUR_RESELLER_USER>",
-      "<YOUR_PASSWORD>"
-    )
-
+```ruby
+lookup = MooMoo::Lookup.new(
+  host:     "horizon.opensrs.net",
+  key:      "<YOUR_KEY>",
+  username: "<YOUR_RESELLER_USER>",
+  password: "<YOUR_PASSWORD>"
+)
+```
 Or configure MooMoo and you can initialize it without any arguments:
 
-    MooMoo.configure do |config|
-      config.host     = "horizon.opensrs.net"
-      config.key      = "<YOUR_KEY>"
-      config.username = "<YOUR_RESELLER_USER>"
-      config.password = "<YOUR_PASSWORD>"
-    end
+```ruby
+MooMoo.configure do |config|
+  config.host     = "horizon.opensrs.net"
+  config.key      = "<YOUR_KEY>"
+  config.username = "<YOUR_RESELLER_USER>"
+  config.password = "<YOUR_PASSWORD>"
+end
 
-    ...
+...
 
-    lookup = MooMoo::Lookup.new
+lookup = MooMoo::Lookup.new
+```
 
 As an alternative, you can create a .moomoo.yml file in your project root with a default
 configuration for the library to use.
@@ -50,18 +53,22 @@ configuration for the library to use.
 Now you can call a variety of commands to deal with domains, nameservers, etc.
 Here's how to check the availability of a domain name:
 
-    lookup.api_lookup(:attributes => { :domain => 'example.com' })
-    p lookup.successful?
+```ruby
+lookup.api_lookup(:attributes => { :domain => 'example.com' })
+p lookup.successful?
 
-    true
+true
+```
 
 After calling the service method, you can use the following methods to access
 the response:
 
-  response    - the http response
-  message     - the "response_text"
-  attributes  - the "attributes" hash with relevant data
-  successful? - wheater the request was successful or not
+```
+response    - the http response
+message     - the "response_text"
+attributes  - the "attributes" hash with relevant data
+successful? - wheater the request was successful or not
+```
 
 Currently, there is support for the following services:
 
@@ -104,9 +111,11 @@ If you need to debug requests and responses, you can set a logger object, and
 MooMoo will `debug` the request/response XMLs. Make sure the log level is set to
 `debug`.
 
-    MooMoo.configure do |config|
-      config.logger = my_logger
-    end
+```ruby
+MooMoo.configure do |config|
+  config.logger = my_logger
+end
+```
 
 Note on Patches/Pull Requests
 -----------------------------
@@ -123,4 +132,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) 2012 Site5.com. See LICENSE for details.
+Copyright (c) 2014 Site5.com. See LICENSE for details.
