@@ -3,8 +3,7 @@ MooMoo [![MooMoo Build Status][Build Icon]][Build Status]
 
 MooMoo is a Ruby library for working with the [Tucows OpenSRS XML API][].
 
-MooMoo has been tested on MRI 1.8.7, MRI 1.9.2, MRI 1.9.3 Preview 1,
-Rubinius 2.0.0pre, and JRuby 1.6.2.
+MooMoo has been tested with MRI versions 1.9.3, 2.0.0, 2.1.1 and JRuby 1.9 mode.
 
 Documentation is available in [RDoc][] format.
 
