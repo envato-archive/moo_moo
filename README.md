@@ -133,4 +133,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) 2012 Site5.com. See LICENSE for details.
+Copyright (c) 2014 Site5.com. See LICENSE for details.
