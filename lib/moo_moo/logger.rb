@@ -1,12 +1,12 @@
 module Faraday
   class Response::MooMooLogger < Response::Middleware
     def call(env)
-      debug("[MooMoo request] #{env[:body]}")
+      debug("[MooMoo request] #{env.body}")
       super
     end
 
     def on_complete(env)
-      debug("[MooMoo response] #{env[:response].body}")
+      debug("[MooMoo response] #{env.body}")
     end
 
     private

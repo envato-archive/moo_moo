@@ -28,5 +28,5 @@ require 'moo_moo/services/transfer'
 require 'moo_moo/services/dns_zone'
 require 'moo_moo/services/cookie'
 
-Faraday.register_middleware :request, :open_srs_xml_builder => MooMoo::OpenSRSXMLBuilder
-Faraday.register_middleware :response, :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS
+Faraday::Request.register_middleware  :open_srs_xml_builder => MooMoo::OpenSRSXMLBuilder
+Faraday::Response.register_middleware :open_srs_errors => MooMoo::OpenSRSErrors, :parse_open_srs => MooMoo::ParseOpenSRS
