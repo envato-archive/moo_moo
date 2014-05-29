@@ -8,15 +8,6 @@ rescue LoadError
 end
 
 begin
-  require 'metric_fu'
-  MetricFu::Configuration.run do |config|
-    config.rcov[:rcov_opts] << "-Ispec"
-  end
-rescue LoadError
-  puts "Can't load metric_fu"
-end
-
-begin
   require 'rdoc/task'
   Rake::RDocTask.new do |rdoc|
     version = MooMoo::VERSION
@@ -61,11 +52,5 @@ end
 
 RSpec::Core::RakeTask.new :spec
 Bundler::GemHelper.install_tasks
-
-desc  "Run all specs with rcov"
-RSpec::Core::RakeTask.new(:rcov) do |t|
-  t.rcov = true
-  t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/,features\/ --comments}
-end
 
 task :default => [:spec]
