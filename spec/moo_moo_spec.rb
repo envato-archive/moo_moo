@@ -15,7 +15,6 @@ describe MooMoo do
         config.host     = 'host.com'
         config.key      = 'secret'
         config.username = 'username'
-        config.password = 'secret2'
       end
 
       opensrs = MooMoo::BaseCommand.new
@@ -23,7 +22,6 @@ describe MooMoo do
       opensrs.host.should     == 'host.com'
       opensrs.key.should      == 'secret'
       opensrs.username.should == 'username'
-      opensrs.password.should == 'secret2'
     end
   end
 

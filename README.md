@@ -28,8 +28,7 @@ First, create an opensrs object for the namespace you want to use:
 lookup = MooMoo::Lookup.new(
   host:     "horizon.opensrs.net",
   key:      "<YOUR_KEY>",
-  username: "<YOUR_RESELLER_USER>",
-  password: "<YOUR_PASSWORD>"
+  username: "<YOUR_RESELLER_USER>"
 )
 ```
 Or configure MooMoo and you can initialize it without any arguments:
@@ -39,7 +38,6 @@ MooMoo.configure do |config|
   config.host     = "horizon.opensrs.net"
   config.key      = "<YOUR_KEY>"
   config.username = "<YOUR_RESELLER_USER>"
-  config.password = "<YOUR_PASSWORD>"
 end
 
 ...

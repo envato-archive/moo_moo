@@ -13,7 +13,7 @@ module MooMoo
   #       ... custom response processing ...
   #     end
   class BaseCommand
-    attr_reader :host, :key, :username, :password, :port, :response
+    attr_reader :host, :key, :username, :port, :response
 
     # Register an api service for the current class.
     #
@@ -37,7 +37,6 @@ module MooMoo
     #  * <tt>:host</tt> - host of the OpenSRS server
     #  * <tt>:key</tt> - private key
     #  * <tt>:username</tt> - username of the reseller
-    #  * <tt>:password</tt> - password of the rseller
     #
     # === Optional
     #  * <tt>:port</tt> - port to connect on
@@ -45,7 +44,6 @@ module MooMoo
       @host     = params[:host]     || MooMoo.config.host     || raise(OpenSRSException, "Host is required")
       @key      = params[:key]      || MooMoo.config.key      || raise(OpenSRSException, "Key is required")
       @username = params[:username] || MooMoo.config.username || raise(OpenSRSException, "Username is required")
-      @password = params[:password] || MooMoo.config.password || raise(OpenSRSException, "Password is required")
       @port     = params[:port]     || MooMoo.config.port     || 55443
     end
 

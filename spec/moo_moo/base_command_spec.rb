@@ -7,7 +7,7 @@ end
 describe MooMoo::BaseCommand do
 
   subject { SampleService.new(:host => "thehost.com", :key => "thekey",
-      :username => "theuser", :password => "thepass", :port => "12345") }
+      :username => "theuser", :port => "12345") }
 
   let(:response) { double("Response", :body => {"attributes" => { :the => :attrs }})}
 

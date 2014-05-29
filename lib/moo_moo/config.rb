@@ -5,7 +5,6 @@ module MooMoo
     attr_accessor :host
     attr_accessor :key
     attr_accessor :username
-    attr_accessor :password
     attr_accessor :port
     attr_accessor :logger
 
@@ -13,7 +12,6 @@ module MooMoo
       @host     = default_option("host") || 'horizon.opensrs.net'
       @key      = default_option("key")
       @username = default_option("username")
-      @password = default_option("password")
       @port     = default_option("port")
     end
 
