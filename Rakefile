@@ -25,7 +25,7 @@ end
 
 desc "Sanitize sensitive info from cassettes"
 task :sanitize_cassettes do
-  if ENV['OPENSRS_TEST_KEY'] && ENV['OPENSRS_TEST_URL'] && ENV['OPENSRS_TEST_USER'] && ENV['OPENSRS_TEST_PASS']
+  if ENV['OPENSRS_TEST_KEY'] && ENV['OPENSRS_TEST_URL'] && ENV['OPENSRS_TEST_USER']
     path = File.join(File.dirname(__FILE__), 'spec', 'vcr_cassettes')
     files = Dir.glob("#{path}/**/*.yml")
     if files.any?
@@ -35,7 +35,6 @@ task :sanitize_cassettes do
         old.gsub!(ENV['OPENSRS_TEST_KEY'], '123key')
         old.gsub!(ENV['OPENSRS_TEST_URL'], 'server.com')
         old.gsub!(ENV['OPENSRS_TEST_USER'], 'opensrs_user')
-        old.gsub!(ENV['OPENSRS_TEST_PASS'], 'password')
         old.gsub!(/x-signature.*?\n.*?\w{32}/, "x-signature:\n      - 00000000000000000000000000000000")
         old.gsub!(/\w{16}:\w{6}:\w{2,8}/, '0000000000000000:000000:00000')
         File.open(file, 'w') do |f|
@@ -46,7 +45,7 @@ task :sanitize_cassettes do
       puts "Nothing to sanitize"
     end
   else
-    puts "I can't sanitize without setting up OPENSRS_TEST_KEY, OPENSRS_TEST_URL, OPENSRS_TEST_USER, and OPENSRS_TEST_PASS"
+    puts "I can't sanitize without setting up OPENSRS_TEST_KEY, OPENSRS_TEST_URL, OPENSRS_TEST_USER"
   end
 end
 
