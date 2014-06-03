@@ -2,7 +2,6 @@ require 'rspec'
 require 'moo_moo'
 require 'webmock/rspec'
 require 'vcr'
-require 'extlib'
 
 VCR.config do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
