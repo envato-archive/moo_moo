@@ -1,15 +1,15 @@
 MooMoo [![MooMoo Build Status][Build Icon]][Build Status]
 =========================================================
 
-MooMoo is a Ruby library for working with the [Tucows OpenSRS XML API][].
+MooMoo is a Ruby library for working with the [OpenSRS XML Domain API][].
 
-MooMoo has been tested with MRI versions 1.9.3, 2.0.0, 2.1.1 and JRuby 1.9 mode.
+MooMoo has been tested with MRI versions 1.9.3, 2.0.0, 2.1.3 and JRuby 1.9 mode.
 
 Documentation is available in [RDoc][] format.
 
 [Build Status]: http://travis-ci.org/site5/moo_moo
 [Build Icon]: https://secure.travis-ci.org/site5/moo_moo.png?branch=master
-[Tucows OpenSRS XML API]: http://www.opensrs.com/site/resources/documentation
+[OpenSRS XML Domain API]: https://opensrs.com/integration/api/
 [RDoc]: http://rdoc.info/github/site5/moo_moo/master/frames
 
 Description
@@ -17,7 +17,7 @@ Description
 
 Implements most of the functionality of the OpenSRS XML API. For full
 documentation of the OpenSRS XML API see
-<http://www.opensrs.com/site/resources/documentation>
+<https://help.opensrs.com/hc/en-us/articles/203245883-OpenSRS-API?_ga=1.67322641.108940997.1400249225>
 
 Usage
 -----
@@ -65,7 +65,7 @@ the response:
 response    - the http response
 message     - the "response_text"
 attributes  - the "attributes" hash with relevant data
-successful? - wheater the request was successful or not
+successful? - whether the request was successful or not
 ```
 
 Currently, there is support for the following services:
@@ -76,30 +76,30 @@ Currently, there is support for the following services:
   * Provisioning
   * Transfer
 
-API services are namespaced with api. For example, for the Lookup "get" api method,
-it will be named "api_get".
+API services are namespaced with api. For example, for the Lookup "get" API method,
+it will be named `api_get`.
 
 MooMoo provides custom methods that should make it easier to deal with the OpenSRS
-api (e.g. Lookup :domain_contacts). This custom methods are not namespaced.
-Check their documentation to see what parameters does it expect and what responses
-does it return.
+API (e.g. Lookup `:domain_contacts`). These custom methods are not namespaced.
+Check the documentation to see the parameters they expect and the responses
+they return.
 
 TLD List
 --------
 
-MooMoo::Lookup provides a `tlds` method that is used to list top level domains
+`MooMoo::Lookup` provides a `tlds` method that is used to list top level domains
 that OpenSRS support. At this time, OpenSRS has no API method that does that,
-so we keep that in a custom configuration file (config/tlds.yml).
+so we keep that in a custom configuration file (`config/tlds.yml`).
 
-The top level domains data comes from http://www.opensrs.com/site/services/domains/tlds.
+The top level domains data comes from https://opensrs.com/services/domains/domain-pricing/.
 OpenSRS also provides a CSV file for country code top level domains at
-http://opensrs.com/images/elements/cctld-pricing.csv.
+https://opensrs.com/images/elements/cctld-pricing.csv.
 
-In order to generate our own config/tlds.yml file, we use the scripts/parse_cctld_csv
-script to parse OpenSRS csv file. In order to do that, place an updated cctld-pricing.csv
-under config, and run scripts/parse_cctld_csv.
+In order to generate our own `config/tlds.yml` file, we use the `scripts/parse_cctld_csv`
+script to parse OpenSRS CSV file. In order to do that, place an updated `cctld-pricing.csv`
+under `config`, and run `scripts/parse_cctld_csv`.
 
-For non country code top level domains, the scripts/parse_cctld_csv `defaults`
+For non-country code top level domains, the `scripts/parse_cctld_csv` `defaults`
 list needs to be updated.
 
 Debugging
@@ -122,7 +122,7 @@ Note on Patches/Pull Requests
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
   future version unintentionally.
-* Commit, do not mess with rakefile, version, or history. (if you want to have
+* Commit, do not mess with Rakefile, version, or history. (if you want to have
   your own version, that is fine but bump version in a commit by itself I can
   ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.

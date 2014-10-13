@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Tim Parkin"]
   s.email       = ["tparkin@site5.com"]
   s.homepage    = ""
-  s.summary     = %q{Implements OpenSRS XML API}
-  s.description = %q{Implements OpenSRS XML API}
+  s.summary     = %q{Implements OpenSRS XML Domain API}
+  s.description = %q{Implements OpenSRS XML Domain API}
   s.license     = 'MIT'
 
   s.rubyforge_project = "opensrs"
