@@ -5,8 +5,8 @@
 # provide a csv file, we keep them in a custom list.
 #
 # Sources:
-#   - http://opensrs.com/images/elements/cctld-pricing.csv
-#   - http://www.opensrs.com/site/services/domains/tlds
+#   - https://opensrs.com/images/elements/cctld-pricing.csv
+#   - https://opensrs.com/services/domains/domain-pricing/
 
 require 'csv'
 
