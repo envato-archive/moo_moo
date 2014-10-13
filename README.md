@@ -17,7 +17,7 @@ Description
 
 Implements most of the functionality of the OpenSRS XML API. For full
 documentation of the OpenSRS XML API see
-<https://help.opensrs.com/hc/en-us/articles/203245883-OpenSRS-API?_ga=1.67322641.108940997.1400249225>
+<https://help.opensrs.com/hc/en-us/articles/203245883-OpenSRS-API>.
 
 Usage
 -----
