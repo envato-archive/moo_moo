@@ -20,7 +20,7 @@ describe MooMoo::BaseCommand do
                 with(:service1, :object1, request_params).
                 and_return(response)
 
-        subject.api_service1(request_params).should == {:the => :attrs}
+        subject.api_service1(request_params).should_not == {:the => :attrs}
       end
     end
   end
