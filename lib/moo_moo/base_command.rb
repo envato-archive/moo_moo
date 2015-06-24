@@ -25,9 +25,15 @@ module MooMoo
     #
     # * <tt>action_name</tt> - the api action to be called
     # * <tt>object</tt> - the object
-    def self.register_service(action_name, object)
+    #
+    # === Optional
+    # * <tt>options</tt> - the api paramenters. An object parameter can be
+    # provided in order to override the default api object.
+    def self.register_service(action_name, object, options={})
       define_method("api_#{action_name}") do |*args|
-        perform(action_name, object, args.first || {})
+        params = args.first || {}
+        object = params.delete(:object) if params[:object]
+        perform(action_name, object, params)
       end
     end
 
@@ -71,7 +77,7 @@ module MooMoo
     #  * <tt>:command</tt> - command to run
     #
     # === Optional
-    #  * <tt>:params</tt> - parameters for the command
+    #  * <tt>:params</tt> - parameters for the command.
     def perform(action, object, params = {})
       (@response = faraday_request(action, object, params)) && attributes
     end
