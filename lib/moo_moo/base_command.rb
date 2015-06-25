@@ -25,11 +25,7 @@ module MooMoo
     #
     # * <tt>action_name</tt> - the api action to be called
     # * <tt>object</tt> - the object
-    #
-    # === Optional
-    # * <tt>options</tt> - the api paramenters. An object parameter can be
-    # provided in order to override the default api object.
-    def self.register_service(action_name, object, options={})
+    def self.register_service(action_name, object)
       define_method("api_#{action_name}") do |*args|
         params = args.first || {}
         object = params.delete(:object) if params[:object]
