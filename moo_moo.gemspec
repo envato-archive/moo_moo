@@ -6,9 +6,9 @@ Gem::Specification.new do |s|
   s.name        = "moo_moo"
   s.version     = MooMoo::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Tim Parkin"]
-  s.email       = ["tparkin@site5.com"]
-  s.homepage    = ""
+  s.authors     = ["Justin Mazzi"]
+  s.email       = ["justin@pressed.net"]
+  s.homepage    = "https://github.com/pressednet/moo_moo"
   s.summary     = %q{Implements OpenSRS XML Domain API}
   s.description = %q{Implements OpenSRS XML Domain API}
   s.license     = 'MIT'

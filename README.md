@@ -7,10 +7,10 @@ MooMoo has been tested with MRI versions 1.9.3, 2.0.0, 2.1.3 and JRuby 1.9 mode.
 
 Documentation is available in [RDoc][] format.
 
-[Build Status]: http://travis-ci.org/site5/moo_moo
-[Build Icon]: https://secure.travis-ci.org/site5/moo_moo.png?branch=master
+[Build Status]: http://travis-ci.org/pressednet/moo_moo
+[Build Icon]: https://secure.travis-ci.org/pressednet/moo_moo.png?branch=master
 [OpenSRS XML Domain API]: https://opensrs.com/integration/api/
-[RDoc]: http://rdoc.info/github/site5/moo_moo/master/frames
+[RDoc]: http://rdoc.info/github/pressednet/moo_moo/master/frames
 
 Description
 -----------
@@ -130,4 +130,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) 2014 Site5.com. See LICENSE for details.
+Copyright (c) 2016 Pressed, LLC. See LICENSE for details.
