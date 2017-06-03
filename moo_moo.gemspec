@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "opensrs"
 
-  s.add_runtime_dependency 'faraday', '~> 0.9.0'
+  s.add_runtime_dependency 'faraday', '>= 0.9.0', '< 1.0'
   s.add_runtime_dependency 'jruby-openssl', '>= 0.7.3' if RUBY_PLATFORM == 'java'
 
   s.add_development_dependency 'rake', '~> 0.9.2.2'
