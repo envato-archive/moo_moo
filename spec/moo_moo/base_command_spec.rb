@@ -22,6 +22,14 @@ describe MooMoo::BaseCommand do
 
         subject.api_service1(request_params).should == {:the => :attrs}
       end
+
+      it "overrides the api object" do
+        subject.should_receive(:faraday_request).
+                with(:service1, :another_object, request_params).
+                and_return(response)
+
+        subject.api_service1(request_params.merge(object: :another_object)).should == {:the => :attrs}
+      end
     end
   end
 
@@ -64,7 +72,7 @@ describe MooMoo::BaseCommand do
     let(:response) { {:status => 200, :body => File.open("spec/fixtures/success_response.xml")} }
 
     before :each do
-      @request  = stub_request(:post, "https://thehost.com:12345/").to_return(response)
+      @request = stub_request(:post, "https://thehost.com:12345/").to_return(response)
       subject.send(:perform, :service1, :object1)
     end
 
